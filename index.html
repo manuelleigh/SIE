@@ -1,29 +1,102 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistemas de Información Empresarial</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Sistemas de Información Empresarial | Portafolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0f172a',
+                        cardBg: '#1e293b',
+                        neonBlue: '#38bdf8',
+                        neonPurple: '#a855f7'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; overflow-x: hidden; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #38bdf8, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .animated-bg {
+            position: absolute; width: 300px; height: 300px;
+            background: #a855f7; border-radius: 50%; filter: blur(100px);
+            opacity: 0.3; animation: float 10s infinite alternate; z-index: -1;
+        }
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, 50px); }
+        }
+    </style>
 </head>
-<body class="bg-light">
-    <div class="container py-5">
-        <header class="pb-3 mb-4 border-bottom">
-            <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
-                <span class="fs-4">Sistemas de Información Empresarial (SIE)</span>
-            </a>
-        </header>
-        <div class="p-5 mb-4 bg-white rounded-3 shadow-sm">
-            <div class="container-fluid py-1">
-                <h1 class="display-5 fw-bold">Portafolio de Casos Prácticos</h1>
-                <p class="col-md-8 fs-4">Repositorio de evidencias prácticas desarrolladas durante el ciclo para ser presentadas dinámicamente.</p>
-                <a class="btn btn-primary btn-lg" href="semana5/index.html" role="button">Ver Práctica - Semana 5</a>
+<body class="antialiased relative min-h-screen flex flex-col">
+    <!-- Animated background blobs -->
+    <div class="animated-bg top-0 left-0"></div>
+    <div class="animated-bg bottom-0 right-0" style="background: #38bdf8; animation-delay: -5s;"></div>
+
+    <nav class="glass-panel sticky top-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="text-2xl font-bold text-gradient"><i class="fa-solid fa-layer-group mr-2"></i>SIE Portafolio</div>
+            <div>
+                <a href="https://github.com/manuelleigh/SIE" target="_blank" class="text-gray-300 hover:text-white transition"><i class="fa-brands fa-github text-2xl"></i></a>
             </div>
         </div>
-        
-        <footer class="pt-3 mt-4 text-muted border-top">
-            &copy; 2026 - Curso SIE
-        </footer>
-    </div>
+    </nav>
+
+    <main class="flex-grow flex flex-col items-center justify-center p-6 mt-10">
+        <div class="text-center max-w-3xl" data-aos="fade-up" data-aos-duration="1000">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6">Sistemas de Información <span class="text-gradient">Empresarial</span></h1>
+            <p class="text-xl text-gray-400 mb-10">Repositorio interactivo para la presentación de casos prácticos de innovación tecnológica, metodologías ágiles y DevOps.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl mt-10" data-aos="fade-up" data-aos-delay="300">
+            <!-- Card Semana 5 -->
+            <div class="glass-panel rounded-2xl p-6 hover:-translate-y-2 transition-transform duration-300 group cursor-pointer border-t border-neonBlue">
+                <div class="w-14 h-14 rounded-full bg-blue-500/20 flex items-center justify-center mb-4 text-neonBlue group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-rocket text-2xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Semana 5</h3>
+                <p class="text-gray-400 mb-6">Implementación de E-Commerce usando Scrum, CI/CD, Docker y estándares ISO 27001/9001.</p>
+                <a href="semana5/index.html" class="inline-flex items-center text-neonBlue font-semibold hover:text-neonPurple transition-colors">
+                    Ver Proyecto Innovador <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </a>
+            </div>
+            
+            <!-- Placeholder para futuras semanas -->
+            <div class="glass-panel rounded-2xl p-6 border-t border-gray-600 opacity-50">
+                <div class="w-14 h-14 rounded-full bg-gray-500/20 flex items-center justify-center mb-4 text-gray-400">
+                    <i class="fa-solid fa-lock text-2xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2 text-gray-300">Semana 6</h3>
+                <p class="text-gray-500">Próximamente disponible en las siguientes sesiones del curso.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-center p-6 text-gray-500 border-t border-white/10 mt-20 glass-panel">
+        <p>&copy; 2026 - Universidad / Curso SIE - Innovación Tecnológica</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ once: true });
+    </script>
 </body>
 </html>
