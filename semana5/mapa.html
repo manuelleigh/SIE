@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano — Sesión 5: SIE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper-0:#0a2c4c;
+    --paper-1:#0e3a63;
+    --grid:rgba(255,255,255,0.055);
+    --gridm:rgba(255,255,255,0.11);
+    --ink:#eaf1f7;
+    --ink-dim:#9fb6cc;
+    --ink-faint:#6f8aa3;
+    --line:#3a5e80;
+    --brass:#e2a25a;
+    --coral:#ea7086;
+    --teal:#63d9a8;
+    --amber:#f0b25b;
+    --violet:#b79af0;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      repeating-linear-gradient(0deg, var(--grid) 0 1px, transparent 1px 44px),
+      repeating-linear-gradient(90deg, var(--grid) 0 1px, transparent 1px 44px),
+      repeating-linear-gradient(0deg, var(--gridm) 0 1px, transparent 1px 220px),
+      repeating-linear-gradient(90deg, var(--gridm) 0 1px, transparent 1px 220px),
+      linear-gradient(160deg, var(--paper-1), var(--paper-0) 75%);
+    min-height:100vh;
+    font-family:'IBM Plex Sans',Arial,sans-serif;
+    color:var(--ink);
+    padding:34px 16px 40px;
+  }
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  header{max-width:980px;margin:0 auto 8px;}
+  header .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.06em;color:var(--brass);text-transform:uppercase;}
+  header h1{font-weight:600;font-size:clamp(22px,3.6vw,29px);margin:8px 0 6px;}
+  header p{color:var(--ink-dim);font-size:14px;margin:0;max-width:560px;line-height:1.6;}
+
+  .stage{max-width:980px;margin:26px auto 0;position:relative;}
+
+  /* ---- vista esquemática (escritorio) ---- */
+  .schema{position:relative;width:100%;aspect-ratio:16/10;}
+  svg.traces{position:absolute;inset:0;width:100%;height:100%;overflow:visible;}
+  .trace{fill:none;stroke:var(--line);stroke-width:1.4;stroke-dasharray:4 3;transition:stroke 0.35s ease, stroke-width 0.35s ease;}
+  .trace.on{stroke-dasharray:3 3;animation:march 0.6s linear infinite;}
+  @keyframes march{ to{ stroke-dashoffset:-24; } }
+  .via{fill:var(--paper-0);stroke:var(--line);stroke-width:1.4;transition:stroke 0.35s ease;}
+  .via.on{ fill:currentColor; }
+
+  .chip{
+    position:absolute;transform:translate(-50%,-50%);
+    background:rgba(9,32,56,0.85);
+    border:1.4px solid var(--line);
+    border-radius:6px;
+    padding:12px 14px;
+    text-align:left;
+    transition:border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .chip .pin{position:absolute;width:9px;height:2px;background:var(--line);}
+  .chip.hub{width:186px;padding:16px 16px;text-align:center;}
+  .chip.hub .ref{color:var(--brass);}
+  .chip.hub h2{margin:4px 0 0;font-size:15px;font-weight:600;}
+  .chip.hub .sub{font-size:11px;color:var(--ink-dim);margin-top:3px;}
+
+  .chip.topic{width:198px;cursor:pointer;user-select:none;}
+  .chip.topic:focus-visible{outline:2px solid var(--ink);outline-offset:3px;}
+  .chip.topic .ref{font-size:10.5px;letter-spacing:0.04em;color:var(--ink-faint);}
+  .chip.topic h3{margin:4px 0 2px;font-size:13.5px;font-weight:500;line-height:1.3;}
+  .chip.topic .sub{font-size:11px;color:var(--ink-dim);}
+  .chip.topic.active{ box-shadow:0 0 0 1px currentColor, 0 0 22px -4px currentColor; }
+  .chip.topic.active .ref{ color:currentColor; }
+  .chip.topic.active{ border-color:currentColor; }
+
+  .t1{ left:14%; top:12%; }
+  .t2{ left:86%; top:12%; text-align:right; }
+  .t3{ left:14%; top:88%; }
+  .t4{ left:86%; top:88%; text-align:right; }
+
+  /* ---- vista compacta (móvil) ---- */
+  .stack{display:none;flex-direction:column;gap:10px;}
+  .stack .row{
+    display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:8px;
+    background:rgba(9,32,56,0.85);border:1.4px solid var(--line);cursor:pointer;
+  }
+  .stack .row .ref{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-faint);min-width:52px;}
+  .stack .row .k{font-size:14px;font-weight:500;flex:1;}
+  .stack .row.active{ border-color:currentColor; box-shadow:0 0 0 1px currentColor; }
+  .stack .row.active .ref, .stack .row.active .k{ color:currentColor; }
+
+  /* ---- bloque de rotulo (título de plano) ---- */
+  .titleblock{
+    max-width:980px;margin:22px auto 0;border:1.4px solid var(--line);border-radius:6px;
+    display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-dim);
+    background:rgba(9,32,56,0.6);
+  }
+  .titleblock div{padding:9px 12px;border-left:1.4px solid var(--line);}
+  .titleblock div:first-child{border-left:none;}
+  .titleblock b{display:block;color:var(--ink-faint);font-size:9.5px;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:2px;}
+  .titleblock span{color:var(--ink);}
+
+  /* ---- panel de datos ---- */
+  .panel{
+    max-width:980px;margin:16px auto 0;border-radius:8px;border:1.4px solid var(--line);
+    background:rgba(9,32,56,0.85);max-height:0;overflow:hidden;opacity:0;padding:0;
+    transition:max-height 0.35s ease, opacity 0.3s ease, padding 0.35s ease;
+  }
+  .panel.show{max-height:460px;opacity:1;padding:20px 24px 22px;}
+  .panel .ref{font-family:'IBM Plex Mono',monospace;font-size:11px;color:currentColor;letter-spacing:0.04em;}
+  .panel h2{font-size:16.5px;font-weight:600;margin:4px 0 12px;}
+  .panel ul{margin:0;padding-left:18px;color:var(--ink-dim);font-size:14px;line-height:1.8;}
+  .panel ul li::marker{color:currentColor;}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;}
+  .tags span{font-family:'IBM Plex Mono',monospace;font-size:10.5px;padding:4px 9px;border-radius:4px;border:1px solid currentColor;color:currentColor;}
+
+  @media (max-width:760px){
+    .schema{display:none;}
+    .stack{display:flex;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .trace.on{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Plano N.° SIE-05 · Ciclo agosto 2026</div>
+  <h1>Sistemas de Información Empresarial — sesión 5</h1>
+  <p>Mapa conceptual en formato de esquema técnico. Selecciona un componente para ver su ficha.</p>
+</header>
+
+<div class="stage">
+  <div class="schema" id="schema">
+    <svg class="traces" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+  </div>
+  <div class="stack" id="stack"></div>
+
+  <div class="panel" id="panel">
+    <div class="ref" id="panel-ref"></div>
+    <h2 id="panel-title"></h2>
+    <ul id="panel-list"></ul>
+    <div class="tags" id="panel-tags"></div>
+  </div>
+
+  <div class="titleblock">
+    <div><b>Proyecto</b><span>Sistemas de Información Empresarial</span></div>
+    <div><b>Plano</b><span>Mapa conceptual — sesión 5</span></div>
+    <div><b>Escala</b><span>N.T.S.</span></div>
+    <div><b>Rev.</b><span>03 · Caso 03</span></div>
+  </div>
+</div>
+
+<script>
+const NS = "http://www.w3.org/2000/svg";
+const schema = document.getElementById("schema");
+const svg = schema.querySelector("svg.traces");
+const stack = document.getElementById("stack");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const hub = { x:50, y:50, ref:"NÚCLEO", label:"SIE · Sesión 5", sub:"Modelado, diseño y agilidad" };
+
+const topics = [
+  { id:"t1", x:14, y:12, ref:"REF-01", color:"coral", label:"Modelado y diseño de procesos", sub:"Diagramas y estándares",
+    items:[
+      "Análisis del modelado y diseño avanzado de información empresarial",
+      "Representación de procesos de negocio mediante diagramas",
+      "Cumplimiento de estándares de representación en contextos organizacionales"
+    ], tags:["BPMN","Estándares de representación"] },
+  { id:"t2", x:86, y:12, ref:"REF-02", color:"amber", label:"Metodologías ágiles (Scrum)", sub:"Artefactos y ventajas",
+    items:[
+      "Ventajas de una buena implementación ágil: entregas incrementales y mayor adaptabilidad",
+      "Artefactos de Scrum: Product Backlog, Sprint Backlog e Incremento",
+      "Aplicación práctica de los artefactos en un caso de sistema web"
+    ], tags:["Product Backlog","Sprint Backlog","Incremento"] },
+  { id:"t3", x:14, y:88, ref:"REF-03", color:"teal", label:"Activos y seguridad organizacional", sub:"Riesgos y normas ISO",
+    items:[
+      "Activos clave: hardware, software, datos y usuarios",
+      "Riesgos: phishing, ransomware, DoS, man-in-the-middle, SQL injection, XSS y DNS spoofing",
+      "Normas ISO como mejora continua: 9001, 25000, 27001, 12207, 25010 y 29110"
+    ], tags:["Activos de TI","Normas ISO","Vectores de ataque"] },
+  { id:"t4", x:86, y:88, ref:"REF-04", color:"violet", label:"Despliegue y transformación tecnológica", sub:"Contenedores y CI/CD",
+    items:[
+      "Despliegue: instalar, configurar y activar una aplicación en un entorno operativo",
+      "Contenedores (Docker) frente a máquinas virtuales: más ligeros y rápidos",
+      "Flujo Git y pipelines CI/CD que automatizan build, pruebas y release",
+      "Kubernetes como orquestador de contenedores en producción"
+    ], tags:["Contenedores","CI/CD","Kubernetes"] }
+];
+
+const colorHex = { coral:"#ea7086", amber:"#f0b25b", teal:"#63d9a8", violet:"#b79af0" };
+
+function elNS(tag, attrs){
+  const e = document.createElementNS(NS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+
+// trazos en L desde el núcleo hasta cada chip, con "via" en el codo
+const traceEls = {};
+topics.forEach(t=>{
+  const midX = t.x < 50 ? (hub.x + (hub.x - t.x)*0.15) : (hub.x - (t.x - hub.x)*0.15);
+  const elbowX = t.x < 50 ? hub.x - 14 : hub.x + 14;
+  const d = `M ${hub.x} ${hub.y} L ${elbowX} ${hub.y} L ${elbowX} ${t.y} L ${t.x} ${t.y}`;
+  const path = elNS("path", { class:"trace", d, "vector-effect":"non-scaling-stroke" });
+  svg.appendChild(path);
+  const via = elNS("circle", { class:"via", cx:elbowX, cy:t.y, r:"1.1", "vector-effect":"non-scaling-stroke" });
+  svg.appendChild(via);
+  traceEls[t.id] = { path, via };
+});
+
+function addChip(cls, n, innerHTML){
+  const d = document.createElement("div");
+  d.className = cls;
+  d.style.left = n.x + "%";
+  d.style.top = n.y + "%";
+  d.innerHTML = innerHTML;
+  schema.appendChild(d);
+  return d;
+}
+addChip("chip hub", hub, `<div class="ref mono">${hub.ref}</div><h2>${hub.label}</h2><div class="sub">${hub.sub}</div>`);
+
+const chipEls = {};
+topics.forEach(t=>{
+  const d = addChip(`chip topic ${t.id}`, t, `<div class="ref mono">${t.ref}</div><h3>${t.label}</h3><div class="sub">${t.sub}</div>`);
+  d.dataset.c = t.color;
+  d.tabIndex = 0;
+  d.setAttribute("role","button");
+  d.addEventListener("click", ()=> onSelect(t.id));
+  d.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); onSelect(t.id); }});
+  chipEls[t.id] = d;
+});
+
+const rowEls = {};
+topics.forEach(t=>{
+  const row = document.createElement("div");
+  row.className = "row";
+  row.tabIndex = 0;
+  row.setAttribute("role","button");
+  row.innerHTML = `<span class="ref">${t.ref}</span><span class="k">${t.label}</span>`;
+  row.addEventListener("click", ()=> onSelect(t.id));
+  row.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); onSelect(t.id); }});
+  stack.appendChild(row);
+  rowEls[t.id] = row;
+});
+
+const panel = document.getElementById("panel");
+const panelRef = document.getElementById("panel-ref");
+const panelTitle = document.getElementById("panel-title");
+const panelList = document.getElementById("panel-list");
+const panelTags = document.getElementById("panel-tags");
+
+let activeId = null;
+
+function resetActive(){
+  topics.forEach(t=>{
+    chipEls[t.id].classList.remove("active");
+    rowEls[t.id].classList.remove("active");
+    rowEls[t.id].style.color = "";
+    traceEls[t.id].path.classList.remove("on");
+    traceEls[t.id].via.classList.remove("on");
+    traceEls[t.id].path.style.stroke = "";
+    traceEls[t.id].path.style.strokeWidth = "";
+    traceEls[t.id].via.style.color = "";
+  });
+}
+
+function onSelect(id){
+  if(activeId === id){
+    resetActive(); panel.classList.remove("show"); activeId = null; return;
+  }
+  resetActive();
+  const t = topics.find(x=>x.id===id);
+  const color = colorHex[t.color];
+
+  chipEls[id].classList.add("active");
+  rowEls[id].classList.add("active");
+  rowEls[id].style.color = color;
+
+  const tr = traceEls[id];
+  tr.path.style.stroke = color;
+  tr.path.style.strokeWidth = "2.2";
+  tr.via.style.color = color;
+  if(!reduceMotion){ tr.path.classList.add("on"); tr.via.classList.add("on"); }
+  else { tr.via.classList.add("on"); }
+
+  panelRef.style.color = color;
+  panelRef.textContent = t.ref + " · componente de la sesión 5";
+  panelTitle.textContent = t.label;
+  panelList.innerHTML = t.items.map(i => `<li>${i}</li>`).join("");
+  panelTags.innerHTML = t.tags.map(tag => `<span style="color:${color}">${tag}</span>`).join("");
+  panel.classList.add("show");
+  activeId = id;
+}
+</script>
+</body>
+</html>
