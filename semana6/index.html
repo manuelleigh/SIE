@@ -1,5 +1,4 @@
-﻿```html
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -1542,7 +1541,7 @@
                             type="submit"
                             class="btn btn-primary"
                         >
-                            ⚡ Evaluar y Procesar
+                            <i class="fa-solid fa-bolt"></i> Evaluar y Procesar
                         </button>
 
                         <button
@@ -1601,7 +1600,7 @@
                     >
 
                         <div class="node-icon">
-                            ▶️
+                            <i class="fa-solid fa-play"></i>
                         </div>
 
                         <strong>
@@ -1643,7 +1642,7 @@
                         <div class="gateway-content">
 
                             <div class="node-icon">
-                                ❓
+                                <i class="fa-solid fa-question"></i>
                             </div>
 
                             <strong>
@@ -1743,7 +1742,7 @@
                     >
 
                         <div class="node-icon">
-                            ✓
+                            <i class="fa-solid fa-check"></i>
                         </div>
 
                         <strong>
@@ -1830,7 +1829,7 @@
                 <div class="feedback-item problem-box">
 
                     <div class="feedback-title">
-                        ⚠️ Problema detectado
+                        <i class="fa-solid fa-triangle-exclamation"></i> Problema detectado
                     </div>
 
                     <div
@@ -2215,13 +2214,13 @@
                 "Equipo DevOps y Oficial CISO.";
 
             justification =
-                `El valor obtenido (${risk}) es igual o superior a 16. Por la regla de decisión XOR, el proceso se desvía hacia Atención de Emergencia Crítica. Posteriormente se ejecutan dos actividades paralelas mediante la compuerta AND.`;
+                El valor obtenido (${risk}) es igual o superior a 16. Por la regla de decisión XOR, el proceso se desvía hacia Atención de Emergencia Crítica. Posteriormente se ejecutan dos actividades paralelas mediante la compuerta AND.;
 
 
             if (type === "Lógico") {
 
                 problem =
-                    `El incidente "${incidentName}" corresponde a un riesgo lógico con una combinación elevada de probabilidad (${probability}) e impacto (${impact}). Puede comprometer servicios, aplicaciones, datos o infraestructura lógica.`;
+                    El incidente "${incidentName}" corresponde a un riesgo lógico con una combinación elevada de probabilidad (${probability}) e impacto (${impact}). Puede comprometer servicios, aplicaciones, datos o infraestructura lógica.;
 
                 feedback =
                     "El sistema identifica una situación que requiere respuesta inmediata debido a la posibilidad de afectar la continuidad o seguridad de los servicios TI.";
@@ -2234,7 +2233,7 @@
             else if (type === "Físico") {
 
                 problem =
-                    `El incidente "${incidentName}" representa un riesgo físico con probabilidad ${probability} e impacto ${impact}, pudiendo afectar infraestructura o disponibilidad de los servicios TI.`;
+                    El incidente "${incidentName}" representa un riesgo físico con probabilidad ${probability} e impacto ${impact}, pudiendo afectar infraestructura o disponibilidad de los servicios TI.;
 
                 feedback =
                     "La combinación de probabilidad e impacto requiere una respuesta prioritaria para evitar una interrupción mayor de la infraestructura tecnológica.";
@@ -2247,7 +2246,7 @@
             else {
 
                 problem =
-                    `El incidente "${incidentName}" corresponde a un riesgo humano con probabilidad ${probability} e impacto ${impact}. El comportamiento o error involucrado podría afectar los servicios o la seguridad de la información.`;
+                    El incidente "${incidentName}" corresponde a un riesgo humano con probabilidad ${probability} e impacto ${impact}. El comportamiento o error involucrado podría afectar los servicios o la seguridad de la información.;
 
                 feedback =
                     "La evaluación indica que el factor humano requiere intervención inmediata para reducir la posibilidad de una afectación mayor.";
@@ -2275,13 +2274,13 @@
                 "Mesa de ayuda / equipo de TI responsable del servicio.";
 
             justification =
-                `El valor obtenido (${risk}) se encuentra entre 9 y 15. El sistema no activa la emergencia crítica, por lo que el flujo se dirige a Mantenimiento Programado / Monitoreo SLA.`;
+                El valor obtenido (${risk}) se encuentra entre 9 y 15. El sistema no activa la emergencia crítica, por lo que el flujo se dirige a Mantenimiento Programado / Monitoreo SLA.;
 
 
             if (type === "Lógico") {
 
                 problem =
-                    `Se detectó un riesgo lógico de nivel importante asociado al incidente "${incidentName}".`;
+                    Se detectó un riesgo lógico de nivel importante asociado al incidente "${incidentName}".;
 
                 feedback =
                     "Aunque no alcanza el umbral de emergencia, el riesgo debe ser atendido para evitar que aumente su impacto o frecuencia.";
@@ -2294,7 +2293,7 @@
             else if (type === "Físico") {
 
                 problem =
-                    `Se identificó una condición física que puede afectar la disponibilidad de los servicios TI.`;
+                    Se identificó una condición física que puede afectar la disponibilidad de los servicios TI.;
 
                 feedback =
                     "La infraestructura debe ser revisada antes de que la condición pueda provocar una interrupción.";
@@ -2307,7 +2306,7 @@
             else {
 
                 problem =
-                    `Se identificó un riesgo humano que puede generar incidentes recurrentes.`;
+                    Se identificó un riesgo humano que puede generar incidentes recurrentes.;
 
                 feedback =
                     "El factor humano debe ser controlado mediante seguimiento y acciones preventivas.";
@@ -2335,11 +2334,11 @@
                 "Mesa de ayuda / responsable del servicio.";
 
             justification =
-                `El valor obtenido (${risk}) está entre 4 y 8. La regla XOR dirige el incidente hacia mantenimiento programado y monitoreo SLA.`;
+                El valor obtenido (${risk}) está entre 4 y 8. La regla XOR dirige el incidente hacia mantenimiento programado y monitoreo SLA.;
 
 
             problem =
-                `El incidente "${incidentName}" presenta un riesgo apreciable con probabilidad ${probability} e impacto ${impact}.`;
+                El incidente "${incidentName}" presenta un riesgo apreciable con probabilidad ${probability} e impacto ${impact}.;
 
             feedback =
                 "El riesgo no requiere una respuesta de emergencia, pero debe permanecer registrado y bajo seguimiento para evitar que evolucione a una condición más severa.";
@@ -2365,11 +2364,11 @@
                 "Mesa de ayuda / responsable operativo.";
 
             justification =
-                `El valor obtenido (${risk}) se encuentra entre 1 y 3. La regla XOR determina que no es necesario activar la ruta de emergencia y se mantiene dentro del flujo de mantenimiento y monitoreo.`;
+                El valor obtenido (${risk}) se encuentra entre 1 y 3. La regla XOR determina que no es necesario activar la ruta de emergencia y se mantiene dentro del flujo de mantenimiento y monitoreo.;
 
 
             problem =
-                `El incidente "${incidentName}" presenta un nivel marginal con probabilidad ${probability} e impacto ${impact}.`;
+                El incidente "${incidentName}" presenta un nivel marginal con probabilidad ${probability} e impacto ${impact}.;
 
             feedback =
                 "El riesgo actual es limitado. Sin embargo, conservar el registro permite identificar si el incidente se vuelve recurrente.";
@@ -2563,11 +2562,10 @@
             "badge badge-green";
 
 
-        processResult.innerHTML = `
-            <strong>Estado:</strong>
+        processResult.innerHTML =             <strong>Estado:</strong>
             Registra un incidente para iniciar
             el proceso BPMN.
-        `;
+        ;
 
     }
 
@@ -2630,11 +2628,10 @@
             nodes.start
         );
 
-        processResult.innerHTML = `
-            <strong>Evento Inicio:</strong>
+        processResult.innerHTML =             <strong>Evento Inicio:</strong>
             Se registra el incidente
             "${escapeHtml(incidentName)}".
-        `;
+        ;
 
         await wait(700);
 
@@ -2645,10 +2642,9 @@
             nodes.evaluation
         );
 
-        processResult.innerHTML = `
-            <strong>Evaluación:</strong>
+        processResult.innerHTML =             <strong>Evaluación:</strong>
             Se calcula P × I = ${risk}.
-        `;
+        ;
 
         await wait(900);
 
@@ -2659,11 +2655,10 @@
             nodes.xor
         );
 
-        processResult.innerHTML = `
-            <strong>Compuerta XOR:</strong>
+        processResult.innerHTML =             <strong>Compuerta XOR:</strong>
             Se determina la ruta de atención
             según el valor del riesgo.
-        `;
+        ;
 
         await wait(900);
 
@@ -2685,11 +2680,10 @@
                 "badge badge-red";
 
 
-            processResult.innerHTML = `
-                <strong>Decisión:</strong>
+            processResult.innerHTML =                 <strong>Decisión:</strong>
                 Riesgo ${risk} ≥ 16.
                 Se activa Atención de Emergencia Crítica.
-            `;
+            ;
 
             await wait(900);
 
@@ -2700,11 +2694,10 @@
                 nodes.devops
             );
 
-            processResult.innerHTML = `
-                <strong>Rama A · DevOps:</strong>
+            processResult.innerHTML =                 <strong>Rama A · DevOps:</strong>
                 Aislamiento del servicio y bloqueo
                 de puertos cuando corresponda.
-            `;
+            ;
 
             await wait(900);
 
@@ -2715,11 +2708,10 @@
                 nodes.ciso
             );
 
-            processResult.innerHTML = `
-                <strong>Rama B · CISO:</strong>
+            processResult.innerHTML =                 <strong>Rama B · CISO:</strong>
                 Notificación y auditoría inmediata
                 de seguridad.
-            `;
+            ;
 
             await wait(1100);
 
@@ -2742,12 +2734,11 @@
                 "badge badge-orange";
 
 
-            processResult.innerHTML = `
-                <strong>Decisión:</strong>
+            processResult.innerHTML =                 <strong>Decisión:</strong>
                 Riesgo ${risk} < 16.
                 Se deriva a Mantenimiento Programado
                 / Monitoreo SLA.
-            `;
+            ;
 
             await wait(1400);
 
@@ -2768,11 +2759,10 @@
             "badge badge-green";
 
 
-        processResult.innerHTML = `
-            <strong>Evento Fin:</strong>
+        processResult.innerHTML =             <strong>Evento Fin:</strong>
             El flujo finaliza con una acción
             de mitigación o seguimiento definida.
-        `;
+        ;
 
     }
 
@@ -2882,9 +2872,9 @@
             const incident = {
 
                 id:
-                    `INC-${String(
+                    INC-${String(
                         incidentCounter
-                    ).padStart(3,"0")}`,
+                    ).padStart(3,"0")},
 
                 name:
                     incidentName,
@@ -2927,8 +2917,7 @@
 
             showToast(
                 "Incidente procesado",
-                `${incident.id} · Riesgo ${risk} · ${severity.name}`
-            );
+                ${incident.id} · Riesgo ${risk} · ${severity.name}            );
 
 
             await animateProcess(
@@ -2953,8 +2942,7 @@
             incidents.length === 0
         ) {
 
-            historyBody.innerHTML = `
-                <tr>
+            historyBody.innerHTML =                 <tr>
                     <td
                         colspan="8"
                         style="
@@ -2966,7 +2954,7 @@
                         No existen incidentes evaluados.
                     </td>
                 </tr>
-            `;
+            ;
 
             return;
 
@@ -2991,8 +2979,7 @@
                         );
 
 
-                    row.innerHTML = `
-
+                    row.innerHTML = 
                         <td>
                             <strong>
                                 ${incident.id}
@@ -3041,7 +3028,7 @@
                             ${incident.action}
                         </td>
 
-                    `;
+                    ;
 
 
                     historyBody.appendChild(
@@ -3433,16 +3420,14 @@
 
                 document
                     .getElementById(
-                        `p${example.p}`
-                    )
+                        p${example.p}                    )
                     .checked =
                     true;
 
 
                 document
                     .getElementById(
-                        `i${example.i}`
-                    )
+                        i${example.i}                    )
                     .checked =
                     true;
 
@@ -3603,6 +3588,3 @@
 
 </body>
 </html>
-```
-
-
