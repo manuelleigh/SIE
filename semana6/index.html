@@ -1103,6 +1103,2072 @@
         .metric-icon i { font-size: 1.5rem; background: -webkit-linear-gradient(45deg, var(--blue), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .node-icon i, .parallel-icon i { font-size: 1.5rem; color: var(--blue); }
         .bpmn-node.warning .node-icon i { color: var(--orange); }
+        .gateway i { font-size: 2rem; color: var(--red); }
+        .brand-icon i { font-size: 1.5rem; color: white; }
+    </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+
+<body>
+
+<header>
+
+    <div class="header-container">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                <i class="fa-solid fa-shield"></i>
+            </div>
+
+            <div>
+
+                <h1>
+                    IT Risk Management
+                </h1>
+
+                <p>
+                    Gestión de Servicios TI · BPMN
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="status">
+
+            <span class="status-dot"></span>
+
+            Sistema operativo
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <!-- ======================================================
+         TITULO
+    ======================================================= -->
+
+    <section class="page-title">
+
+        <h2>
+            Gestión de Riesgos Informáticos
+        </h2>
+
+        <p>
+            Sistema prototipo para registrar, evaluar y gestionar
+            riesgos de TI mediante una matriz de probabilidad e
+            impacto y un proceso BPMN de atención.
+        </p>
+
+    </section>
+
+
+    <!-- ======================================================
+         METRICAS
+    ======================================================= -->
+
+    <section class="metrics">
+
+        <div class="metric-card">
+
+            <div class="metric-top">
+
+                <span class="metric-label">
+                    Incidentes evaluados
+                </span>
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                </div>
+
+            </div>
+
+            <div
+                class="metric-value"
+                id="totalIncidents"
+            >
+                0
+            </div>
+
+            <div class="metric-description">
+                Registros procesados
+            </div>
+
+        </div>
+
+
+        <div class="metric-card">
+
+            <div class="metric-top">
+
+                <span class="metric-label">
+                    Riesgos críticos
+                </span>
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+
+            </div>
+
+            <div
+                class="metric-value"
+                id="criticalIncidents"
+            >
+                0
+            </div>
+
+            <div class="metric-description">
+                Valor ≥ 16
+            </div>
+
+        </div>
+
+
+        <div class="metric-card">
+
+            <div class="metric-top">
+
+                <span class="metric-label">
+                    Riesgo promedio
+                </span>
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-chart-simple"></i>
+                </div>
+
+            </div>
+
+            <div
+                class="metric-value"
+                id="averageRisk"
+            >
+                0
+            </div>
+
+            <div class="metric-description">
+                Sobre escala de 25
+            </div>
+
+        </div>
+
+
+        <div class="metric-card">
+
+            <div class="metric-top">
+
+                <span class="metric-label">
+                    Último estado
+                </span>
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-gear"></i>
+                </div>
+
+            </div>
+
+            <div
+                class="metric-value"
+                id="lastStatus"
+                style="font-size:18px"
+            >
+                Esperando
+            </div>
+
+            <div class="metric-description">
+                Estado del proceso
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         FORMULARIO + BPMN
+    ======================================================= -->
+
+    <section class="content-grid">
+
+
+        <!-- ================= FORMULARIO ================= -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h3>
+                        Registrar incidente
+                    </h3>
+
+                    <p>
+                        Matriz de evaluación de riesgos TI
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="card-body">
+
+                <form id="riskForm">
+
+
+                    <div class="form-group">
+
+                        <label for="incidentName">
+                            Nombre / Identificador
+                        </label>
+
+                        <input
+                            type="text"
+                            id="incidentName"
+                            placeholder="Ej. Ataque de malware"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="riskType">
+                            Tipo de riesgo
+                        </label>
+
+                        <select
+                            id="riskType"
+                            required
+                        >
+
+                            <option value="">
+                                Seleccionar categoría
+                            </option>
+
+                            <option value="Físico">
+                                Físico
+                            </option>
+
+                            <option value="Lógico">
+                                Lógico
+                            </option>
+
+                            <option value="Humano">
+                                Humano
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Probabilidad de ocurrencia
+                        </label>
+
+                        <div class="scale-grid">
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="probability"
+                                    id="p1"
+                                    value="1"
+                                    required
+                                >
+                                <label for="p1">1</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="probability"
+                                    id="p2"
+                                    value="2"
+                                >
+                                <label for="p2">2</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="probability"
+                                    id="p3"
+                                    value="3"
+                                >
+                                <label for="p3">3</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="probability"
+                                    id="p4"
+                                    value="4"
+                                >
+                                <label for="p4">4</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="probability"
+                                    id="p5"
+                                    value="5"
+                                >
+                                <label for="p5">5</label>
+                            </div>
+
+                        </div>
+
+                        <small>
+                            1 = Muy baja · 5 = Muy alta
+                        </small>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Gravedad / Impacto
+                        </label>
+
+                        <div class="scale-grid">
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="impact"
+                                    id="i1"
+                                    value="1"
+                                    required
+                                >
+                                <label for="i1">1</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="impact"
+                                    id="i2"
+                                    value="2"
+                                >
+                                <label for="i2">2</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="impact"
+                                    id="i3"
+                                    value="3"
+                                >
+                                <label for="i3">3</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="impact"
+                                    id="i4"
+                                    value="4"
+                                >
+                                <label for="i4">4</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="impact"
+                                    id="i5"
+                                    value="5"
+                                >
+                                <label for="i5">5</label>
+                            </div>
+
+                        </div>
+
+                        <small>
+                            1 = Bajo · 5 = Muy alto
+                        </small>
+
+                    </div>
+
+
+                    <div class="risk-preview">
+
+                        <div
+                            style="
+                                color:#94a3b8;
+                                font-size:11px;
+                            "
+                        >
+                            VALOR DEL RIESGO
+                        </div>
+
+                        <div
+                            class="risk-number"
+                            id="previewRisk"
+                        >
+                            —
+                        </div>
+
+                        <div
+                            class="risk-level risk-default"
+                            id="previewLevel"
+                        >
+                            Pendiente
+                        </div>
+
+                    </div>
+
+
+                    <div class="button-group">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            <i class="fa-solid fa-bolt"></i> Evaluar y Procesar
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            id="exampleBtn"
+                        >
+                            <i class="fa-solid fa-upload"></i> Cargar ejemplo
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= BPMN ================= -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h3>
+                        Orquestación del proceso BPMN
+                    </h3>
+
+                    <p>
+                        Ruta determinada por la severidad
+                    </p>
+
+                </div>
+
+                <div
+                    id="bpmnStatus"
+                    class="badge badge-green"
+                >
+                    ESPERANDO
+                </div>
+
+            </div>
+
+
+            <div class="bpmn-wrapper">
+
+                <div class="bpmn-flow">
+
+
+                    <div
+                        class="bpmn-node event"
+                        id="nodeStart"
+                    >
+
+                        <div class="node-icon">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+
+                        <strong>
+                            Inicio
+                        </strong>
+
+                        <span>
+                            Registro
+                        </span>
+
+                    </div>
+
+
+                    <div class="connector"></div>
+
+
+                    <div
+                        class="bpmn-node task"
+                        id="nodeEvaluation"
+                    >
+
+                        <div class="node-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div><strong>Evaluar riesgo</strong>
+
+                        <span>
+                            P × I
+                        </span>
+
+                    </div>
+
+
+                    <div class="connector"></div>
+
+
+                    <div
+                        class="bpmn-node gateway"
+                        id="nodeXor"
+                    >
+
+                        <div class="gateway-content">
+
+                            <div class="node-icon">
+                                <i class="fa-solid fa-question"></i>
+                            </div>
+
+                            <strong>
+                                XOR
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="connector">
+
+                        <div class="connector-label">
+                            Regla
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="bpmn-node task warning"
+                        id="nodeMaintenance"
+                    >
+
+                        <div class="node-icon">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                        </div>
+
+                        <strong>
+                            Mantenimiento
+                        </strong>
+
+                        <span>
+                            Monitoreo SLA
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="parallel-container"
+                        id="parallelContainer"
+                    >
+
+                        <div
+                            class="parallel-task"
+                            id="nodeDevOps"
+                        >
+
+                            <div class="parallel-icon"><i class="fa-solid fa-server"></i></div><div class="parallel-text"><strong>Rama A · DevOps
+                                </strong>
+
+                                <span>
+                                    Aislar servicio /
+                                    bloquear puertos
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="parallel-task"
+                            id="nodeCiso"
+                        >
+
+                            <div class="parallel-icon">
+                                <i class="fa-solid fa-shield"></i>
+                            </div>
+
+                            <div class="parallel-text">
+
+                                <strong>
+                                    Rama B · CISO
+                                </strong>
+
+                                <span>
+                                    Notificación y
+                                    auditoría
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="connector"></div>
+
+
+                    <div
+                        class="bpmn-node event event-end success"
+                        id="nodeEnd"
+                    >
+
+                        <div class="node-icon">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+
+                        <strong>
+                            Fin
+                        </strong>
+
+                        <span>
+                            Mitigado
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="process-result"
+                id="processResult"
+            >
+
+                <strong>
+                    Estado:
+                </strong>
+
+                Registra un incidente para iniciar
+                el proceso BPMN.
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         FEEDBACK Y SOLUCIÓN
+    ======================================================= -->
+
+    <section class="card feedback-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h3>
+                    <i class="fa-solid fa-cube"></i> Diagnóstico y propuesta de solución
+                </h3>
+
+                <p>
+                    Feedback generado a partir de la evaluación
+                    del riesgo.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <div
+                id="feedbackPlaceholder"
+                class="feedback-placeholder"
+            >
+
+                <div style="font-size:30px;margin-bottom:8px;">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </div>
+
+                Evalúa un incidente para obtener el
+                diagnóstico y la posible solución.
+
+            </div>
+
+
+            <div
+                id="feedbackContent"
+                class="feedback-grid"
+                style="display:none;"
+            >
+
+                <div class="feedback-item problem-box">
+
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Problema detectado
+                    </div>
+
+                    <div
+                        class="feedback-text"
+                        id="feedbackProblem"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="feedback-item">
+
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-cube"></i> Feedback
+                    </div>
+
+                    <div
+                        class="feedback-text"
+                        id="feedbackText"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="feedback-item solution-box">
+
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-screwdriver-wrench"></i> Posible solución
+                    </div>
+
+                    <div
+                        class="feedback-text"
+                        id="feedbackSolution"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="feedback-item action-box">
+
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-bullseye"></i> Acción recomendada
+                    </div>
+
+                    <div
+                        class="feedback-text"
+                        id="feedbackAction"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="feedback-item responsible-box">
+
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-cube"></i> Responsable sugerido
+                    </div>
+
+                    <div
+                        class="feedback-text"
+                        id="feedbackResponsible"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="feedback-item">
+
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-cube"></i> Prioridad
+                    </div>
+
+                    <div
+                        class="feedback-text"
+                        id="feedbackPriority"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="feedback-item full">
+
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-cube"></i> Justificación de la decisión BPMN
+                    </div>
+
+                    <div
+                        class="feedback-text"
+                        id="feedbackJustification"
+                    >
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         HISTORIAL
+    ======================================================= -->
+
+    <section class="card table-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h3>
+                    Historial de incidentes
+                </h3>
+
+                <p>
+                    Riesgos procesados por el sistema.
+                </p>
+
+            </div>
+
+            <button
+                class="btn btn-danger"
+                id="clearBtn"
+                style="
+                    padding:8px 12px;
+                    font-size:11px;
+                "
+            >
+                <i class="fa-solid fa-cube"></i> Limpiar
+            </button>
+
+        </div>
+
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Incidente</th>
+                        <th>Tipo</th>
+                        <th>P</th>
+                        <th>I</th>
+                        <th>Valor</th>
+                        <th>Severidad</th>
+                        <th>Acción</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="historyBody">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         GRAFICO
+    ======================================================= -->
+
+    <section class="card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h3>
+                    <i class="fa-solid fa-chart-simple"></i> Análisis visual de riesgos
+                </h3>
+
+                <p>
+                    Comparación de los valores de riesgo.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <div class="chart-container">
+
+                <canvas id="riskChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    Sistema académico de demostración ·
+    Gestión de Servicios TI · BPMN ·
+    Sistemas de Información Empresarial
+
+</footer>
+
+
+<div
+    class="toast"
+    id="toast"
+>
+
+    <div
+        class="toast-title"
+        id="toastTitle"
+    >
+        Sistema
+    </div>
+
+    <div
+        class="toast-message"
+        id="toastMessage"
+    >
+        Mensaje
+    </div>
+
+</div>
+
+
+
+
+    <style>
+        :root {
+            --bg: #0b1120;
+            --bg2: #111827;
+            --card: #151e30;
+            --card2: #0f172a;
+            --border: #26344d;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+
+            --blue: #3b82f6;
+            --green: #22c55e;
+            --yellow: #eab308;
+            --orange: #f97316;
+            --red: #ef4444;
+            --purple: #8b5cf6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family:
+                Inter,
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(59,130,246,.12),
+                    transparent 30%
+                ),
+                var(--bg);
+
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        /* ================================
+           HEADER
+        ================================= */
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            background: rgba(11,17,32,.92);
+            backdrop-filter: blur(15px);
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-container {
+            max-width: 1500px;
+            margin: auto;
+
+            padding: 18px 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-icon {
+            width: 46px;
+            height: 46px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--blue),
+                    var(--purple)
+                );
+
+            font-size: 22px;
+
+            box-shadow:
+                0 0 25px rgba(59,130,246,.35);
+        }
+
+        .brand h1 {
+            font-size: 18px;
+        }
+
+        .brand p {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 8px 13px;
+
+            border-radius: 20px;
+
+            color: #86efac;
+
+            background: rgba(34,197,94,.08);
+
+            border: 1px solid rgba(34,197,94,.25);
+
+            font-size: 12px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: var(--green);
+
+            box-shadow:
+                0 0 10px var(--green);
+        }
+
+        /* ================================
+           MAIN
+        ================================= */
+
+        main {
+            max-width: 1500px;
+            margin: auto;
+            padding: 30px;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .page-title h2 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: var(--muted);
+            line-height: 1.6;
+            max-width: 900px;
+        }
+
+        /* ================================
+           METRICS
+        ================================= */
+
+        .metrics {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4,1fr);
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+        }
+
+        .metric-card {
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 16px;
+
+            padding: 20px;
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,.2);
+
+            transition: .2s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .metric-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 15px;
+        }
+
+        .metric-label {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .metric-icon {
+            width: 35px;
+            height: 35px;
+
+            border-radius: 9px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background:
+                rgba(59,130,246,.12);
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .metric-description {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* ================================
+           GRID
+        ================================= */
+
+        .content-grid {
+            display: grid;
+
+            grid-template-columns:
+                minmax(320px,.8fr)
+                minmax(500px,1.5fr);
+
+            gap: 22px;
+
+            margin-bottom: 22px;
+        }
+
+        .card {
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,.22);
+        }
+
+        .card-header {
+            padding: 20px 22px;
+
+            border-bottom: 1px solid var(--border);
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .card-header h3 {
+            font-size: 17px;
+        }
+
+        .card-header p {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .card-body {
+            padding: 22px;
+        }
+
+        /* ================================
+           FORM
+        ================================= */
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            margin-bottom: 8px;
+        }
+
+        .form-group small {
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            margin-top: 5px;
+        }
+
+        input,
+        select {
+            width: 100%;
+
+            padding: 12px 13px;
+
+            border-radius: 10px;
+
+            border: 1px solid var(--border);
+
+            background: #0e1728;
+
+            color: white;
+
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--blue);
+
+            box-shadow:
+                0 0 0 3px rgba(59,130,246,.12);
+        }
+
+        .scale-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(5,1fr);
+
+            gap: 7px;
+        }
+
+        .scale-option {
+            position: relative;
+        }
+
+        .scale-option input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .scale-option label {
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid var(--border);
+
+            border-radius: 9px;
+
+            background: #0e1728;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+        .scale-option label:hover {
+            border-color: #526783;
+        }
+
+        .scale-option input:checked + label {
+            border-color: var(--blue);
+
+            background:
+                rgba(59,130,246,.18);
+
+            color: #93c5fd;
+        }
+
+        /* ================================
+           RISK PREVIEW
+        ================================= */
+
+        .risk-preview {
+            margin-top: 20px;
+
+            padding: 18px;
+
+            border-radius: 13px;
+
+            border: 1px dashed #334155;
+
+            background:
+                rgba(15,23,42,.6);
+
+            text-align: center;
+        }
+
+        .risk-number {
+            font-size: 42px;
+            font-weight: 900;
+
+            margin: 5px 0;
+        }
+
+        .risk-level {
+            display: inline-block;
+
+            padding: 6px 13px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .risk-default {
+            color: var(--muted);
+            background: #1e293b;
+        }
+
+        /* ================================
+           BUTTONS
+        ================================= */
+
+        .button-group {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+        .btn {
+            border: none;
+
+            padding: 12px 15px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            font-weight: 700;
+
+            transition: .2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--blue),
+                    #2563eb
+                );
+        }
+
+        .btn-secondary {
+            color: #cbd5e1;
+
+            background: #1e293b;
+
+            border: 1px solid var(--border);
+        }
+
+        .btn-danger {
+            color: white;
+
+            background: #7f1d1d;
+        }
+
+        /* ================================
+           FEEDBACK
+        ================================= */
+
+        .feedback-card {
+            margin-bottom: 22px;
+        }
+
+        .feedback-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2,1fr);
+
+            gap: 15px;
+        }
+
+        .feedback-item {
+            padding: 18px;
+
+            border-radius: 13px;
+
+            background:
+                rgba(15,23,42,.65);
+
+            border: 1px solid var(--border);
+
+            transition: .3s;
+        }
+
+        .feedback-item:hover {
+            border-color: #3b4d6d;
+        }
+
+        .feedback-item.full {
+            grid-column: 1 / -1;
+        }
+
+        .feedback-title {
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin-bottom: 9px;
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+        .feedback-text {
+            color: #cbd5e1;
+
+            font-size: 12px;
+
+            line-height: 1.65;
+        }
+
+        .feedback-placeholder {
+            text-align: center;
+
+            padding: 25px;
+
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+        .solution-box {
+            border-left: 4px solid var(--blue);
+        }
+
+        .problem-box {
+            border-left: 4px solid var(--red);
+        }
+
+        .action-box {
+            border-left: 4px solid var(--orange);
+        }
+
+        .responsible-box {
+            border-left: 4px solid var(--purple);
+        }
+
+        /* ================================
+           BPMN
+        ================================= */
+
+        .bpmn-wrapper {
+            overflow-x: auto;
+        }
+
+        .bpmn-flow {
+            min-width: 1000px;
+
+            padding: 40px 20px;
+
+            display: flex;
+
+            align-items: center;
+        }
+
+        .bpmn-node {
+            position: relative;
+
+            min-width: 125px;
+            min-height: 85px;
+
+            padding: 12px;
+
+            border-radius: 13px;
+
+            border: 1px solid #334155;
+
+            background: #101a2c;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            text-align: center;
+
+            transition: .4s;
+
+            z-index: 2;
+        }
+
+        .bpmn-node .node-icon {
+            font-size: 22px;
+            margin-bottom: 6px;
+        }
+
+        .bpmn-node strong {
+            font-size: 12px;
+        }
+
+        .bpmn-node span {
+            font-size: 10px;
+            color: var(--muted);
+            margin-top: 3px;
+        }
+
+        .event {
+            width: 82px;
+            min-width: 82px;
+
+            height: 82px;
+            min-height: 82px;
+
+            border-radius: 50%;
+        }
+
+        .event-end {
+            border-width: 3px;
+        }
+
+        .gateway {
+            width: 65px;
+            min-width: 65px;
+
+            height: 65px;
+            min-height: 65px;
+
+            transform: rotate(45deg);
+
+            border-radius: 8px;
+        }
+
+        .gateway-content {
+            transform: rotate(-45deg);
+        }
+
+        .task {
+            min-width: 150px;
+        }
+
+        .connector {
+            position: relative;
+
+            width: 55px;
+            min-width: 55px;
+
+            height: 3px;
+
+            background: #334155;
+        }
+
+        .connector::after {
+            content: "";
+
+            position: absolute;
+
+            right: -2px;
+
+            top: 50%;
+
+            transform:
+                translateY(-50%)
+                rotate(45deg);
+
+            width: 7px;
+            height: 7px;
+
+            border-top: 2px solid #475569;
+            border-right: 2px solid #475569;
+        }
+
+        .connector-label {
+            position: absolute;
+
+            top: -21px;
+
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            color: #64748b;
+
+            font-size: 9px;
+
+            white-space: nowrap;
+        }
+
+        .bpmn-node.active {
+            border-color: var(--blue);
+
+            background:
+                rgba(59,130,246,.16);
+
+            box-shadow:
+                0 0 25px rgba(59,130,246,.3);
+
+            transform: translateY(-5px);
+        }
+
+        .gateway.active {
+            transform:
+                rotate(45deg)
+                scale(1.1);
+        }
+
+        .gateway.active .gateway-content {
+            transform: rotate(-45deg);
+        }
+
+        .bpmn-node.critical.active {
+            border-color: var(--red);
+
+            background:
+                rgba(239,68,68,.15);
+
+            box-shadow:
+                0 0 28px rgba(239,68,68,.3);
+        }
+
+        .bpmn-node.success.active {
+            border-color: var(--green);
+
+            background:
+                rgba(34,197,94,.13);
+
+            box-shadow:
+                0 0 25px rgba(34,197,94,.25);
+        }
+
+        .bpmn-node.warning.active {
+            border-color: var(--orange);
+
+            background:
+                rgba(249,115,22,.13);
+
+            box-shadow:
+                0 0 25px rgba(249,115,22,.25);
+        }
+
+        /* ================================
+           PARALLEL TASKS
+        ================================= */
+
+        .parallel-container {
+            display: none;
+
+            flex-direction: column;
+
+            gap: 12px;
+
+            margin: 0 15px;
+        }
+
+        .parallel-container.visible {
+            display: flex;
+        }
+
+        .parallel-task {
+            width: 200px;
+
+            min-height: 65px;
+
+            padding: 10px;
+
+            border-radius: 11px;
+
+            border: 1px solid var(--border);
+
+            background: #101a2c;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            transition: .4s;
+        }
+
+        .parallel-task.active {
+            border-color: var(--red);
+
+            background:
+                rgba(239,68,68,.12);
+
+            box-shadow:
+                0 0 20px rgba(239,68,68,.2);
+        }
+
+        .parallel-icon {
+            width: 34px;
+            height: 34px;
+
+            border-radius: 8px;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            background: #1e293b;
+        }
+
+        .parallel-text strong {
+            display: block;
+            font-size: 11px;
+        }
+
+        .parallel-text span {
+            font-size: 9px;
+            color: var(--muted);
+        }
+
+        /* ================================
+           PROCESS RESULT
+        ================================= */
+
+        .process-result {
+            padding: 15px 22px;
+
+            background:
+                rgba(15,23,42,.65);
+
+            border-top: 1px solid var(--border);
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+        .process-result strong {
+            color: white;
+        }
+
+        /* ================================
+           TABLE
+        ================================= */
+
+        .table-card {
+            margin-bottom: 22px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 900px;
+        }
+
+        th,
+        td {
+            padding: 13px 15px;
+
+            text-align: left;
+
+            border-bottom: 1px solid var(--border);
+
+            font-size: 12px;
+        }
+
+        th {
+            color: var(--muted);
+
+            background: #111827;
+        }
+
+        td {
+            color: #dbe4f0;
+        }
+
+        tbody tr:hover {
+            background:
+                rgba(59,130,246,.05);
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 5px 9px;
+
+            border-radius: 20px;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .badge-green {
+            color: #86efac;
+            background: rgba(34,197,94,.12);
+        }
+
+        .badge-yellow {
+            color: #fde047;
+            background: rgba(234,179,8,.12);
+        }
+
+        .badge-orange {
+            color: #fdba74;
+            background: rgba(249,115,22,.12);
+        }
+
+        .badge-red {
+            color: #fca5a5;
+            background: rgba(239,68,68,.12);
+        }
+
+        /* ================================
+           CHART
+        ================================= */
+
+        .chart-container {
+            position: relative;
+
+            height: 330px;
+        }
+
+        /* ================================
+           TOAST
+        ================================= */
+
+        .toast {
+            position: fixed;
+
+            right: 25px;
+            bottom: 25px;
+
+            z-index: 500;
+
+            max-width: 350px;
+
+            padding: 15px 18px;
+
+            border-radius: 12px;
+
+            background: #172033;
+
+            border: 1px solid var(--border);
+
+            box-shadow:
+                0 15px 40px rgba(0,0,0,.4);
+
+            transform:
+                translateY(120px);
+
+            opacity: 0;
+
+            transition: .3s;
+
+            pointer-events: none;
+        }
+
+        .toast.show {
+            transform:
+                translateY(0);
+
+            opacity: 1;
+        }
+
+        .toast-title {
+            font-weight: 800;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .toast-message {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        /* ================================
+           FOOTER
+        ================================= */
+
+        footer {
+            max-width: 1500px;
+            margin: auto;
+
+            padding: 10px 30px 30px;
+
+            text-align: center;
+
+            color: #64748b;
+
+            font-size: 11px;
+        }
+
+        /* ================================
+           RESPONSIVE
+        ================================= */
+
+        @media(max-width:1100px) {
+
+            .metrics {
+                grid-template-columns:
+                    repeat(2,1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media(max-width:650px) {
+
+            main {
+                padding: 20px 15px;
+            }
+
+            .header-container {
+                padding: 15px;
+            }
+
+            .status {
+                display: none;
+            }
+
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+
+            .feedback-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feedback-item.full {
+                grid-column: auto;
+            }
+
+        }
+            /* Enhanced UI by AI */
+        body { background: radial-gradient(circle at top right, rgba(59,130,246,0.15), transparent 40%), radial-gradient(circle at bottom left, rgba(139,92,246,0.15), transparent 40%), var(--bg); }
+        .metric-card, .card, .bpmn-node {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(10px);
+            background: rgba(21, 30, 48, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .metric-card:hover, .card:hover, .bpmn-node:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(59,130,246,0.2);
+        }
+        .metric-icon i { font-size: 1.5rem; background: -webkit-linear-gradient(45deg, var(--blue), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .node-icon i, .parallel-icon i { font-size: 1.5rem; color: var(--blue); }
+        .bpmn-node.warning .node-icon i { color: var(--orange); }
+        .gateway i { font-size: 2rem; color: var(--red); }
         .brand-icon i { font-size: 1.5rem; color: white; }
     </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -2214,13 +4280,13 @@
                 "Equipo DevOps y Oficial CISO.";
 
             justification =
-                El valor obtenido (${risk}) es igual o superior a 16. Por la regla de decisión XOR, el proceso se desvía hacia Atención de Emergencia Crítica. Posteriormente se ejecutan dos actividades paralelas mediante la compuerta AND.;
+                `El valor obtenido (${risk}) es igual o superior a 16. Por la regla de decisión XOR, el proceso se desvía hacia Atención de Emergencia Crítica. Posteriormente se ejecutan dos actividades paralelas mediante la compuerta AND.`;
 
 
             if (type === "Lógico") {
 
                 problem =
-                    El incidente "${incidentName}" corresponde a un riesgo lógico con una combinación elevada de probabilidad (${probability}) e impacto (${impact}). Puede comprometer servicios, aplicaciones, datos o infraestructura lógica.;
+                    `El incidente "${incidentName}" corresponde a un riesgo lógico con una combinación elevada de probabilidad (${probability}) e impacto (${impact}). Puede comprometer servicios, aplicaciones, datos o infraestructura lógica.`;
 
                 feedback =
                     "El sistema identifica una situación que requiere respuesta inmediata debido a la posibilidad de afectar la continuidad o seguridad de los servicios TI.";
@@ -2233,7 +4299,7 @@
             else if (type === "Físico") {
 
                 problem =
-                    El incidente "${incidentName}" representa un riesgo físico con probabilidad ${probability} e impacto ${impact}, pudiendo afectar infraestructura o disponibilidad de los servicios TI.;
+                    `El incidente "${incidentName}" representa un riesgo físico con probabilidad ${probability} e impacto ${impact}, pudiendo afectar infraestructura o disponibilidad de los servicios TI.`;
 
                 feedback =
                     "La combinación de probabilidad e impacto requiere una respuesta prioritaria para evitar una interrupción mayor de la infraestructura tecnológica.";
@@ -2246,7 +4312,7 @@
             else {
 
                 problem =
-                    El incidente "${incidentName}" corresponde a un riesgo humano con probabilidad ${probability} e impacto ${impact}. El comportamiento o error involucrado podría afectar los servicios o la seguridad de la información.;
+                    `El incidente "${incidentName}" corresponde a un riesgo humano con probabilidad ${probability} e impacto ${impact}. El comportamiento o error involucrado podría afectar los servicios o la seguridad de la información.`;
 
                 feedback =
                     "La evaluación indica que el factor humano requiere intervención inmediata para reducir la posibilidad de una afectación mayor.";
@@ -2274,13 +4340,13 @@
                 "Mesa de ayuda / equipo de TI responsable del servicio.";
 
             justification =
-                El valor obtenido (${risk}) se encuentra entre 9 y 15. El sistema no activa la emergencia crítica, por lo que el flujo se dirige a Mantenimiento Programado / Monitoreo SLA.;
+                `El valor obtenido (${risk}) se encuentra entre 9 y 15. El sistema no activa la emergencia crítica, por lo que el flujo se dirige a Mantenimiento Programado / Monitoreo SLA.`;
 
 
             if (type === "Lógico") {
 
                 problem =
-                    Se detectó un riesgo lógico de nivel importante asociado al incidente "${incidentName}".;
+                    `Se detectó un riesgo lógico de nivel importante asociado al incidente "${incidentName}".`;
 
                 feedback =
                     "Aunque no alcanza el umbral de emergencia, el riesgo debe ser atendido para evitar que aumente su impacto o frecuencia.";
@@ -2293,7 +4359,7 @@
             else if (type === "Físico") {
 
                 problem =
-                    Se identificó una condición física que puede afectar la disponibilidad de los servicios TI.;
+                    `Se identificó una condición física que puede afectar la disponibilidad de los servicios TI.`;
 
                 feedback =
                     "La infraestructura debe ser revisada antes de que la condición pueda provocar una interrupción.";
@@ -2306,7 +4372,7 @@
             else {
 
                 problem =
-                    Se identificó un riesgo humano que puede generar incidentes recurrentes.;
+                    `Se identificó un riesgo humano que puede generar incidentes recurrentes.`;
 
                 feedback =
                     "El factor humano debe ser controlado mediante seguimiento y acciones preventivas.";
@@ -2334,11 +4400,11 @@
                 "Mesa de ayuda / responsable del servicio.";
 
             justification =
-                El valor obtenido (${risk}) está entre 4 y 8. La regla XOR dirige el incidente hacia mantenimiento programado y monitoreo SLA.;
+                `El valor obtenido (${risk}) está entre 4 y 8. La regla XOR dirige el incidente hacia mantenimiento programado y monitoreo SLA.`;
 
 
             problem =
-                El incidente "${incidentName}" presenta un riesgo apreciable con probabilidad ${probability} e impacto ${impact}.;
+                `El incidente "${incidentName}" presenta un riesgo apreciable con probabilidad ${probability} e impacto ${impact}.`;
 
             feedback =
                 "El riesgo no requiere una respuesta de emergencia, pero debe permanecer registrado y bajo seguimiento para evitar que evolucione a una condición más severa.";
@@ -2364,11 +4430,11 @@
                 "Mesa de ayuda / responsable operativo.";
 
             justification =
-                El valor obtenido (${risk}) se encuentra entre 1 y 3. La regla XOR determina que no es necesario activar la ruta de emergencia y se mantiene dentro del flujo de mantenimiento y monitoreo.;
+                `El valor obtenido (${risk}) se encuentra entre 1 y 3. La regla XOR determina que no es necesario activar la ruta de emergencia y se mantiene dentro del flujo de mantenimiento y monitoreo.`;
 
 
             problem =
-                El incidente "${incidentName}" presenta un nivel marginal con probabilidad ${probability} e impacto ${impact}.;
+                `El incidente "${incidentName}" presenta un nivel marginal con probabilidad ${probability} e impacto ${impact}.`;
 
             feedback =
                 "El riesgo actual es limitado. Sin embargo, conservar el registro permite identificar si el incidente se vuelve recurrente.";
@@ -2562,10 +4628,11 @@
             "badge badge-green";
 
 
-        processResult.innerHTML =             <strong>Estado:</strong>
+        processResult.innerHTML = `
+            <strong>Estado:</strong>
             Registra un incidente para iniciar
             el proceso BPMN.
-        ;
+        `;
 
     }
 
@@ -2628,10 +4695,11 @@
             nodes.start
         );
 
-        processResult.innerHTML =             <strong>Evento Inicio:</strong>
+        processResult.innerHTML = `
+            <strong>Evento Inicio:</strong>
             Se registra el incidente
             "${escapeHtml(incidentName)}".
-        ;
+        `;
 
         await wait(700);
 
@@ -2642,9 +4710,10 @@
             nodes.evaluation
         );
 
-        processResult.innerHTML =             <strong>Evaluación:</strong>
+        processResult.innerHTML = `
+            <strong>Evaluación:</strong>
             Se calcula P × I = ${risk}.
-        ;
+        `;
 
         await wait(900);
 
@@ -2655,10 +4724,11 @@
             nodes.xor
         );
 
-        processResult.innerHTML =             <strong>Compuerta XOR:</strong>
+        processResult.innerHTML = `
+            <strong>Compuerta XOR:</strong>
             Se determina la ruta de atención
             según el valor del riesgo.
-        ;
+        `;
 
         await wait(900);
 
@@ -2680,10 +4750,11 @@
                 "badge badge-red";
 
 
-            processResult.innerHTML =                 <strong>Decisión:</strong>
+            processResult.innerHTML = `
+                <strong>Decisión:</strong>
                 Riesgo ${risk} ≥ 16.
                 Se activa Atención de Emergencia Crítica.
-            ;
+            `;
 
             await wait(900);
 
@@ -2694,10 +4765,11 @@
                 nodes.devops
             );
 
-            processResult.innerHTML =                 <strong>Rama A · DevOps:</strong>
+            processResult.innerHTML = `
+                <strong>Rama A · DevOps:</strong>
                 Aislamiento del servicio y bloqueo
                 de puertos cuando corresponda.
-            ;
+            `;
 
             await wait(900);
 
@@ -2708,10 +4780,11 @@
                 nodes.ciso
             );
 
-            processResult.innerHTML =                 <strong>Rama B · CISO:</strong>
+            processResult.innerHTML = `
+                <strong>Rama B · CISO:</strong>
                 Notificación y auditoría inmediata
                 de seguridad.
-            ;
+            `;
 
             await wait(1100);
 
@@ -2734,11 +4807,12 @@
                 "badge badge-orange";
 
 
-            processResult.innerHTML =                 <strong>Decisión:</strong>
+            processResult.innerHTML = `
+                <strong>Decisión:</strong>
                 Riesgo ${risk} < 16.
                 Se deriva a Mantenimiento Programado
                 / Monitoreo SLA.
-            ;
+            `;
 
             await wait(1400);
 
@@ -2759,10 +4833,11 @@
             "badge badge-green";
 
 
-        processResult.innerHTML =             <strong>Evento Fin:</strong>
+        processResult.innerHTML = `
+            <strong>Evento Fin:</strong>
             El flujo finaliza con una acción
             de mitigación o seguimiento definida.
-        ;
+        `;
 
     }
 
@@ -2872,9 +4947,5613 @@
             const incident = {
 
                 id:
-                    INC-${String(
+                    `INC-${String(
                         incidentCounter
-                    ).padStart(3,"0")},
+                    ).padStart(3,"0")}`,
+
+                name:
+                    incidentName,
+
+                type:
+                    type,
+
+                probability:
+                    probability,
+
+                impact:
+                    impact,
+
+                risk:
+                    risk,
+
+                severity:
+                    severity.name,
+
+                color:
+                    severity.color,
+
+                action:
+                    action
+
+            };
+
+
+            incidents.push(
+                incident
+            );
+
+
+            renderHistory();
+
+            updateMetrics();
+
+            updateChart();
+
+
+            showToast(
+                "Incidente procesado",
+                `${incident.id} · Riesgo ${risk} · ${severity.name}`
+            );
+
+
+            await animateProcess(
+                risk,
+                incidentName
+            );
+
+        }
+    );
+
+
+    /* ==========================================================
+       TABLA
+    ========================================================== */
+
+    function renderHistory() {
+
+        historyBody.innerHTML = "";
+
+
+        if (
+            incidents.length === 0
+        ) {
+
+            historyBody.innerHTML = `
+                <tr>
+                    <td
+                        colspan="8"
+                        style="
+                            text-align:center;
+                            padding:30px;
+                            color:#64748b;
+                        "
+                    >
+                        No existen incidentes evaluados.
+                    </td>
+                </tr>
+            `;
+
+            return;
+
+        }
+
+
+        incidents
+            .slice()
+            .reverse()
+            .forEach(
+                incident => {
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    const severity =
+                        getSeverity(
+                            incident.risk
+                        );
+
+
+                    row.innerHTML = `
+
+                        <td>
+                            <strong>
+                                ${incident.id}
+                            </strong>
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                incident.name
+                            )}
+                        </td>
+
+                        <td>
+                            ${incident.type}
+                        </td>
+
+                        <td>
+                            ${incident.probability}
+                        </td>
+
+                        <td>
+                            ${incident.impact}
+                        </td>
+
+                        <td>
+                            <strong>
+                                ${incident.risk}
+                            </strong>
+                            /25
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="
+                                    badge
+                                    ${severity.className}
+                                "
+                            >
+                                ${severity.name}
+                            </span>
+
+                        </td>
+
+                        <td>
+                            ${incident.action}
+                        </td>
+
+                    `;
+
+
+                    historyBody.appendChild(
+                        row
+                    );
+
+                }
+            );
+
+    }
+
+
+    /* ==========================================================
+       ESCAPE HTML
+    ========================================================== */
+
+    function escapeHtml(text) {
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+        div.textContent =
+            text;
+
+        return div.innerHTML;
+
+    }
+
+
+    /* ==========================================================
+       MÉTRICAS
+    ========================================================== */
+
+    function updateMetrics() {
+
+        const total =
+            incidents.length;
+
+
+        const critical =
+            incidents.filter(
+                incident =>
+                    incident.risk >= 16
+            ).length;
+
+
+        const average =
+            total === 0
+                ?
+                0
+                :
+                (
+                    incidents.reduce(
+                        (
+                            total,
+                            incident
+                        ) =>
+                            total +
+                            incident.risk,
+                        0
+                    )
+                    /
+                    total
+                ).toFixed(1);
+
+
+        document
+            .getElementById(
+                "totalIncidents"
+            )
+            .textContent =
+            total;
+
+
+        document
+            .getElementById(
+                "criticalIncidents"
+            )
+            .textContent =
+            critical;
+
+
+        document
+            .getElementById(
+                "averageRisk"
+            )
+            .textContent =
+            average;
+
+
+        if (total > 0) {
+
+            document
+                .getElementById(
+                    "lastStatus"
+                )
+                .textContent =
+                incidents[
+                    incidents.length - 1
+                ].severity;
+
+        }
+
+        else {
+
+            document
+                .getElementById(
+                    "lastStatus"
+                )
+                .textContent =
+                "Esperando";
+
+        }
+
+    }
+
+
+    /* ==========================================================
+       CHART
+    ========================================================== */
+
+    function createChart() {
+
+        const context =
+            document
+                .getElementById(
+                    "riskChart"
+                )
+                .getContext(
+                    "2d"
+                );
+
+
+        riskChart =
+            new Chart(
+                context,
+                {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels: [],
+
+                        datasets: [
+
+                            {
+
+                                label:
+                                    "Valor del Riesgo",
+
+                                data: [],
+
+                                backgroundColor: [],
+
+                                borderRadius: 7,
+
+                                borderWidth: 1
+
+                            }
+
+                        ]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        scales: {
+
+                            y: {
+
+                                beginAtZero: true,
+
+                                max: 25,
+
+                                ticks: {
+                                    color:
+                                        "#94a3b8"
+                                },
+
+                                grid: {
+                                    color:
+                                        "rgba(148,163,184,.1)"
+                                },
+
+                                title: {
+
+                                    display: true,
+
+                                    text:
+                                        "Valor del riesgo",
+
+                                    color:
+                                        "#94a3b8"
+
+                                }
+
+                            },
+
+                            x: {
+
+                                ticks: {
+                                    color:
+                                        "#94a3b8"
+                                },
+
+                                grid: {
+                                    display: false
+                                }
+
+                            }
+
+                        },
+
+                        plugins: {
+
+                            legend: {
+
+                                labels: {
+                                    color:
+                                        "#cbd5e1"
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+            );
+
+    }
+
+
+    /* ==========================================================
+       ACTUALIZAR CHART
+    ========================================================== */
+
+    function updateChart() {
+
+        if (!riskChart) {
+            return;
+        }
+
+
+        riskChart.data.labels =
+            incidents.map(
+                incident =>
+                    incident.id
+            );
+
+
+        riskChart.data.datasets[0]
+            .data =
+            incidents.map(
+                incident =>
+                    incident.risk
+            );
+
+
+        riskChart.data.datasets[0]
+            .backgroundColor =
+            incidents.map(
+                incident =>
+                    incident.color
+            );
+
+
+        riskChart.update();
+
+    }
+
+
+    /* ==========================================================
+       EJEMPLOS
+    ========================================================== */
+
+    document
+        .getElementById(
+            "exampleBtn"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                const examples = [
+
+                    {
+                        name:
+                            "Ataque de malware",
+
+                        type:
+                            "Lógico",
+
+                        p: 5,
+                        i: 5
+                    },
+
+                    {
+                        name:
+                            "Caída del servidor principal",
+
+                        type:
+                            "Lógico",
+
+                        p: 4,
+                        i: 4
+                    },
+
+                    {
+                        name:
+                            "Error de configuración",
+
+                        type:
+                            "Humano",
+
+                        p: 3,
+                        i: 3
+                    },
+
+                    {
+                        name:
+                            "Falla de climatización",
+
+                        type:
+                            "Físico",
+
+                        p: 2,
+                        i: 4
+                    },
+
+                    {
+                        name:
+                            "Contraseña compartida",
+
+                        type:
+                            "Humano",
+
+                        p: 4,
+                        i: 4
+                    },
+
+                    {
+                        name:
+                            "Interrupción temporal de red",
+
+                        type:
+                            "Físico",
+
+                        p: 1,
+                        i: 2
+                    }
+
+                ];
+
+
+                const example =
+                    examples[
+                        Math.floor(
+                            Math.random()
+                            *
+                            examples.length
+                        )
+                    ];
+
+
+                document
+                    .getElementById(
+                        "incidentName"
+                    )
+                    .value =
+                    example.name;
+
+
+                document
+                    .getElementById(
+                        "riskType"
+                    )
+                    .value =
+                    example.type;
+
+
+                document
+                    .getElementById(
+                        `p${example.p}`
+                    )
+                    .checked =
+                    true;
+
+
+                document
+                    .getElementById(
+                        `i${example.i}`
+                    )
+                    .checked =
+                    true;
+
+
+                updatePreview();
+
+
+                showToast(
+                    "Ejemplo cargado",
+                    "Presiona Evaluar y Procesar."
+                );
+
+            }
+        );
+
+
+    /* ==========================================================
+       LIMPIAR
+    ========================================================== */
+
+    document
+        .getElementById(
+            "clearBtn"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                if (
+                    incidents.length === 0
+                ) {
+
+                    showToast(
+                        "Historial vacío",
+                        "No hay registros."
+                    );
+
+                    return;
+
+                }
+
+
+                if (
+                    !confirm(
+                        "¿Deseas eliminar todo el historial?"
+                    )
+                ) {
+
+                    return;
+
+                }
+
+
+                incidents = [];
+
+                incidentCounter = 0;
+
+
+                renderHistory();
+
+                updateMetrics();
+
+                updateChart();
+
+                resetBpmn();
+
+
+                document
+                    .getElementById(
+                        "feedbackPlaceholder"
+                    )
+                    .style.display =
+                    "block";
+
+
+                document
+                    .getElementById(
+                        "feedbackContent"
+                    )
+                    .style.display =
+                    "none";
+
+
+                showToast(
+                    "Historial eliminado",
+                    "Se eliminaron los registros."
+                );
+
+            }
+        );
+
+
+    /* ==========================================================
+       TOAST
+    ========================================================== */
+
+    function showToast(
+        title,
+        message
+    ) {
+
+        const toast =
+            document.getElementById(
+                "toast"
+            );
+
+
+        document
+            .getElementById(
+                "toastTitle"
+            )
+            .textContent =
+            title;
+
+
+        document
+            .getElementById(
+                "toastMessage"
+            )
+            .textContent =
+            message;
+
+
+        toast.classList.add(
+            "show"
+        );
+
+
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            3500
+        );
+
+    }
+
+
+    /* ==========================================================
+       INICIALIZACIÓN
+    ========================================================== */
+
+    createChart();
+
+    renderHistory();
+
+    updateMetrics();
+
+    updatePreview();
+
+    resetBpmn();
+
+</script>
+
+    <style>
+        :root {
+            --bg: #0b1120;
+            --bg2: #111827;
+            --card: #151e30;
+            --card2: #0f172a;
+            --border: #26344d;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+
+            --blue: #3b82f6;
+            --green: #22c55e;
+            --yellow: #eab308;
+            --orange: #f97316;
+            --red: #ef4444;
+            --purple: #8b5cf6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family:
+                Inter,
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(59,130,246,.12),
+                    transparent 30%
+                ),
+                var(--bg);
+
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        /* ================================
+           HEADER
+        ================================= */
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            background: rgba(11,17,32,.92);
+            backdrop-filter: blur(15px);
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-container {
+            max-width: 1500px;
+            margin: auto;
+
+            padding: 18px 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-icon {
+            width: 46px;
+            height: 46px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--blue),
+                    var(--purple)
+                );
+
+            font-size: 22px;
+
+            box-shadow:
+                0 0 25px rgba(59,130,246,.35);
+        }
+
+        .brand h1 {
+            font-size: 18px;
+        }
+
+        .brand p {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 8px 13px;
+
+            border-radius: 20px;
+
+            color: #86efac;
+
+            background: rgba(34,197,94,.08);
+
+            border: 1px solid rgba(34,197,94,.25);
+
+            font-size: 12px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: var(--green);
+
+            box-shadow:
+                0 0 10px var(--green);
+        }
+
+        /* ================================
+           MAIN
+        ================================= */
+
+        main {
+            max-width: 1500px;
+            margin: auto;
+            padding: 30px;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .page-title h2 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: var(--muted);
+            line-height: 1.6;
+            max-width: 900px;
+        }
+
+        /* ================================
+           METRICS
+        ================================= */
+
+        .metrics {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4,1fr);
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+        }
+
+        .metric-card {
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 16px;
+
+            padding: 20px;
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,.2);
+
+            transition: .2s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .metric-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 15px;
+        }
+
+        .metric-label {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .metric-icon {
+            width: 35px;
+            height: 35px;
+
+            border-radius: 9px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background:
+                rgba(59,130,246,.12);
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .metric-description {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* ================================
+           GRID
+        ================================= */
+
+        .content-grid {
+            display: grid;
+
+            grid-template-columns:
+                minmax(320px,.8fr)
+                minmax(500px,1.5fr);
+
+            gap: 22px;
+
+            margin-bottom: 22px;
+        }
+
+        .card {
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,.22);
+        }
+
+        .card-header {
+            padding: 20px 22px;
+
+            border-bottom: 1px solid var(--border);
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .card-header h3 {
+            font-size: 17px;
+        }
+
+        .card-header p {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .card-body {
+            padding: 22px;
+        }
+
+        /* ================================
+           FORM
+        ================================= */
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            margin-bottom: 8px;
+        }
+
+        .form-group small {
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            margin-top: 5px;
+        }
+
+        input,
+        select {
+            width: 100%;
+
+            padding: 12px 13px;
+
+            border-radius: 10px;
+
+            border: 1px solid var(--border);
+
+            background: #0e1728;
+
+            color: white;
+
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--blue);
+
+            box-shadow:
+                0 0 0 3px rgba(59,130,246,.12);
+        }
+
+        .scale-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(5,1fr);
+
+            gap: 7px;
+        }
+
+        .scale-option {
+            position: relative;
+        }
+
+        .scale-option input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .scale-option label {
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid var(--border);
+
+            border-radius: 9px;
+
+            background: #0e1728;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+        .scale-option label:hover {
+            border-color: #526783;
+        }
+
+        .scale-option input:checked + label {
+            border-color: var(--blue);
+
+            background:
+                rgba(59,130,246,.18);
+
+            color: #93c5fd;
+        }
+
+        /* ================================
+           RISK PREVIEW
+        ================================= */
+
+        .risk-preview {
+            margin-top: 20px;
+
+            padding: 18px;
+
+            border-radius: 13px;
+
+            border: 1px dashed #334155;
+
+            background:
+                rgba(15,23,42,.6);
+
+            text-align: center;
+        }
+
+        .risk-number {
+            font-size: 42px;
+            font-weight: 900;
+
+            margin: 5px 0;
+        }
+
+        .risk-level {
+            display: inline-block;
+
+            padding: 6px 13px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .risk-default {
+            color: var(--muted);
+            background: #1e293b;
+        }
+
+        /* ================================
+           BUTTONS
+        ================================= */
+
+        .button-group {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+        .btn {
+            border: none;
+
+            padding: 12px 15px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            font-weight: 700;
+
+            transition: .2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--blue),
+                    #2563eb
+                );
+        }
+
+        .btn-secondary {
+            color: #cbd5e1;
+
+            background: #1e293b;
+
+            border: 1px solid var(--border);
+        }
+
+        .btn-danger {
+            color: white;
+
+            background: #7f1d1d;
+        }
+
+        /* ================================
+           FEEDBACK
+        ================================= */
+
+        .feedback-card {
+            margin-bottom: 22px;
+        }
+
+        .feedback-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2,1fr);
+
+            gap: 15px;
+        }
+
+        .feedback-item {
+            padding: 18px;
+
+            border-radius: 13px;
+
+            background:
+                rgba(15,23,42,.65);
+
+            border: 1px solid var(--border);
+
+            transition: .3s;
+        }
+
+        .feedback-item:hover {
+            border-color: #3b4d6d;
+        }
+
+        .feedback-item.full {
+            grid-column: 1 / -1;
+        }
+
+        .feedback-title {
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin-bottom: 9px;
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+        .feedback-text {
+            color: #cbd5e1;
+
+            font-size: 12px;
+
+            line-height: 1.65;
+        }
+
+        .feedback-placeholder {
+            text-align: center;
+
+            padding: 25px;
+
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+        .solution-box {
+            border-left: 4px solid var(--blue);
+        }
+
+        .problem-box {
+            border-left: 4px solid var(--red);
+        }
+
+        .action-box {
+            border-left: 4px solid var(--orange);
+        }
+
+        .responsible-box {
+            border-left: 4px solid var(--purple);
+        }
+
+        /* ================================
+           BPMN
+        ================================= */
+
+        .bpmn-wrapper {
+            overflow-x: auto;
+        }
+
+        .bpmn-flow {
+            min-width: 1000px;
+
+            padding: 40px 20px;
+
+            display: flex;
+
+            align-items: center;
+        }
+
+        .bpmn-node {
+            position: relative;
+
+            min-width: 125px;
+            min-height: 85px;
+
+            padding: 12px;
+
+            border-radius: 13px;
+
+            border: 1px solid #334155;
+
+            background: #101a2c;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            text-align: center;
+
+            transition: .4s;
+
+            z-index: 2;
+        }
+
+        .bpmn-node .node-icon {
+            font-size: 22px;
+            margin-bottom: 6px;
+        }
+
+        .bpmn-node strong {
+            font-size: 12px;
+        }
+
+        .bpmn-node span {
+            font-size: 10px;
+            color: var(--muted);
+            margin-top: 3px;
+        }
+
+        .event {
+            width: 82px;
+            min-width: 82px;
+
+            height: 82px;
+            min-height: 82px;
+
+            border-radius: 50%;
+        }
+
+        .event-end {
+            border-width: 3px;
+        }
+
+        .gateway {
+            width: 65px;
+            min-width: 65px;
+
+            height: 65px;
+            min-height: 65px;
+
+            transform: rotate(45deg);
+
+            border-radius: 8px;
+        }
+
+        .gateway-content {
+            transform: rotate(-45deg);
+        }
+
+        .task {
+            min-width: 150px;
+        }
+
+        .connector {
+            position: relative;
+
+            width: 55px;
+            min-width: 55px;
+
+            height: 3px;
+
+            background: #334155;
+        }
+
+        .connector::after {
+            content: "";
+
+            position: absolute;
+
+            right: -2px;
+
+            top: 50%;
+
+            transform:
+                translateY(-50%)
+                rotate(45deg);
+
+            width: 7px;
+            height: 7px;
+
+            border-top: 2px solid #475569;
+            border-right: 2px solid #475569;
+        }
+
+        .connector-label {
+            position: absolute;
+
+            top: -21px;
+
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            color: #64748b;
+
+            font-size: 9px;
+
+            white-space: nowrap;
+        }
+
+        .bpmn-node.active {
+            border-color: var(--blue);
+
+            background:
+                rgba(59,130,246,.16);
+
+            box-shadow:
+                0 0 25px rgba(59,130,246,.3);
+
+            transform: translateY(-5px);
+        }
+
+        .gateway.active {
+            transform:
+                rotate(45deg)
+                scale(1.1);
+        }
+
+        .gateway.active .gateway-content {
+            transform: rotate(-45deg);
+        }
+
+        .bpmn-node.critical.active {
+            border-color: var(--red);
+
+            background:
+                rgba(239,68,68,.15);
+
+            box-shadow:
+                0 0 28px rgba(239,68,68,.3);
+        }
+
+        .bpmn-node.success.active {
+            border-color: var(--green);
+
+            background:
+                rgba(34,197,94,.13);
+
+            box-shadow:
+                0 0 25px rgba(34,197,94,.25);
+        }
+
+        .bpmn-node.warning.active {
+            border-color: var(--orange);
+
+            background:
+                rgba(249,115,22,.13);
+
+            box-shadow:
+                0 0 25px rgba(249,115,22,.25);
+        }
+
+        /* ================================
+           PARALLEL TASKS
+        ================================= */
+
+        .parallel-container {
+            display: none;
+
+            flex-direction: column;
+
+            gap: 12px;
+
+            margin: 0 15px;
+        }
+
+        .parallel-container.visible {
+            display: flex;
+        }
+
+        .parallel-task {
+            width: 200px;
+
+            min-height: 65px;
+
+            padding: 10px;
+
+            border-radius: 11px;
+
+            border: 1px solid var(--border);
+
+            background: #101a2c;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            transition: .4s;
+        }
+
+        .parallel-task.active {
+            border-color: var(--red);
+
+            background:
+                rgba(239,68,68,.12);
+
+            box-shadow:
+                0 0 20px rgba(239,68,68,.2);
+        }
+
+        .parallel-icon {
+            width: 34px;
+            height: 34px;
+
+            border-radius: 8px;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            background: #1e293b;
+        }
+
+        .parallel-text strong {
+            display: block;
+            font-size: 11px;
+        }
+
+        .parallel-text span {
+            font-size: 9px;
+            color: var(--muted);
+        }
+
+        /* ================================
+           PROCESS RESULT
+        ================================= */
+
+        .process-result {
+            padding: 15px 22px;
+
+            background:
+                rgba(15,23,42,.65);
+
+            border-top: 1px solid var(--border);
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+        .process-result strong {
+            color: white;
+        }
+
+        /* ================================
+           TABLE
+        ================================= */
+
+        .table-card {
+            margin-bottom: 22px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 900px;
+        }
+
+        th,
+        td {
+            padding: 13px 15px;
+
+            text-align: left;
+
+            border-bottom: 1px solid var(--border);
+
+            font-size: 12px;
+        }
+
+        th {
+            color: var(--muted);
+
+            background: #111827;
+        }
+
+        td {
+            color: #dbe4f0;
+        }
+
+        tbody tr:hover {
+            background:
+                rgba(59,130,246,.05);
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 5px 9px;
+
+            border-radius: 20px;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .badge-green {
+            color: #86efac;
+            background: rgba(34,197,94,.12);
+        }
+
+        .badge-yellow {
+            color: #fde047;
+            background: rgba(234,179,8,.12);
+        }
+
+        .badge-orange {
+            color: #fdba74;
+            background: rgba(249,115,22,.12);
+        }
+
+        .badge-red {
+            color: #fca5a5;
+            background: rgba(239,68,68,.12);
+        }
+
+        /* ================================
+           CHART
+        ================================= */
+
+        .chart-container {
+            position: relative;
+
+            height: 330px;
+        }
+
+        /* ================================
+           TOAST
+        ================================= */
+
+        .toast {
+            position: fixed;
+
+            right: 25px;
+            bottom: 25px;
+
+            z-index: 500;
+
+            max-width: 350px;
+
+            padding: 15px 18px;
+
+            border-radius: 12px;
+
+            background: #172033;
+
+            border: 1px solid var(--border);
+
+            box-shadow:
+                0 15px 40px rgba(0,0,0,.4);
+
+            transform:
+                translateY(120px);
+
+            opacity: 0;
+
+            transition: .3s;
+
+            pointer-events: none;
+        }
+
+        .toast.show {
+            transform:
+                translateY(0);
+
+            opacity: 1;
+        }
+
+        .toast-title {
+            font-weight: 800;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .toast-message {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        /* ================================
+           FOOTER
+        ================================= */
+
+        footer {
+            max-width: 1500px;
+            margin: auto;
+
+            padding: 10px 30px 30px;
+
+            text-align: center;
+
+            color: #64748b;
+
+            font-size: 11px;
+        }
+
+        /* ================================
+           RESPONSIVE
+        ================================= */
+
+        @media(max-width:1100px) {
+
+            .metrics {
+                grid-template-columns:
+                    repeat(2,1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media(max-width:650px) {
+
+            main {
+                padding: 20px 15px;
+            }
+
+            .header-container {
+                padding: 15px;
+            }
+
+            .status {
+                display: none;
+            }
+
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+
+            .feedback-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feedback-item.full {
+                grid-column: auto;
+            }
+
+        }
+            /* Enhanced UI by AI */
+        body { background: radial-gradient(circle at top right, rgba(59,130,246,0.15), transparent 40%), radial-gradient(circle at bottom left, rgba(139,92,246,0.15), transparent 40%), var(--bg); }
+        .metric-card, .card, .bpmn-node {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(10px);
+            background: rgba(21, 30, 48, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .metric-card:hover, .card:hover, .bpmn-node:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(59,130,246,0.2);
+        }
+        .metric-icon i { font-size: 1.5rem; background: -webkit-linear-gradient(45deg, var(--blue), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .node-icon i, .parallel-icon i { font-size: 1.5rem; color: var(--blue); }
+        .bpmn-node.warning .node-icon i { color: var(--orange); }
+        .gateway i { font-size: 2rem; color: var(--red); }
+        .brand-icon i { font-size: 1.5rem; color: white; }
+    </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+
+<body>
+
+<header>
+
+    <div class="header-container">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                <i class="fa-solid fa-shield"></i>
+            </div>
+
+            <div>
+
+                <h1>
+                    IT Risk Management
+                </h1>
+
+                <p>
+                    Gestión de Servicios TI · BPMN
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="status">
+
+            <span class="status-dot"></span>
+
+            Sistema operativo
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <!-- ======================================================
+         TITULO
+    ======================================================= -->
+
+    <section class="page-title">
+
+        <h2>
+            Gestión de Riesgos Informáticos
+        </h2>
+
+        <p>
+            Sistema prototipo para registrar, evaluar y gestionar
+            riesgos de TI mediante una matriz de probabilidad e
+            impacto y un proceso BPMN de atención.
+        </p>
+
+    </section>
+
+
+    <!-- ======================================================
+         METRICAS
+    ======================================================= -->
+
+    <section class="metrics">
+
+        <div class="metric-card">
+
+            <div class="metric-top">
+
+                <span class="metric-label">
+                    Incidentes evaluados
+                </span>
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                </div>
+
+            </div>
+
+            <div
+                class="metric-value"
+                id="totalIncidents"
+            >
+                0
+            </div>
+
+            <div class="metric-description">
+                Registros procesados
+            </div>
+
+        </div>
+
+
+        <div class="metric-card">
+
+            <div class="metric-top">
+
+                <span class="metric-label">
+                    Riesgos críticos
+                </span>
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+
+            </div>
+
+            <div
+                class="metric-value"
+                id="criticalIncidents"
+            >
+                0
+            </div>
+
+            <div class="metric-description">
+                Valor ≥ 16
+            </div>
+
+        </div>
+
+
+        <div class="metric-card">
+
+            <div class="metric-top">
+
+                <span class="metric-label">
+                    Riesgo promedio
+                </span>
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-chart-simple"></i>
+                </div>
+
+            </div>
+
+            <div
+                class="metric-value"
+                id="averageRisk"
+            >
+                0
+            </div>
+
+            <div class="metric-description">
+                Sobre escala de 25
+            </div>
+
+        </div>
+
+
+        <div class="metric-card">
+
+            <div class="metric-top">
+
+                <span class="metric-label">
+                    Último estado
+                </span>
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-gear"></i>
+                </div>
+
+            </div>
+
+            <div
+                class="metric-value"
+                id="lastStatus"
+                style="font-size:18px"
+            >
+                Esperando
+            </div>
+
+            <div class="metric-description">
+                Estado del proceso
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         FORMULARIO + BPMN
+    ======================================================= -->
+
+    <section class="content-grid">
+
+
+        <!-- ================= FORMULARIO ================= -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h3>
+                        Registrar incidente
+                    </h3>
+
+                    <p>
+                        Matriz de evaluación de riesgos TI
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="card-body">
+
+                <form id="riskForm">
+
+
+                    <div class="form-group">
+
+                        <label for="incidentName">
+                            Nombre / Identificador
+                        </label>
+
+                        <input
+                            type="text"
+                            id="incidentName"
+                            placeholder="Ej. Ataque de malware"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="riskType">
+                            Tipo de riesgo
+                        </label>
+
+                        <select
+                            id="riskType"
+                            required
+                        >
+
+                            <option value="">
+                                Seleccionar categoría
+                            </option>
+
+                            <option value="Físico">
+                                Físico
+                            </option>
+
+                            <option value="Lógico">
+                                Lógico
+                            </option>
+
+                            <option value="Humano">
+                                Humano
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Probabilidad de ocurrencia
+                        </label>
+
+                        <div class="scale-grid">
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="probability"
+                                    id="p1"
+                                    value="1"
+                                    required
+                                >
+                                <label for="p1">1</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="probability"
+                                    id="p2"
+                                    value="2"
+                                >
+                                <label for="p2">2</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="probability"
+                                    id="p3"
+                                    value="3"
+                                >
+                                <label for="p3">3</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="probability"
+                                    id="p4"
+                                    value="4"
+                                >
+                                <label for="p4">4</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="probability"
+                                    id="p5"
+                                    value="5"
+                                >
+                                <label for="p5">5</label>
+                            </div>
+
+                        </div>
+
+                        <small>
+                            1 = Muy baja · 5 = Muy alta
+                        </small>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Gravedad / Impacto
+                        </label>
+
+                        <div class="scale-grid">
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="impact"
+                                    id="i1"
+                                    value="1"
+                                    required
+                                >
+                                <label for="i1">1</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="impact"
+                                    id="i2"
+                                    value="2"
+                                >
+                                <label for="i2">2</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="impact"
+                                    id="i3"
+                                    value="3"
+                                >
+                                <label for="i3">3</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="impact"
+                                    id="i4"
+                                    value="4"
+                                >
+                                <label for="i4">4</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="impact"
+                                    id="i5"
+                                    value="5"
+                                >
+                                <label for="i5">5</label>
+                            </div>
+
+                        </div>
+
+                        <small>
+                            1 = Bajo · 5 = Muy alto
+                        </small>
+
+                    </div>
+
+
+                    <div class="risk-preview">
+
+                        <div
+                            style="
+                                color:#94a3b8;
+                                font-size:11px;
+                            "
+                        >
+                            VALOR DEL RIESGO
+                        </div>
+
+                        <div
+                            class="risk-number"
+                            id="previewRisk"
+                        >
+                            —
+                        </div>
+
+                        <div
+                            class="risk-level risk-default"
+                            id="previewLevel"
+                        >
+                            Pendiente
+                        </div>
+
+                    </div>
+
+
+                    <div class="button-group">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            <i class="fa-solid fa-bolt"></i> Evaluar y Procesar
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            id="exampleBtn"
+                        >
+                            <i class="fa-solid fa-upload"></i> Cargar ejemplo
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= BPMN ================= -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h3>
+                        Orquestación del proceso BPMN
+                    </h3>
+
+                    <p>
+                        Ruta determinada por la severidad
+                    </p>
+
+                </div>
+
+                <div
+                    id="bpmnStatus"
+                    class="badge badge-green"
+                >
+                    ESPERANDO
+                </div>
+
+            </div>
+
+
+            <div class="bpmn-wrapper">
+
+                <div class="bpmn-flow">
+
+
+                    <div
+                        class="bpmn-node event"
+                        id="nodeStart"
+                    >
+
+                        <div class="node-icon">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+
+                        <strong>
+                            Inicio
+                        </strong>
+
+                        <span>
+                            Registro
+                        </span>
+
+                    </div>
+
+
+                    <div class="connector"></div>
+
+
+                    <div
+                        class="bpmn-node task"
+                        id="nodeEvaluation"
+                    >
+
+                        <div class="node-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div><strong>Evaluar riesgo</strong>
+
+                        <span>
+                            P × I
+                        </span>
+
+                    </div>
+
+
+                    <div class="connector"></div>
+
+
+                    <div
+                        class="bpmn-node gateway"
+                        id="nodeXor"
+                    >
+
+                        <div class="gateway-content">
+
+                            <div class="node-icon">
+                                <i class="fa-solid fa-question"></i>
+                            </div>
+
+                            <strong>
+                                XOR
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="connector">
+
+                        <div class="connector-label">
+                            Regla
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="bpmn-node task warning"
+                        id="nodeMaintenance"
+                    >
+
+                        <div class="node-icon">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                        </div>
+
+                        <strong>
+                            Mantenimiento
+                        </strong>
+
+                        <span>
+                            Monitoreo SLA
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="parallel-container"
+                        id="parallelContainer"
+                    >
+
+                        <div
+                            class="parallel-task"
+                            id="nodeDevOps"
+                        >
+
+                            <div class="parallel-icon"><i class="fa-solid fa-server"></i></div><div class="parallel-text"><strong>Rama A · DevOps
+                                </strong>
+
+                                <span>
+                                    Aislar servicio /
+                                    bloquear puertos
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="parallel-task"
+                            id="nodeCiso"
+                        >
+
+                            <div class="parallel-icon">
+                                <i class="fa-solid fa-shield"></i>
+                            </div>
+
+                            <div class="parallel-text">
+
+                                <strong>
+                                    Rama B · CISO
+                                </strong>
+
+                                <span>
+                                    Notificación y
+                                    auditoría
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="connector"></div>
+
+
+                    <div
+                        class="bpmn-node event event-end success"
+                        id="nodeEnd"
+                    >
+
+                        <div class="node-icon">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+
+                        <strong>
+                            Fin
+                        </strong>
+
+                        <span>
+                            Mitigado
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="process-result"
+                id="processResult"
+            >
+
+                <strong>
+                    Estado:
+                </strong>
+
+                Registra un incidente para iniciar
+                el proceso BPMN.
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         FEEDBACK Y SOLUCIÓN
+    ======================================================= -->
+
+    <section class="card feedback-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h3>
+                    <i class="fa-solid fa-cube"></i> Diagnóstico y propuesta de solución
+                </h3>
+
+                <p>
+                    Feedback generado a partir de la evaluación
+                    del riesgo.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <div
+                id="feedbackPlaceholder"
+                class="feedback-placeholder"
+            >
+
+                <div style="font-size:30px;margin-bottom:8px;">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </div>
+
+                Evalúa un incidente para obtener el
+                diagnóstico y la posible solución.
+
+            </div>
+
+
+            <div
+                id="feedbackContent"
+                class="feedback-grid"
+                style="display:none;"
+            >
+
+                <div class="feedback-item problem-box">
+
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Problema detectado
+                    </div>
+
+                    <div
+                        class="feedback-text"
+                        id="feedbackProblem"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="feedback-item">
+
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-cube"></i> Feedback
+                    </div>
+
+                    <div
+                        class="feedback-text"
+                        id="feedbackText"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="feedback-item solution-box">
+
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-screwdriver-wrench"></i> Posible solución
+                    </div>
+
+                    <div
+                        class="feedback-text"
+                        id="feedbackSolution"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="feedback-item action-box">
+
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-bullseye"></i> Acción recomendada
+                    </div>
+
+                    <div
+                        class="feedback-text"
+                        id="feedbackAction"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="feedback-item responsible-box">
+
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-cube"></i> Responsable sugerido
+                    </div>
+
+                    <div
+                        class="feedback-text"
+                        id="feedbackResponsible"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="feedback-item">
+
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-cube"></i> Prioridad
+                    </div>
+
+                    <div
+                        class="feedback-text"
+                        id="feedbackPriority"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="feedback-item full">
+
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-cube"></i> Justificación de la decisión BPMN
+                    </div>
+
+                    <div
+                        class="feedback-text"
+                        id="feedbackJustification"
+                    >
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         HISTORIAL
+    ======================================================= -->
+
+    <section class="card table-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h3>
+                    Historial de incidentes
+                </h3>
+
+                <p>
+                    Riesgos procesados por el sistema.
+                </p>
+
+            </div>
+
+            <button
+                class="btn btn-danger"
+                id="clearBtn"
+                style="
+                    padding:8px 12px;
+                    font-size:11px;
+                "
+            >
+                <i class="fa-solid fa-cube"></i> Limpiar
+            </button>
+
+        </div>
+
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Incidente</th>
+                        <th>Tipo</th>
+                        <th>P</th>
+                        <th>I</th>
+                        <th>Valor</th>
+                        <th>Severidad</th>
+                        <th>Acción</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="historyBody">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         GRAFICO
+    ======================================================= -->
+
+    <section class="card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h3>
+                    <i class="fa-solid fa-chart-simple"></i> Análisis visual de riesgos
+                </h3>
+
+                <p>
+                    Comparación de los valores de riesgo.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <div class="chart-container">
+
+                <canvas id="riskChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    Sistema académico de demostración ·
+    Gestión de Servicios TI · BPMN ·
+    Sistemas de Información Empresarial
+
+</footer>
+
+
+<div
+    class="toast"
+    id="toast"
+>
+
+    <div
+        class="toast-title"
+        id="toastTitle"
+    >
+        Sistema
+    </div>
+
+    <div
+        class="toast-message"
+        id="toastMessage"
+    >
+        Mensaje
+    </div>
+
+</div>
+
+
+
+
+    <style>
+        :root {
+            --bg: #0b1120;
+            --bg2: #111827;
+            --card: #151e30;
+            --card2: #0f172a;
+            --border: #26344d;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+
+            --blue: #3b82f6;
+            --green: #22c55e;
+            --yellow: #eab308;
+            --orange: #f97316;
+            --red: #ef4444;
+            --purple: #8b5cf6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family:
+                Inter,
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(59,130,246,.12),
+                    transparent 30%
+                ),
+                var(--bg);
+
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        /* ================================
+           HEADER
+        ================================= */
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            background: rgba(11,17,32,.92);
+            backdrop-filter: blur(15px);
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-container {
+            max-width: 1500px;
+            margin: auto;
+
+            padding: 18px 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-icon {
+            width: 46px;
+            height: 46px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--blue),
+                    var(--purple)
+                );
+
+            font-size: 22px;
+
+            box-shadow:
+                0 0 25px rgba(59,130,246,.35);
+        }
+
+        .brand h1 {
+            font-size: 18px;
+        }
+
+        .brand p {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 8px 13px;
+
+            border-radius: 20px;
+
+            color: #86efac;
+
+            background: rgba(34,197,94,.08);
+
+            border: 1px solid rgba(34,197,94,.25);
+
+            font-size: 12px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: var(--green);
+
+            box-shadow:
+                0 0 10px var(--green);
+        }
+
+        /* ================================
+           MAIN
+        ================================= */
+
+        main {
+            max-width: 1500px;
+            margin: auto;
+            padding: 30px;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .page-title h2 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: var(--muted);
+            line-height: 1.6;
+            max-width: 900px;
+        }
+
+        /* ================================
+           METRICS
+        ================================= */
+
+        .metrics {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4,1fr);
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+        }
+
+        .metric-card {
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 16px;
+
+            padding: 20px;
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,.2);
+
+            transition: .2s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .metric-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 15px;
+        }
+
+        .metric-label {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .metric-icon {
+            width: 35px;
+            height: 35px;
+
+            border-radius: 9px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background:
+                rgba(59,130,246,.12);
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .metric-description {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* ================================
+           GRID
+        ================================= */
+
+        .content-grid {
+            display: grid;
+
+            grid-template-columns:
+                minmax(320px,.8fr)
+                minmax(500px,1.5fr);
+
+            gap: 22px;
+
+            margin-bottom: 22px;
+        }
+
+        .card {
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,.22);
+        }
+
+        .card-header {
+            padding: 20px 22px;
+
+            border-bottom: 1px solid var(--border);
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .card-header h3 {
+            font-size: 17px;
+        }
+
+        .card-header p {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .card-body {
+            padding: 22px;
+        }
+
+        /* ================================
+           FORM
+        ================================= */
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            margin-bottom: 8px;
+        }
+
+        .form-group small {
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            margin-top: 5px;
+        }
+
+        input,
+        select {
+            width: 100%;
+
+            padding: 12px 13px;
+
+            border-radius: 10px;
+
+            border: 1px solid var(--border);
+
+            background: #0e1728;
+
+            color: white;
+
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--blue);
+
+            box-shadow:
+                0 0 0 3px rgba(59,130,246,.12);
+        }
+
+        .scale-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(5,1fr);
+
+            gap: 7px;
+        }
+
+        .scale-option {
+            position: relative;
+        }
+
+        .scale-option input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .scale-option label {
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid var(--border);
+
+            border-radius: 9px;
+
+            background: #0e1728;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+        .scale-option label:hover {
+            border-color: #526783;
+        }
+
+        .scale-option input:checked + label {
+            border-color: var(--blue);
+
+            background:
+                rgba(59,130,246,.18);
+
+            color: #93c5fd;
+        }
+
+        /* ================================
+           RISK PREVIEW
+        ================================= */
+
+        .risk-preview {
+            margin-top: 20px;
+
+            padding: 18px;
+
+            border-radius: 13px;
+
+            border: 1px dashed #334155;
+
+            background:
+                rgba(15,23,42,.6);
+
+            text-align: center;
+        }
+
+        .risk-number {
+            font-size: 42px;
+            font-weight: 900;
+
+            margin: 5px 0;
+        }
+
+        .risk-level {
+            display: inline-block;
+
+            padding: 6px 13px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .risk-default {
+            color: var(--muted);
+            background: #1e293b;
+        }
+
+        /* ================================
+           BUTTONS
+        ================================= */
+
+        .button-group {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+        .btn {
+            border: none;
+
+            padding: 12px 15px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            font-weight: 700;
+
+            transition: .2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--blue),
+                    #2563eb
+                );
+        }
+
+        .btn-secondary {
+            color: #cbd5e1;
+
+            background: #1e293b;
+
+            border: 1px solid var(--border);
+        }
+
+        .btn-danger {
+            color: white;
+
+            background: #7f1d1d;
+        }
+
+        /* ================================
+           FEEDBACK
+        ================================= */
+
+        .feedback-card {
+            margin-bottom: 22px;
+        }
+
+        .feedback-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2,1fr);
+
+            gap: 15px;
+        }
+
+        .feedback-item {
+            padding: 18px;
+
+            border-radius: 13px;
+
+            background:
+                rgba(15,23,42,.65);
+
+            border: 1px solid var(--border);
+
+            transition: .3s;
+        }
+
+        .feedback-item:hover {
+            border-color: #3b4d6d;
+        }
+
+        .feedback-item.full {
+            grid-column: 1 / -1;
+        }
+
+        .feedback-title {
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin-bottom: 9px;
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+        .feedback-text {
+            color: #cbd5e1;
+
+            font-size: 12px;
+
+            line-height: 1.65;
+        }
+
+        .feedback-placeholder {
+            text-align: center;
+
+            padding: 25px;
+
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+        .solution-box {
+            border-left: 4px solid var(--blue);
+        }
+
+        .problem-box {
+            border-left: 4px solid var(--red);
+        }
+
+        .action-box {
+            border-left: 4px solid var(--orange);
+        }
+
+        .responsible-box {
+            border-left: 4px solid var(--purple);
+        }
+
+        /* ================================
+           BPMN
+        ================================= */
+
+        .bpmn-wrapper {
+            overflow-x: auto;
+        }
+
+        .bpmn-flow {
+            min-width: 1000px;
+
+            padding: 40px 20px;
+
+            display: flex;
+
+            align-items: center;
+        }
+
+        .bpmn-node {
+            position: relative;
+
+            min-width: 125px;
+            min-height: 85px;
+
+            padding: 12px;
+
+            border-radius: 13px;
+
+            border: 1px solid #334155;
+
+            background: #101a2c;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            text-align: center;
+
+            transition: .4s;
+
+            z-index: 2;
+        }
+
+        .bpmn-node .node-icon {
+            font-size: 22px;
+            margin-bottom: 6px;
+        }
+
+        .bpmn-node strong {
+            font-size: 12px;
+        }
+
+        .bpmn-node span {
+            font-size: 10px;
+            color: var(--muted);
+            margin-top: 3px;
+        }
+
+        .event {
+            width: 82px;
+            min-width: 82px;
+
+            height: 82px;
+            min-height: 82px;
+
+            border-radius: 50%;
+        }
+
+        .event-end {
+            border-width: 3px;
+        }
+
+        .gateway {
+            width: 65px;
+            min-width: 65px;
+
+            height: 65px;
+            min-height: 65px;
+
+            transform: rotate(45deg);
+
+            border-radius: 8px;
+        }
+
+        .gateway-content {
+            transform: rotate(-45deg);
+        }
+
+        .task {
+            min-width: 150px;
+        }
+
+        .connector {
+            position: relative;
+
+            width: 55px;
+            min-width: 55px;
+
+            height: 3px;
+
+            background: #334155;
+        }
+
+        .connector::after {
+            content: "";
+
+            position: absolute;
+
+            right: -2px;
+
+            top: 50%;
+
+            transform:
+                translateY(-50%)
+                rotate(45deg);
+
+            width: 7px;
+            height: 7px;
+
+            border-top: 2px solid #475569;
+            border-right: 2px solid #475569;
+        }
+
+        .connector-label {
+            position: absolute;
+
+            top: -21px;
+
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            color: #64748b;
+
+            font-size: 9px;
+
+            white-space: nowrap;
+        }
+
+        .bpmn-node.active {
+            border-color: var(--blue);
+
+            background:
+                rgba(59,130,246,.16);
+
+            box-shadow:
+                0 0 25px rgba(59,130,246,.3);
+
+            transform: translateY(-5px);
+        }
+
+        .gateway.active {
+            transform:
+                rotate(45deg)
+                scale(1.1);
+        }
+
+        .gateway.active .gateway-content {
+            transform: rotate(-45deg);
+        }
+
+        .bpmn-node.critical.active {
+            border-color: var(--red);
+
+            background:
+                rgba(239,68,68,.15);
+
+            box-shadow:
+                0 0 28px rgba(239,68,68,.3);
+        }
+
+        .bpmn-node.success.active {
+            border-color: var(--green);
+
+            background:
+                rgba(34,197,94,.13);
+
+            box-shadow:
+                0 0 25px rgba(34,197,94,.25);
+        }
+
+        .bpmn-node.warning.active {
+            border-color: var(--orange);
+
+            background:
+                rgba(249,115,22,.13);
+
+            box-shadow:
+                0 0 25px rgba(249,115,22,.25);
+        }
+
+        /* ================================
+           PARALLEL TASKS
+        ================================= */
+
+        .parallel-container {
+            display: none;
+
+            flex-direction: column;
+
+            gap: 12px;
+
+            margin: 0 15px;
+        }
+
+        .parallel-container.visible {
+            display: flex;
+        }
+
+        .parallel-task {
+            width: 200px;
+
+            min-height: 65px;
+
+            padding: 10px;
+
+            border-radius: 11px;
+
+            border: 1px solid var(--border);
+
+            background: #101a2c;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            transition: .4s;
+        }
+
+        .parallel-task.active {
+            border-color: var(--red);
+
+            background:
+                rgba(239,68,68,.12);
+
+            box-shadow:
+                0 0 20px rgba(239,68,68,.2);
+        }
+
+        .parallel-icon {
+            width: 34px;
+            height: 34px;
+
+            border-radius: 8px;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            background: #1e293b;
+        }
+
+        .parallel-text strong {
+            display: block;
+            font-size: 11px;
+        }
+
+        .parallel-text span {
+            font-size: 9px;
+            color: var(--muted);
+        }
+
+        /* ================================
+           PROCESS RESULT
+        ================================= */
+
+        .process-result {
+            padding: 15px 22px;
+
+            background:
+                rgba(15,23,42,.65);
+
+            border-top: 1px solid var(--border);
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+        .process-result strong {
+            color: white;
+        }
+
+        /* ================================
+           TABLE
+        ================================= */
+
+        .table-card {
+            margin-bottom: 22px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 900px;
+        }
+
+        th,
+        td {
+            padding: 13px 15px;
+
+            text-align: left;
+
+            border-bottom: 1px solid var(--border);
+
+            font-size: 12px;
+        }
+
+        th {
+            color: var(--muted);
+
+            background: #111827;
+        }
+
+        td {
+            color: #dbe4f0;
+        }
+
+        tbody tr:hover {
+            background:
+                rgba(59,130,246,.05);
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 5px 9px;
+
+            border-radius: 20px;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .badge-green {
+            color: #86efac;
+            background: rgba(34,197,94,.12);
+        }
+
+        .badge-yellow {
+            color: #fde047;
+            background: rgba(234,179,8,.12);
+        }
+
+        .badge-orange {
+            color: #fdba74;
+            background: rgba(249,115,22,.12);
+        }
+
+        .badge-red {
+            color: #fca5a5;
+            background: rgba(239,68,68,.12);
+        }
+
+        /* ================================
+           CHART
+        ================================= */
+
+        .chart-container {
+            position: relative;
+
+            height: 330px;
+        }
+
+        /* ================================
+           TOAST
+        ================================= */
+
+        .toast {
+            position: fixed;
+
+            right: 25px;
+            bottom: 25px;
+
+            z-index: 500;
+
+            max-width: 350px;
+
+            padding: 15px 18px;
+
+            border-radius: 12px;
+
+            background: #172033;
+
+            border: 1px solid var(--border);
+
+            box-shadow:
+                0 15px 40px rgba(0,0,0,.4);
+
+            transform:
+                translateY(120px);
+
+            opacity: 0;
+
+            transition: .3s;
+
+            pointer-events: none;
+        }
+
+        .toast.show {
+            transform:
+                translateY(0);
+
+            opacity: 1;
+        }
+
+        .toast-title {
+            font-weight: 800;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .toast-message {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        /* ================================
+           FOOTER
+        ================================= */
+
+        footer {
+            max-width: 1500px;
+            margin: auto;
+
+            padding: 10px 30px 30px;
+
+            text-align: center;
+
+            color: #64748b;
+
+            font-size: 11px;
+        }
+
+        /* ================================
+           RESPONSIVE
+        ================================= */
+
+        @media(max-width:1100px) {
+
+            .metrics {
+                grid-template-columns:
+                    repeat(2,1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media(max-width:650px) {
+
+            main {
+                padding: 20px 15px;
+            }
+
+            .header-container {
+                padding: 15px;
+            }
+
+            .status {
+                display: none;
+            }
+
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+
+            .feedback-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feedback-item.full {
+                grid-column: auto;
+            }
+
+        }
+            /* Enhanced UI by AI */
+        body { background: radial-gradient(circle at top right, rgba(59,130,246,0.15), transparent 40%), radial-gradient(circle at bottom left, rgba(139,92,246,0.15), transparent 40%), var(--bg); }
+        .metric-card, .card, .bpmn-node {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(10px);
+            background: rgba(21, 30, 48, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .metric-card:hover, .card:hover, .bpmn-node:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(59,130,246,0.2);
+        }
+        .metric-icon i { font-size: 1.5rem; background: -webkit-linear-gradient(45deg, var(--blue), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .node-icon i, .parallel-icon i { font-size: 1.5rem; color: var(--blue); }
+        .bpmn-node.warning .node-icon i { color: var(--orange); }
+        .gateway i { font-size: 2rem; color: var(--red); }
+        .brand-icon i { font-size: 1.5rem; color: white; }
+    </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+
+<body>
+
+<header>
+
+    <div class="header-container">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                <i class="fa-solid fa-shield"></i>
+            </div>
+
+            <div>
+
+                <h1>
+                    IT Risk Management
+                </h1>
+
+                <p>
+                    Gestión de Servicios TI · BPMN
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="status">
+
+            <span class="status-dot"></span>
+
+            Sistema operativo
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <!-- ======================================================
+         TITULO
+    ======================================================= -->
+
+    <section class="page-title">
+
+        <h2>
+            Gestión de Riesgos Informáticos
+        </h2>
+
+        <p>
+            Sistema prototipo para registrar, evaluar y gestionar
+            riesgos de TI mediante una matriz de probabilidad e
+            impacto y un proceso BPMN de atención.
+        </p>
+
+    </section>
+
+
+    <!-- ======================================================
+         METRICAS
+    ======================================================= -->
+
+    <section class="metrics">
+
+        <div class="metric-card">
+
+            <div class="metric-top">
+
+                <span class="metric-label">
+                    Incidentes evaluados
+                </span>
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                </div>
+
+            </div>
+
+            <div
+                class="metric-value"
+                id="totalIncidents"
+            >
+                0
+            </div>
+
+            <div class="metric-description">
+                Registros procesados
+            </div>
+
+        </div>
+
+
+        <div class="metric-card">
+
+            <div class="metric-top">
+
+                <span class="metric-label">
+                    Riesgos críticos
+                </span>
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+
+            </div>
+
+            <div
+                class="metric-value"
+                id="criticalIncidents"
+            >
+                0
+            </div>
+
+            <div class="metric-description">
+                Valor ≥ 16
+            </div>
+
+        </div>
+
+
+        <div class="metric-card">
+
+            <div class="metric-top">
+
+                <span class="metric-label">
+                    Riesgo promedio
+                </span>
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-chart-simple"></i>
+                </div>
+
+            </div>
+
+            <div
+                class="metric-value"
+                id="averageRisk"
+            >
+                0
+            </div>
+
+            <div class="metric-description">
+                Sobre escala de 25
+            </div>
+
+        </div>
+
+
+        <div class="metric-card">
+
+            <div class="metric-top">
+
+                <span class="metric-label">
+                    Último estado
+                </span>
+
+                <div class="metric-icon">
+                    <i class="fa-solid fa-gear"></i>
+                </div>
+
+            </div>
+
+            <div
+                class="metric-value"
+                id="lastStatus"
+                style="font-size:18px"
+            >
+                Esperando
+            </div>
+
+            <div class="metric-description">
+                Estado del proceso
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         FORMULARIO + BPMN
+    ======================================================= -->
+
+    <section class="content-grid">
+
+
+        <!-- ================= FORMULARIO ================= -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h3>
+                        Registrar incidente
+                    </h3>
+
+                    <p>
+                        Matriz de evaluación de riesgos TI
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="card-body">
+
+                <form id="riskForm">
+
+
+                    <div class="form-group">
+
+                        <label for="incidentName">
+                            Nombre / Identificador
+                        </label>
+
+                        <input
+                            type="text"
+                            id="incidentName"
+                            placeholder="Ej. Ataque de malware"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="riskType">
+                            Tipo de riesgo
+                        </label>
+
+                        <select
+                            id="riskType"
+                            required
+                        >
+
+                            <option value="">
+                                Seleccionar categoría
+                            </option>
+
+                            <option value="Físico">
+                                Físico
+                            </option>
+
+                            <option value="Lógico">
+                                Lógico
+                            </option>
+
+                            <option value="Humano">
+                                Humano
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Probabilidad de ocurrencia
+                        </label>
+
+                        <div class="scale-grid">
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="probability"
+                                    id="p1"
+                                    value="1"
+                                    required
+                                >
+                                <label for="p1">1</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="probability"
+                                    id="p2"
+                                    value="2"
+                                >
+                                <label for="p2">2</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="probability"
+                                    id="p3"
+                                    value="3"
+                                >
+                                <label for="p3">3</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="probability"
+                                    id="p4"
+                                    value="4"
+                                >
+                                <label for="p4">4</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="probability"
+                                    id="p5"
+                                    value="5"
+                                >
+                                <label for="p5">5</label>
+                            </div>
+
+                        </div>
+
+                        <small>
+                            1 = Muy baja · 5 = Muy alta
+                        </small>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Gravedad / Impacto
+                        </label>
+
+                        <div class="scale-grid">
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="impact"
+                                    id="i1"
+                                    value="1"
+                                    required
+                                >
+                                <label for="i1">1</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="impact"
+                                    id="i2"
+                                    value="2"
+                                >
+                                <label for="i2">2</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="impact"
+                                    id="i3"
+                                    value="3"
+                                >
+                                <label for="i3">3</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="impact"
+                                    id="i4"
+                                    value="4"
+                                >
+                                <label for="i4">4</label>
+                            </div>
+
+                            <div class="scale-option">
+                                <input
+                                    type="radio"
+                                    name="impact"
+                                    id="i5"
+                                    value="5"
+                                >
+                                <label for="i5">5</label>
+                            </div>
+
+                        </div>
+
+                        <small>
+                            1 = Bajo · 5 = Muy alto
+                        </small>
+
+                    </div>
+
+
+                    <div class="risk-preview">
+
+                        <div
+                            style="
+                                color:#94a3b8;
+                                font-size:11px;
+                            "
+                        >
+                            VALOR DEL RIESGO
+                        </div>
+
+                        <div
+                            class="risk-number"
+                            id="previewRisk"
+                        >
+                            —
+                        </div>
+
+                        <div
+                            class="risk-level risk-default"
+                            id="previewLevel"
+                        >
+                            Pendiente
+                        </div>
+
+                    </div>
+
+
+                    <div class="button-group">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            <i class="fa-solid fa-bolt"></i> Evaluar y Procesar
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            id="exampleBtn"
+                        >
+                            <i class="fa-solid fa-upload"></i> Cargar ejemplo
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= BPMN ================= -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h3>
+                        Orquestación del proceso BPMN
+                    </h3>
+
+                    <p>
+                        Ruta determinada por la severidad
+                    </p>
+
+                </div>
+
+                <div
+                    id="bpmnStatus"
+                    class="badge badge-green"
+                >
+                    ESPERANDO
+                </div>
+
+            </div>
+
+
+            <div class="bpmn-wrapper">
+
+                <div class="bpmn-flow">
+
+
+                    <div
+                        class="bpmn-node event"
+                        id="nodeStart"
+                    >
+
+                        <div class="node-icon">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+
+                        <strong>
+                            Inicio
+                        </strong>
+
+                        <span>
+                            Registro
+                        </span>
+
+                    </div>
+
+
+                    <div class="connector"></div>
+
+
+                    <div
+                        class="bpmn-node task"
+                        id="nodeEvaluation"
+                    >
+
+                        <div class="node-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div><strong>Evaluar riesgo</strong>
+
+                        <span>
+                            P × I
+                        </span>
+
+                    </div>
+
+
+                    <div class="connector"></div>
+
+
+                    <div
+                        class="bpmn-node gateway"
+                        id="nodeXor"
+                    >
+
+                        <div class="gateway-content">
+
+                            <div class="node-icon">
+                                <i class="fa-solid fa-question"></i>
+                            </div>
+
+                            <strong>
+                                XOR
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="connector">
+
+                        <div class="connector-label">
+                            Regla
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="bpmn-node task warning"
+                        id="nodeMaintenance"
+                    >
+
+                        <div class="node-icon">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                        </div>
+
+                        <strong>
+                            Mantenimiento
+                        </strong>
+
+                        <span>
+                            Monitoreo SLA
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="parallel-container"
+                        id="parallelContainer"
+                    >
+
+                        <div
+                            class="parallel-task"
+                            id="nodeDevOps"
+                        >
+
+                            <div class="parallel-icon"><i class="fa-solid fa-server"></i></div><div class="parallel-text"><strong>Rama A · DevOps
+                                </strong>
+
+                                <span>
+                                    Aislar servicio /
+                                    bloquear puertos
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="parallel-task"
+                            id="nodeCiso"
+                        >
+
+                            <div class="parallel-icon">
+                                <i class="fa-solid fa-shield"></i>
+                            </div>
+
+                            <div class="parallel-text">
+
+                                <strong>
+                                    Rama B · CISO
+                                </strong>
+
+                                <span>
+                                    Notificación y
+                                    auditoría
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="connector"></div>
+
+
+                    <div
+                        class="bpmn-node event event-end success"
+                        id="nodeEnd"
+                    >
+
+                        <div class="node-icon">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+
+                        <strong>
+                            Fin
+                        </strong>
+
+                        <span>
+                            Mitigado
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="process-result"
+                id="processResult"
+            >
+
+                <strong>
+                    Estado:
+                </strong>
+
+                Registra un incidente para iniciar
+                el proceso BPMN.
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         FEEDBACK Y SOLUCIÓN
+    ======================================================= -->
+
+    <section class="card feedback-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h3>
+                    <i class="fa-solid fa-cube"></i> Diagnóstico y propuesta de solución
+                </h3>
+
+                <p>
+                    Feedback generado a partir de la evaluación
+                    del riesgo.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <div
+                id="feedbackPlaceholder"
+                class="feedback-placeholder"
+            >
+
+                <div style="font-size:30px;margin-bottom:8px;">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </div>
+
+                Evalúa un incidente para obtener el
+                diagnóstico y la posible solución.
+
+            </div>
+
+
+            <div
+                id="feedbackContent"
+                class="feedback-grid"
+                style="display:none;"
+            >
+
+                <div class="feedback-item problem-box">
+
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Problema detectado
+                    </div>
+
+                    <div
+                        class="feedback-text"
+                        id="feedbackProblem"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="feedback-item">
+
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-cube"></i> Feedback
+                    </div>
+
+                    <div
+                        class="feedback-text"
+                        id="feedbackText"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="feedback-item solution-box">
+
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-screwdriver-wrench"></i> Posible solución
+                    </div>
+
+                    <div
+                        class="feedback-text"
+                        id="feedbackSolution"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="feedback-item action-box">
+
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-bullseye"></i> Acción recomendada
+                    </div>
+
+                    <div
+                        class="feedback-text"
+                        id="feedbackAction"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="feedback-item responsible-box">
+
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-cube"></i> Responsable sugerido
+                    </div>
+
+                    <div
+                        class="feedback-text"
+                        id="feedbackResponsible"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="feedback-item">
+
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-cube"></i> Prioridad
+                    </div>
+
+                    <div
+                        class="feedback-text"
+                        id="feedbackPriority"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="feedback-item full">
+
+                    <div class="feedback-title">
+                        <i class="fa-solid fa-cube"></i> Justificación de la decisión BPMN
+                    </div>
+
+                    <div
+                        class="feedback-text"
+                        id="feedbackJustification"
+                    >
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         HISTORIAL
+    ======================================================= -->
+
+    <section class="card table-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h3>
+                    Historial de incidentes
+                </h3>
+
+                <p>
+                    Riesgos procesados por el sistema.
+                </p>
+
+            </div>
+
+            <button
+                class="btn btn-danger"
+                id="clearBtn"
+                style="
+                    padding:8px 12px;
+                    font-size:11px;
+                "
+            >
+                <i class="fa-solid fa-cube"></i> Limpiar
+            </button>
+
+        </div>
+
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Incidente</th>
+                        <th>Tipo</th>
+                        <th>P</th>
+                        <th>I</th>
+                        <th>Valor</th>
+                        <th>Severidad</th>
+                        <th>Acción</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="historyBody">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         GRAFICO
+    ======================================================= -->
+
+    <section class="card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h3>
+                    <i class="fa-solid fa-chart-simple"></i> Análisis visual de riesgos
+                </h3>
+
+                <p>
+                    Comparación de los valores de riesgo.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <div class="chart-container">
+
+                <canvas id="riskChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    Sistema académico de demostración ·
+    Gestión de Servicios TI · BPMN ·
+    Sistemas de Información Empresarial
+
+</footer>
+
+
+<div
+    class="toast"
+    id="toast"
+>
+
+    <div
+        class="toast-title"
+        id="toastTitle"
+    >
+        Sistema
+    </div>
+
+    <div
+        class="toast-message"
+        id="toastMessage"
+    >
+        Mensaje
+    </div>
+
+</div>
+
+
+<script>
+
+    /* ==========================================================
+       VARIABLES PRINCIPALES
+    ========================================================== */
+
+    let incidents = [];
+
+    let incidentCounter = 0;
+
+    let riskChart = null;
+
+
+    /* ==========================================================
+       ELEMENTOS DOM
+    ========================================================== */
+
+    const form =
+        document.getElementById("riskForm");
+
+    const previewRisk =
+        document.getElementById("previewRisk");
+
+    const previewLevel =
+        document.getElementById("previewLevel");
+
+    const historyBody =
+        document.getElementById("historyBody");
+
+    const parallelContainer =
+        document.getElementById("parallelContainer");
+
+    const processResult =
+        document.getElementById("processResult");
+
+
+    const nodes = {
+
+        start:
+            document.getElementById("nodeStart"),
+
+        evaluation:
+            document.getElementById("nodeEvaluation"),
+
+        xor:
+            document.getElementById("nodeXor"),
+
+        maintenance:
+            document.getElementById("nodeMaintenance"),
+
+        devops:
+            document.getElementById("nodeDevOps"),
+
+        ciso:
+            document.getElementById("nodeCiso"),
+
+        end:
+            document.getElementById("nodeEnd")
+
+    };
+
+
+    /* ==========================================================
+       DETERMINAR SEVERIDAD
+    ========================================================== */
+
+    function getSeverity(risk) {
+
+        if (risk >= 16) {
+
+            return {
+                name: "Muy grave",
+                className: "badge-red",
+                color: "#ef4444"
+            };
+
+        }
+
+        if (risk >= 9) {
+
+            return {
+                name: "Importante",
+                className: "badge-orange",
+                color: "#f97316"
+            };
+
+        }
+
+        if (risk >= 4) {
+
+            return {
+                name: "Apreciable",
+                className: "badge-yellow",
+                color: "#eab308"
+            };
+
+        }
+
+        return {
+            name: "Marginal",
+            className: "badge-green",
+            color: "#22c55e"
+        };
+
+    }
+
+
+    /* ==========================================================
+       GENERAR DIAGNÓSTICO
+    ========================================================== */
+
+    function generateFeedback(
+        incidentName,
+        type,
+        probability,
+        impact,
+        risk
+    ) {
+
+        let problem = `""`;
+        let feedback = `""`;
+        let solution = `""`;
+        let action = `""`;
+        let responsible = "";
+        let priority = "";
+        let justification = `""`;
+
+
+        /* ======================================================
+           CASO CRÍTICO
+        ====================================================== */
+
+        if (risk >= 16) {
+
+            priority = "CRÍTICA";
+
+            action =`"Activar inmediatamente el proceso de emergencia, contener el incidente y realizar seguimiento continuo hasta su mitigación."`;
+
+            responsible =
+                "Equipo DevOps y Oficial CISO.";
+
+            justification =`El valor obtenido (${risk}) es igual o superior a 16. Por la regla de decisión XOR, el proceso se desvía hacia Atención de Emergencia Crítica. Posteriormente se ejecutan dos actividades paralelas mediante la compuerta AND.`;
+
+
+            if (type === "Lógico") {
+
+                problem =`El incidente "${incidentName}" corresponde a un riesgo lógico con una combinación elevada de probabilidad (${probability}) e impacto (${impact}). Puede comprometer servicios, aplicaciones, datos o infraestructura lógica.`;
+
+                feedback =`"El sistema identifica una situación que requiere respuesta inmediata debido a la posibilidad de afectar la continuidad o seguridad de los servicios TI."`;
+
+                solution =`"Aislar los servicios o equipos afectados, revisar conexiones y registros, bloquear accesos o puertos comprometidos, verificar integridad de los sistemas y realizar una evaluación de seguridad antes de restablecer completamente el servicio."`;
+
+            }
+
+            else if (type === "Físico") {
+
+                problem =`El incidente "${incidentName}" representa un riesgo físico con probabilidad ${probability} e impacto ${impact}, pudiendo afectar infraestructura o disponibilidad de los servicios TI.`;
+
+                feedback =`"La combinación de probabilidad e impacto requiere una respuesta prioritaria para evitar una interrupción mayor de la infraestructura tecnológica."`;
+
+                solution =`"Aislar el área o equipo afectado, proteger la infraestructura crítica, verificar alimentación eléctrica, temperatura, conectividad y condiciones físicas, y activar medidas de contingencia."`;
+
+            }
+
+            else {
+
+                problem =`El incidente "${incidentName}" corresponde a un riesgo humano con probabilidad ${probability} e impacto ${impact}. El comportamiento o error involucrado podría afectar los servicios o la seguridad de la información.`;
+
+                feedback =`"La evaluación indica que el factor humano requiere intervención inmediata para reducir la posibilidad de una afectación mayor."`;
+
+                solution =`"Contener la acción que originó el incidente, revisar permisos y accesos, registrar lo ocurrido y realizar una comunicación inmediata al personal involucrado para evitar recurrencias."`;
+
+            }
+
+        }
+
+
+        /* ======================================================
+           IMPORTANTE
+        ====================================================== */
+
+        else if (risk >= 9) {
+
+            priority = "ALTA";
+
+            action =`"Programar atención prioritaria y realizar seguimiento mediante los mecanismos de gestión y monitoreo establecidos."`;
+
+            responsible =
+                "Mesa de ayuda / equipo de TI responsable del servicio.";
+
+            justification =`El valor obtenido (${risk}) se encuentra entre 9 y 15. El sistema no activa la emergencia crítica, por lo que el flujo se dirige a Mantenimiento Programado / Monitoreo SLA.`;
+
+
+            if (type === "Lógico") {
+
+                problem =`Se detectó un riesgo lógico de nivel importante asociado al incidente "${incidentName}".`;
+
+                feedback =`"Aunque no alcanza el umbral de emergencia, el riesgo debe ser atendido para evitar que aumente su impacto o frecuencia."`;
+
+                solution =`"Revisar la configuración del servicio, aplicar correcciones o actualizaciones necesarias, monitorear el comportamiento y documentar las acciones realizadas."`;
+
+            }
+
+            else if (type === "Físico") {
+
+                problem =`Se identificó una condición física que puede afectar la disponibilidad de los servicios TI.`;
+
+                feedback =`"La infraestructura debe ser revisada antes de que la condición pueda provocar una interrupción."`;
+
+                solution =`"Realizar mantenimiento preventivo, inspeccionar los componentes afectados y establecer controles para evitar la repetición del problema."`;
+
+            }
+
+            else {
+
+                problem =`Se identificó un riesgo humano que puede generar incidentes recurrentes.`;
+
+                feedback =`"El factor humano debe ser controlado mediante seguimiento y acciones preventivas."`;
+
+                solution =`"Reforzar procedimientos, capacitar al personal y verificar el cumplimiento de las políticas internas."`;
+
+            }
+
+        }
+
+
+        /* ======================================================
+           APRECIABLE
+        ====================================================== */
+
+        else if (risk >= 4) {
+
+            priority = "MEDIA";
+
+            action =`"Registrar el incidente y atenderlo dentro del mantenimiento programado, manteniendo monitoreo del comportamiento."`;
+
+            responsible =
+                "Mesa de ayuda / responsable del servicio.";
+
+            justification =`El valor obtenido (${risk}) está entre 4 y 8. La regla XOR dirige el incidente hacia mantenimiento programado y monitoreo SLA.`;
+
+
+            problem =`El incidente "${incidentName}" presenta un riesgo apreciable con probabilidad ${probability} e impacto ${impact}.`;
+
+            feedback =`"El riesgo no requiere una respuesta de emergencia, pero debe permanecer registrado y bajo seguimiento para evitar que evolucione a una condición más severa."`;
+
+            solution =`"Programar una acción preventiva o correctiva, monitorear el incidente y verificar posteriormente si el nivel de riesgo disminuyó."`;
+
+        }
+
+
+        /* ======================================================
+           MARGINAL
+        ====================================================== */
+
+        else {
+
+            priority = "BAJA";
+
+            action =`"Registrar el incidente, mantener monitoreo básico y atenderlo durante las actividades normales de mantenimiento."`;
+
+            responsible =
+                "Mesa de ayuda / responsable operativo.";
+
+            justification =`El valor obtenido (${risk}) se encuentra entre 1 y 3. La regla XOR determina que no es necesario activar la ruta de emergencia y se mantiene dentro del flujo de mantenimiento y monitoreo.`;
+
+
+            problem =`El incidente "${incidentName}" presenta un nivel marginal con probabilidad ${probability} e impacto ${impact}.`;
+
+            feedback =`"El riesgo actual es limitado. Sin embargo, conservar el registro permite identificar si el incidente se vuelve recurrente."`;
+
+            solution =`"Mantener el incidente documentado, realizar seguimiento básico y aplicar una acción preventiva si se identifica una causa recurrente."`;
+
+        }
+
+
+        return {
+            problem,
+            feedback,
+            solution,
+            action,
+            responsible,
+            priority,
+            justification
+        };
+
+    }
+
+
+    /* ==========================================================
+       MOSTRAR FEEDBACK
+    ========================================================== */
+
+    function showFeedback(data) {
+
+        document
+            .getElementById("feedbackPlaceholder")
+            .style.display = "none";
+
+        document
+            .getElementById("feedbackContent")
+            .style.display = "grid";
+
+
+        document
+            .getElementById("feedbackProblem")
+            .textContent =
+            data.problem;
+
+
+        document
+            .getElementById("feedbackText")
+            .textContent =
+            data.feedback;
+
+
+        document
+            .getElementById("feedbackSolution")
+            .textContent =
+            data.solution;
+
+
+        document
+            .getElementById("feedbackAction")
+            .textContent =
+            data.action;
+
+
+        document
+            .getElementById("feedbackResponsible")
+            .textContent =
+            data.responsible;
+
+
+        document
+            .getElementById("feedbackPriority")
+            .textContent =
+            data.priority;
+
+
+        document
+            .getElementById("feedbackJustification")
+            .textContent =
+            data.justification;
+
+    }
+
+
+    /* ==========================================================
+       PREVISUALIZACIÓN
+    ========================================================== */
+
+    function updatePreview() {
+
+        const p =
+            document.querySelector(
+                'input[name="probability"]:checked'
+            );
+
+        const i =
+            document.querySelector(
+                'input[name="impact"]:checked'
+            );
+
+
+        if (!p || !i) {
+
+            previewRisk.textContent = "—";
+
+            previewLevel.textContent =
+                "Pendiente";
+
+            previewLevel.className =
+                "risk-level risk-default";
+
+            return;
+
+        }
+
+
+        const probability =
+            Number(p.value);
+
+        const impact =
+            Number(i.value);
+
+        const risk =
+            probability * impact;
+
+        const severity =
+            getSeverity(risk);
+
+
+        previewRisk.textContent =
+            risk;
+
+        previewLevel.textContent =
+            severity.name;
+
+        previewLevel.className =
+            "risk-level";
+
+        previewLevel.style.background =
+            severity.color + "22";
+
+        previewLevel.style.color =
+            severity.color;
+
+    }
+
+
+    document
+        .querySelectorAll(
+            'input[name="probability"], input[name="impact"]'
+        )
+        .forEach(input => {
+
+            input.addEventListener(
+                "change",
+                updatePreview
+            );
+
+        });
+
+
+    /* ==========================================================
+       RESET BPMN
+    ========================================================== */
+
+    function resetBpmn() {
+
+        Object.values(nodes)
+            .forEach(node => {
+
+                node.classList.remove(
+                    "active"
+                );
+
+            });
+
+
+        parallelContainer
+            .classList.remove(
+                "visible"
+            );
+
+
+        document
+            .getElementById("bpmnStatus")
+            .textContent =
+            "ESPERANDO";
+
+
+        document
+            .getElementById("bpmnStatus")
+            .className =
+            "badge badge-green";
+
+
+        processResult.innerHTML =`<strong>Estado:</strong>
+            Registra un incidente para iniciar
+            el proceso BPMN.`;
+
+    }
+
+
+    /* ==========================================================
+       WAIT
+    ========================================================== */
+
+    function wait(ms) {
+
+        return new Promise(
+            resolve =>
+                setTimeout(resolve, ms)
+        );
+
+    }
+
+
+    /* ==========================================================
+       ACTIVAR NODO
+    ========================================================== */
+
+    function activate(node) {
+
+        node.classList.add(
+            "active"
+        );
+
+    }
+
+
+    /* ==========================================================
+       ANIMACIÓN BPMN
+    ========================================================== */
+
+    async function animateProcess(
+        risk,
+        incidentName
+    ) {
+
+        resetBpmn();
+
+
+        const bpmnStatus =
+            document.getElementById(
+                "bpmnStatus"
+            );
+
+
+        bpmnStatus.textContent =
+            "PROCESANDO";
+
+        bpmnStatus.className =
+            "badge badge-yellow";
+
+
+        /* INICIO */
+
+        activate(
+            nodes.start
+        );
+
+        processResult.innerHTML =`<strong>Evento Inicio:</strong>
+            Se registra el incidente
+            "${escapeHtml(incidentName)}".`;
+
+        await wait(700);
+
+
+        /* EVALUACIÓN */
+
+        activate(
+            nodes.evaluation
+        );
+
+        processResult.innerHTML =`<strong>Evaluación:</strong>
+            Se calcula P × I = ${risk}.`;
+
+        await wait(900);
+
+
+        /* XOR */
+
+        activate(
+            nodes.xor
+        );
+
+        processResult.innerHTML =`<strong>Compuerta XOR:</strong>
+            Se determina la ruta de atención
+            según el valor del riesgo.`;
+
+        await wait(900);
+
+
+        /* CRÍTICO */
+
+        if (risk >= 16) {
+
+            parallelContainer
+                .classList.add(
+                    "visible"
+                );
+
+
+            bpmnStatus.textContent =
+                "EMERGENCIA CRÍTICA";
+
+            bpmnStatus.className =
+                "badge badge-red";
+
+
+            processResult.innerHTML =`<strong>Decisión:</strong>
+                Riesgo ${risk} ≥ 16.
+                Se activa Atención de Emergencia Crítica.`;
+
+            await wait(900);
+
+
+            /* DEVOPS */
+
+            activate(
+                nodes.devops
+            );
+
+            processResult.innerHTML =`<strong>Rama A · DevOps:</strong>
+                Aislamiento del servicio y bloqueo
+                de puertos cuando corresponda.`;
+
+            await wait(900);
+
+
+            /* CISO */
+
+            activate(
+                nodes.ciso
+            );
+
+            processResult.innerHTML =`<strong>Rama B · CISO:</strong>
+                Notificación y auditoría inmediata
+                de seguridad.`;
+
+            await wait(1100);
+
+        }
+
+
+        /* NO CRÍTICO */
+
+        else {
+
+            activate(
+                nodes.maintenance
+            );
+
+
+            bpmnStatus.textContent =
+                "MANTENIMIENTO";
+
+            bpmnStatus.className =
+                "badge badge-orange";
+
+
+            processResult.innerHTML =`<strong>Decisión:</strong>
+                Riesgo ${risk} < 16.
+                Se deriva a Mantenimiento Programado
+                / Monitoreo SLA.`;
+
+            await wait(1400);
+
+        }
+
+
+        /* FIN */
+
+        activate(
+            nodes.end
+        );
+
+
+        bpmnStatus.textContent =
+            "PROCESO COMPLETADO";
+
+        bpmnStatus.className =
+            "badge badge-green";
+
+
+        processResult.innerHTML =`<strong>Evento Fin:</strong>
+            El flujo finaliza con una acción
+            de mitigación o seguimiento definida.`;
+
+    }
+
+
+    /* ==========================================================
+       SUBMIT
+    ========================================================== */
+
+    form.addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const incidentName =
+                document
+                    .getElementById(
+                        "incidentName"
+                    )
+                    .value
+                    .trim();
+
+
+            const type =
+                document
+                    .getElementById(
+                        "riskType"
+                    )
+                    .value;
+
+
+            const p =
+                document.querySelector(
+                    'input[name="probability"]:checked'
+                );
+
+
+            const i =
+                document.querySelector(
+                    'input[name="impact"]:checked'
+                );
+
+
+            if (
+                !incidentName ||
+                !type ||
+                !p ||
+                !i
+            ) {
+
+                showToast(
+                    "Formulario incompleto",
+                    "Completa todos los campos."
+                );
+
+                return;
+
+            }
+
+
+            const probability =
+                Number(p.value);
+
+            const impact =
+                Number(i.value);
+
+
+            const risk =
+                probability * impact;
+
+
+            const severity =
+                getSeverity(risk);
+
+
+            /* Generar diagnóstico */
+
+            const feedback =
+                `generateFeedback(
+                    incidentName,
+                    type,
+                    probability,
+                    impact,
+                    risk
+                )`;
+
+
+            showFeedback(
+                feedback
+            );
+
+
+            /* ID */
+
+            incidentCounter++;
+
+
+            const action =
+                `risk >= 16
+                    ?
+                    "Emergencia Crítica"
+                    :
+                    "Mantenimiento / SLA"`;
+
+
+            const incident = {
+
+                id: `INC-${String(incidentCounter).padStart(3,"0")}`,
 
                 name:
                     incidentName,
