@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Big Data | Caso 02</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { background-color: #0f172a; color: #e2e8f0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        .glass {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .data-stream {
+            position: absolute; right: 20px; top: 20px;
+            font-family: monospace; font-size: 0.75rem; color: #10b981;
+            text-align: right; pointer-events: none;
+            height: 100px; overflow: hidden; opacity: 0.5;
+        }
+        .data-line { animation: slideUp 0.5s ease-out forwards; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col relative">
+
+    <div class="data-stream" id="dataStream"></div>
+
+    <!-- Navigation -->
+    <nav class="glass sticky top-0 z-50 px-6 py-4 border-b border-white/10">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="text-gray-400 hover:text-white transition"><i class="fa-solid fa-arrow-left"></i></a>
+                <h1 class="text-xl font-bold"><i class="fa-solid fa-chart-line text-accentBlue mr-2 text-[#0ea5e9]"></i> E-Commerce Analytics <span class="text-xs bg-purple-500/20 text-[#8b5cf6] px-2 py-1 rounded-full ml-2 align-middle border border-purple-500/30">BIG DATA ENGINE</span></h1>
+            </div>
+            <div class="text-sm font-medium text-green-400 flex items-center">
+                <span class="relative flex h-3 w-3 mr-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                </span>
+                Procesamiento en tiempo real
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-7xl mx-auto w-full px-6 py-8">
+        
+        <header class="mb-8">
+            <h2 class="text-3xl font-bold text-white mb-2">Visión General del Negocio</h2>
+            <p class="text-gray-400">Análisis de grandes volúmenes de datos extraídos de miles de transacciones diarias.</p>
+        </header>
+
+        <!-- Metrics Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            
+            <div class="glass p-6 rounded-2xl border-t-4 border-[#0ea5e9]">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-sm text-gray-400 font-semibold mb-1">Total Ventas (Mensual)</p>
+                        <h3 class="text-3xl font-bold text-white" id="valVentas">S/ 250,000</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center text-[#0ea5e9]">
+                        <i class="fa-solid fa-sack-dollar text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4 text-xs font-medium text-green-400"><i class="fa-solid fa-arrow-trend-up mr-1"></i> +12.5% vs mes anterior</div>
+            </div>
+
+            <div class="glass p-6 rounded-2xl border-t-4 border-[#8b5cf6]">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-sm text-gray-400 font-semibold mb-1">Clientes Activos</p>
+                        <h3 class="text-3xl font-bold text-white" id="valClientes">15,000</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center text-[#8b5cf6]">
+                        <i class="fa-solid fa-users text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4 text-xs font-medium text-green-400"><i class="fa-solid fa-arrow-trend-up mr-1"></i> +8.2% nuevos registros</div>
+            </div>
+
+            <div class="glass p-6 rounded-2xl border-t-4 border-[#f59e0b]">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-sm text-gray-400 font-semibold mb-1">Productos Vendidos</p>
+                        <h3 class="text-3xl font-bold text-white" id="valProductos">8,500</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center text-[#f59e0b]">
+                        <i class="fa-solid fa-boxes-stacked text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4 text-xs font-medium text-red-400"><i class="fa-solid fa-arrow-trend-down mr-1"></i> -1.5% rotación inventario</div>
+            </div>
+
+            <div class="glass p-6 rounded-2xl border-t-4 border-[#10b981]">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-sm text-gray-400 font-semibold mb-1">Volumen de Datos</p>
+                        <h3 class="text-3xl font-bold text-white" id="valData">1.2 TB</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-[#10b981]">
+                        <i class="fa-solid fa-database text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4 text-xs font-medium text-gray-400"><i class="fa-solid fa-bolt text-yellow-400 mr-1"></i> Ingesta: 450 MB/s</div>
+            </div>
+
+        </div>
+
+        <!-- Charts Area -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <div class="glass p-6 rounded-2xl lg:col-span-2">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold"><i class="fa-solid fa-chart-area mr-2 text-[#0ea5e9]"></i> Tendencia de Ventas y Tráfico</h3>
+                    <select class="bg-slate-800 border border-slate-600 text-sm rounded-lg px-3 py-1 focus:outline-none">
+                        <option>Últimos 6 meses</option>
+                        <option>Este año</option>
+                    </select>
+                </div>
+                <div class="w-full h-[300px]">
+                    <canvas id="salesChart"></canvas>
+                </div>
+            </div>
+
+            <div class="glass p-6 rounded-2xl lg:col-span-1">
+                <h3 class="text-xl font-bold mb-6"><i class="fa-solid fa-ranking-star mr-2 text-[#8b5cf6]"></i> Categorías más rentables</h3>
+                <div class="w-full h-[250px] flex justify-center">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+                <div class="mt-6 space-y-3">
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-[#0ea5e9] mr-2"></span> Tecnología</span>
+                        <span class="font-bold">45%</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-[#8b5cf6] mr-2"></span> Hogar</span>
+                        <span class="font-bold">30%</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-[#f59e0b] mr-2"></span> Moda</span>
+                        <span class="font-bold">25%</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Data Simulation for "Big Data" feel
+        const formatNumber = (num) => new Intl.NumberFormat('en-US').format(Math.floor(num));
+        
+        let sales = 250000;
+        let clients = 15000;
+        let products = 8500;
+
+        setInterval(() => {
+            sales += Math.random() * 50;
+            clients += Math.random() > 0.7 ? 1 : 0;
+            products += Math.random() > 0.5 ? Math.floor(Math.random() * 3) : 0;
+            
+            document.getElementById('valVentas').innerText = `S/ ${formatNumber(sales)}`;
+            document.getElementById('valClientes').innerText = formatNumber(clients);
+            document.getElementById('valProductos').innerText = formatNumber(products);
+
+            // Fake terminal data stream
+            const stream = document.getElementById('dataStream');
+            const line = document.createElement('div');
+            line.className = 'data-line';
+            line.innerText = `[RECV] packet_${Math.floor(Math.random()*9999)}.json - ${new Date().toISOString()}`;
+            stream.appendChild(line);
+            if(stream.children.length > 5) stream.removeChild(stream.firstChild);
+            
+        }, 1200);
+
+        // Chart.js Default styling
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.font.family = 'Segoe UI';
+
+        // Line Chart
+        const ctxSales = document.getElementById('salesChart').getContext('2d');
+        const gradientSales = ctxSales.createLinearGradient(0, 0, 0, 300);
+        gradientSales.addColorStop(0, 'rgba(14, 165, 233, 0.5)');
+        gradientSales.addColorStop(1, 'rgba(14, 165, 233, 0.0)');
+
+        new Chart(ctxSales, {
+            type: 'line',
+            data: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Ventas (S/)',
+                    data: [180000, 195000, 185000, 210000, 230000, 250000],
+                    borderColor: '#0ea5e9',
+                    backgroundColor: gradientSales,
+                    borderWidth: 3,
+                    pointBackgroundColor: '#1e293b',
+                    pointBorderColor: '#0ea5e9',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { grid: { color: 'rgba(255,255,255,0.05)' }, border: { display: false } },
+                    x: { grid: { display: false }, border: { display: false } }
+                }
+            }
+        });
+
+        // Doughnut Chart
+        const ctxCat = document.getElementById('categoryChart').getContext('2d');
+        new Chart(ctxCat, {
+            type: 'doughnut',
+            data: {
+                labels: ['Tecnología', 'Hogar', 'Moda'],
+                datasets: [{
+                    data: [45, 30, 25],
+                    backgroundColor: ['#0ea5e9', '#8b5cf6', '#f59e0b'],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '75%',
+                plugins: { legend: { display: false } }
+            }
+        });
+    </script>
+</body>
+</html>

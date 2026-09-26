@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Conceptual Big Data | Caso 03</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #0f172a; color: #e2e8f0; font-family: 'Segoe UI', system-ui, sans-serif; overflow-x: hidden; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); }
+        
+        /* Interactive Tree CSS */
+        .tree ul {
+            padding-top: 30px; position: relative;
+            display: flex; justify-content: center;
+            transition: all 0.5s;
+        }
+        .tree li {
+            float: left; text-align: center;
+            list-style-type: none;
+            position: relative;
+            padding: 30px 10px 0 10px;
+            transition: all 0.5s;
+        }
+        /* Connectors */
+        .tree li::before, .tree li::after {
+            content: ''; position: absolute; top: 0; right: 50%;
+            border-top: 2px solid #38bdf8;
+            width: 50%; height: 30px;
+        }
+        .tree li::after {
+            right: auto; left: 50%;
+            border-left: 2px solid #38bdf8;
+        }
+        .tree li:only-child::after, .tree li:only-child::before {
+            display: none;
+        }
+        .tree li:only-child { padding-top: 0; }
+        .tree li:first-child::before, .tree li:last-child::after { border: 0 none; }
+        .tree li:last-child::before { border-right: 2px solid #38bdf8; border-radius: 0 5px 0 0; }
+        .tree li:first-child::after { border-radius: 5px 0 0 0; }
+        
+        /* Connect parents to children */
+        .tree ul ul::before {
+            content: ''; position: absolute; top: 0; left: 50%;
+            border-left: 2px solid #38bdf8;
+            width: 0; height: 30px;
+        }
+
+        /* Node Styling */
+        .node-box {
+            display: inline-block;
+            padding: 15px 25px;
+            border-radius: 12px;
+            min-width: 140px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;
+        }
+        .node-box:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+            border-color: #38bdf8;
+        }
+        
+        /* Node Tiers */
+        .tier-1 { background: linear-gradient(135deg, #1e293b, #0f172a); border: 2px solid #8b5cf6; }
+        .tier-2 { background: #1e293b; border: 1px solid #0ea5e9; }
+        .tier-3 { background: #1e293b; border: 1px solid #10b981; }
+        .tier-4 { background: #1e293b; border: 1px solid #f59e0b; }
+
+        /* Descriptions */
+        .node-desc { font-size: 0.75rem; color: #94a3b8; margin-top: 5px; max-width: 150px; margin-left: auto; margin-right: auto; line-height: 1.2; }
+
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+    <nav class="glass sticky top-0 z-50 px-6 py-4 border-b border-white/10">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-gray-400 hover:text-white transition"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+            <h1 class="text-xl font-bold text-center w-full"><i class="fa-solid fa-diagram-project text-[#8b5cf6] mr-2"></i> Mapa Conceptual: Big Data Empresarial</h1>
+        </div>
+    </nav>
+
+    <main class="flex-grow flex items-center justify-center p-6 overflow-x-auto">
+        <div class="tree" id="mindmap">
+            <ul>
+                <li>
+                    <div class="node-box tier-1 glass" onclick="toggleSub(this)">
+                        <i class="fa-solid fa-database text-3xl text-[#8b5cf6] mb-2"></i>
+                        <h2 class="text-xl font-bold text-white">BIG DATA</h2>
+                    </div>
+                    <ul class="sub-tree">
+                        <!-- Las 4 Vs -->
+                        <li>
+                            <div class="node-box tier-2" onclick="toggleSub(this)">
+                                <i class="fa-solid fa-weight-hanging text-2xl text-[#0ea5e9] mb-2"></i>
+                                <h3 class="font-bold text-white">Volumen</h3>
+                                <p class="node-desc">Cantidades masivas de datos generados cada segundo.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="node-box tier-2" onclick="toggleSub(this)">
+                                <i class="fa-solid fa-gauge-high text-2xl text-[#0ea5e9] mb-2"></i>
+                                <h3 class="font-bold text-white">Velocidad</h3>
+                                <p class="node-desc">Procesamiento en tiempo real (Streaming).</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="node-box tier-2" onclick="toggleSub(this)">
+                                <i class="fa-solid fa-shapes text-2xl text-[#0ea5e9] mb-2"></i>
+                                <h3 class="font-bold text-white">Variedad</h3>
+                                <p class="node-desc">Datos estructurados y no estructurados.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="node-box tier-2" onclick="toggleSub(this)">
+                                <i class="fa-solid fa-gem text-2xl text-[#0ea5e9] mb-2"></i>
+                                <h3 class="font-bold text-white">Valor</h3>
+                                <p class="node-desc">Insights que generan decisiones estratégicas.</p>
+                            </div>
+                            <ul class="sub-tree">
+                                <li>
+                                    <div class="node-box tier-3 glass" onclick="toggleSub(this)">
+                                        <i class="fa-solid fa-building text-2xl text-[#10b981] mb-2"></i>
+                                        <h3 class="font-bold text-white">Sistemas Empresariales</h3>
+                                    </div>
+                                    <ul class="sub-tree">
+                                        <li>
+                                            <div class="node-box tier-4" onclick="toggleSub(this)">
+                                                <i class="fa-solid fa-expand text-2xl text-[#f59e0b] mb-2"></i>
+                                                <h3 class="font-bold text-white">Escalabilidad</h3>
+                                            </div>
+                                            <ul class="sub-tree">
+                                                <li>
+                                                    <div class="node-box bg-slate-800 border border-slate-600">
+                                                        <i class="fa-solid fa-arrows-up-down text-lg text-gray-400 mb-1"></i>
+                                                        <h4 class="font-bold text-sm text-gray-300">Vertical (Scale-up)</h4>
+                                                        <p class="node-desc text-[10px]">Mejorar hardware de un solo nodo.</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="node-box bg-slate-800 border border-slate-600">
+                                                        <i class="fa-solid fa-arrows-left-right text-lg text-gray-400 mb-1"></i>
+                                                        <h4 class="font-bold text-sm text-gray-300">Horizontal (Scale-out)</h4>
+                                                        <p class="node-desc text-[10px]">Añadir más servidores/nodos distribuidos.</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <div class="node-box tier-4">
+                                                <i class="fa-solid fa-robot text-2xl text-[#f59e0b] mb-2"></i>
+                                                <h3 class="font-bold text-white">Inteligencia Artificial</h3>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="node-box tier-4">
+                                                <i class="fa-solid fa-brain text-2xl text-[#f59e0b] mb-2"></i>
+                                                <h3 class="font-bold text-white">Machine Learning</h3>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </main>
+
+    <div class="fixed bottom-4 right-4 bg-slate-800/80 border border-slate-600 p-3 rounded-xl text-xs text-gray-400 backdrop-blur-md">
+        <i class="fa-solid fa-mouse-pointer mr-2"></i> Puedes hacer clic en los nodos para ocultar/mostrar sus ramas.
+    </div>
+
+    <script>
+        function toggleSub(element) {
+            const nextUl = element.nextElementSibling;
+            if (nextUl && nextUl.tagName === 'UL') {
+                if (nextUl.style.display === 'none') {
+                    nextUl.style.display = 'flex';
+                    element.style.opacity = '1';
+                } else {
+                    nextUl.style.display = 'none';
+                    element.style.opacity = '0.7';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

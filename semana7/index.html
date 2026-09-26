@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semana 7 - Big Data y Escalabilidad</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0f172a',
+                        cardBg: '#1e293b',
+                        accentBlue: '#0ea5e9',
+                        accentPurple: '#8b5cf6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; font-family: 'Segoe UI', system-ui, sans-serif; overflow-x: hidden; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #0ea5e9, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .animated-bg {
+            position: absolute; width: 400px; height: 400px;
+            background: #8b5cf6; border-radius: 50%; filter: blur(120px);
+            opacity: 0.2; animation: float 10s infinite alternate; z-index: -1;
+        }
+        @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(100px, 50px); } }
+    </style>
+</head>
+<body class="antialiased relative min-h-screen flex flex-col">
+    <!-- Animated background blobs -->
+    <div class="animated-bg top-10 left-10"></div>
+    <div class="animated-bg bottom-10 right-10" style="background: #0ea5e9; animation-delay: -5s;"></div>
+
+    <nav class="glass-panel sticky top-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="../index.html" class="text-xl font-bold hover:text-accentBlue transition"><i class="fa-solid fa-arrow-left mr-2"></i> Volver al Inicio</a>
+            <div class="text-xl font-bold text-gradient"><i class="fa-solid fa-database mr-2"></i>Semana 7</div>
+        </div>
+    </nav>
+
+    <main class="flex-grow flex flex-col items-center p-6 mt-12">
+        <div class="text-center max-w-4xl" data-aos="fade-up">
+            <span class="px-4 py-1 rounded-full border border-accentBlue/30 bg-accentBlue/10 text-accentBlue text-sm font-bold tracking-widest uppercase mb-6 inline-block">
+                <i class="fa-solid fa-layer-group mr-2"></i>Sistemas de Información Empresarial
+            </span>
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-6">Escalabilidad y <span class="text-gradient">Big Data</span></h1>
+            <p class="text-xl text-gray-400 mb-12">Gestión de grandes volúmenes de información empresarial. Selecciona uno de los casos desarrollados para esta sesión.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl" data-aos="fade-up" data-aos-delay="200">
+            <!-- Caso 02 -->
+            <a href="caso02.html" class="glass-panel rounded-3xl p-8 hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(14,165,233,0.3)] transition-all duration-300 group border-t-4 border-t-accentBlue block">
+                <div class="w-16 h-16 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-6 text-accentBlue group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-chart-pie text-3xl"></i>
+                </div>
+                <h3 class="text-3xl font-bold mb-3 text-white">Caso 02</h3>
+                <h4 class="text-xl font-semibold mb-4 text-gray-300">Dashboard de Ventas (Big Data)</h4>
+                <p class="text-gray-400 mb-6">Un sistema web interactivo que simula el procesamiento y análisis de miles de transacciones de e-commerce en tiempo real.</p>
+                <span class="inline-flex items-center text-accentBlue font-semibold bg-accentBlue/10 px-4 py-2 rounded-lg">
+                    Ver Dashboard <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                </span>
+            </a>
+            
+            <!-- Caso 03 -->
+            <a href="caso03.html" class="glass-panel rounded-3xl p-8 hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(139,92,246,0.3)] transition-all duration-300 group border-t-4 border-t-accentPurple block">
+                <div class="w-16 h-16 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-6 text-accentPurple group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-sitemap text-3xl"></i>
+                </div>
+                <h3 class="text-3xl font-bold mb-3 text-white">Caso 03</h3>
+                <h4 class="text-xl font-semibold mb-4 text-gray-300">Mapa Conceptual Interactivo</h4>
+                <p class="text-gray-400 mb-6">Exploración visual y dinámica de la arquitectura Big Data, sus dimensiones (Las 4 V's) y su impacto en sistemas empresariales.</p>
+                <span class="inline-flex items-center text-accentPurple font-semibold bg-accentPurple/10 px-4 py-2 rounded-lg">
+                    Explorar Mapa <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                </span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="text-center p-6 text-gray-500 border-t border-white/10 mt-20 glass-panel">
+        <p>&copy; 2026 - Sistemas de Información Empresarial. Creado con estándares profesionales.</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init({ duration: 800, once: true });</script>
+</body>
+</html>

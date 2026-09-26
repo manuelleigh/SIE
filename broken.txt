@@ -1,0 +1,14 @@
+Broken at 575: Riesgo ${risk} ≥ 16.
+Broken at 626: Riesgo ${risk} < 16.
+Broken at 803: ${incident.id} · Riesgo ${risk} · ${severity.name}            );
+Broken at 868: ${incident.id}
+Broken at 873: ${escapeHtml(
+Broken at 879: ${incident.type}
+Broken at 883: ${incident.probability}
+Broken at 887: ${incident.impact}
+Broken at 892: ${incident.risk}
+Broken at 902: ${severity.className}
+Broken at 905: ${severity.name}
+Broken at 911: ${incident.action}
+Broken at 1306: p${example.p}                    )
+Broken at 1313: i${example.i}                    )

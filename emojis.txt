@@ -1,0 +1,11 @@
+Char: — - Hex: 0x2014
+Char: ✓ - Hex: 0x2713
+Char: ❓ - Hex: 0x2753
+Char: ⚠ - Hex: 0x26a0
+Char: ▶ - Hex: 0x25b6
+Char: ﻿ - Hex: 0xfeff
+Char: ⚡ - Hex: 0x26a1
+Char: ️ - Hex: 0xfe0f
+Char: ¿ - Hex: 0xbf
+Char: · - Hex: 0xb7
+Char: ≥ - Hex: 0x2265
