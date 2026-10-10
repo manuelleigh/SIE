@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -34,6 +34,7 @@
         .glow-text-red { text-shadow: 0 0 10px rgba(239, 68, 68, 0.8), 0 0 20px rgba(239, 68, 68, 0.4); }
         .glow-text-blue { text-shadow: 0 0 10px rgba(56, 189, 248, 0.8), 0 0 20px rgba(56, 189, 248, 0.4); }
         .glow-text-green { text-shadow: 0 0 10px rgba(16, 185, 129, 0.8), 0 0 20px rgba(16, 185, 129, 0.4); }
+        .glow-text-purple { text-shadow: 0 0 10px rgba(168, 85, 247, 0.8), 0 0 20px rgba(168, 85, 247, 0.4); }
 
         /* The Core Server */
         .core { transition: all 1s ease; }
@@ -76,7 +77,7 @@
         /* SIEM Radar (A.16) */
         .shield-a16 {
             width: 320px; height: 320px; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: conic-gradient(from 0deg, transparent 70%, rgba(139, 92, 246, 0.4) 100%);
+            background: conic-gradient(from 0deg, transparent 70%, rgba(168, 85, 247, 0.4) 100%);
             opacity: 0; pointer-events: none; transition: opacity 1s;
         }
         .shield-a16.active { opacity: 1; animation: radar-spin 3s linear infinite; }
@@ -87,18 +88,38 @@
         /* Attack Particles */
         .attack-particle {
             position: absolute; width: 4px; height: 20px; background: #ef4444; border-radius: 2px;
-            box-shadow: 0 0 10px #ef4444; opacity: 0;
+            box-shadow: 0 0 10px #ef4444; opacity: 0; transform-origin: center;
         }
-        .attack-1 { top: 10%; left: 10%; transform: rotate(45deg); animation: shoot1 1.5s infinite; }
-        .attack-2 { bottom: 10%; right: 10%; transform: rotate(225deg); animation: shoot2 2s infinite 0.5s; }
-        .attack-3 { top: 10%; right: 10%; transform: rotate(-45deg); animation: shoot3 1.2s infinite 0.2s; }
+        
+        /* Base attack animations */
+        @keyframes shoot1 { 0% { top: 10%; left: 10%; opacity: 1; transform: rotate(45deg) scale(1); background: #ef4444; width: 4px; border-radius: 2px; } 100% { top: 40%; left: 40%; opacity: 0; transform: rotate(45deg) scale(1); background: #ef4444; width: 4px; border-radius: 2px; } }
+        @keyframes shoot2 { 0% { bottom: 10%; right: 10%; opacity: 1; transform: rotate(225deg) scale(1); background: #ef4444; width: 4px; border-radius: 2px; } 100% { bottom: 40%; right: 40%; opacity: 0; transform: rotate(225deg) scale(1); background: #ef4444; width: 4px; border-radius: 2px; } }
+        @keyframes shoot3 { 0% { top: 10%; right: 10%; opacity: 1; transform: rotate(-45deg) scale(1); background: #ef4444; width: 4px; border-radius: 2px; } 100% { top: 40%; right: 40%; opacity: 0; transform: rotate(-45deg) scale(1); background: #ef4444; width: 4px; border-radius: 2px; } }
 
-        @keyframes shoot1 { 0% { top: 10%; left: 10%; opacity: 1; } 100% { top: 40%; left: 40%; opacity: 0; } }
-        @keyframes shoot2 { 0% { bottom: 10%; right: 10%; opacity: 1; } 100% { bottom: 40%; right: 40%; opacity: 0; } }
-        @keyframes shoot3 { 0% { top: 10%; right: 10%; opacity: 1; } 100% { top: 40%; right: 40%; opacity: 0; } }
+        /* Deflection animations */
+        @keyframes deflect1 { 
+            0% { top: 10%; left: 10%; opacity: 1; transform: rotate(45deg); background: #ef4444; width: 4px; height: 20px; } 
+            70% { top: 25%; left: 25%; opacity: 1; transform: rotate(45deg); background: #ef4444; width: 4px; height: 20px; box-shadow: 0 0 10px #ef4444; } 
+            71% { top: 25%; left: 25%; opacity: 1; transform: rotate(0deg) scale(2); background: #3b82f6; width: 15px; height: 15px; border-radius: 50%; box-shadow: 0 0 20px #3b82f6; } 
+            100% { top: 25%; left: 25%; opacity: 0; transform: rotate(0deg) scale(4); background: #3b82f6; width: 15px; height: 15px; border-radius: 50%; } 
+        }
+        @keyframes deflect2 { 
+            0% { bottom: 10%; right: 10%; opacity: 1; transform: rotate(225deg); background: #ef4444; width: 4px; height: 20px; } 
+            75% { bottom: 33%; right: 33%; opacity: 1; transform: rotate(225deg); background: #ef4444; width: 4px; height: 20px; box-shadow: 0 0 10px #ef4444; } 
+            76% { bottom: 33%; right: 33%; opacity: 1; transform: rotate(0deg) scale(2); background: #10b981; width: 15px; height: 15px; border-radius: 50%; box-shadow: 0 0 20px #10b981; } 
+            100% { bottom: 33%; right: 33%; opacity: 0; transform: rotate(0deg) scale(4); background: #10b981; width: 15px; height: 15px; border-radius: 50%; } 
+        }
+        @keyframes deflect3 { 
+            0% { top: 10%; right: 10%; opacity: 1; transform: rotate(-45deg); background: #ef4444; width: 4px; height: 20px; } 
+            65% { top: 20%; right: 20%; opacity: 1; transform: rotate(-45deg); background: #ef4444; width: 4px; height: 20px; box-shadow: 0 0 10px #ef4444; } 
+            66% { top: 20%; right: 20%; opacity: 1; transform: rotate(0deg) scale(2); background: #a855f7; width: 15px; height: 15px; border-radius: 50%; box-shadow: 0 0 20px #a855f7; } 
+            100% { top: 20%; right: 20%; opacity: 0; transform: rotate(0deg) scale(4); background: #a855f7; width: 15px; height: 15px; border-radius: 50%; } 
+        }
 
-        /* Blocked Attacks */
-        .blocked .attack-particle { animation-play-state: paused; opacity: 0; }
+        /* Initial animation state */
+        .attack-1 { animation: shoot1 1.5s infinite; }
+        .attack-2 { animation: shoot2 2.1s infinite 0.5s; }
+        .attack-3 { animation: shoot3 1.8s infinite 0.2s; }
 
         /* Custom Toggle Switch */
         .cyber-switch { position: relative; width: 60px; height: 32px; display: inline-block; flex-shrink: 0; }
@@ -117,6 +138,10 @@
 
         /* Progress Bar */
         .progress-bar { width: 0%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        .attacker-container { transition: all 0.5s; }
+        .attacker-container.blocked i { color: #475569 !important; text-shadow: none !important; animation: none !important; }
+        .attacker-container.blocked .atk-status { color: #475569 !important; }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -162,24 +187,27 @@
                 </div>
 
                 <!-- Threat Actors -->
-                <div class="absolute top-12 left-12 flex flex-col items-center">
-                    <i class="fa-solid fa-user-secret text-4xl text-red-500 glow-text-red mb-2"></i>
-                    <span class="text-[10px] font-mono text-red-500">APT_GROUP_X</span>
+                <div id="apt-actor" class="attacker-container absolute top-12 left-12 flex flex-col items-center z-10">
+                    <i class="fa-solid fa-user-secret text-4xl text-red-500 glow-text-red mb-2 animate-pulse"></i>
+                    <span class="text-[10px] font-mono text-red-500 font-bold">APT_GROUP_X</span>
+                    <span id="apt-status" class="atk-status text-[9px] font-mono text-red-500 mt-1">[ATTACKING: BRUTE_FORCE]</span>
                 </div>
-                <div class="absolute bottom-12 right-12 flex flex-col items-center">
+                <div id="ransom-actor" class="attacker-container absolute bottom-12 right-12 flex flex-col items-center z-10">
                     <i class="fa-solid fa-virus text-4xl text-red-500 glow-text-red mb-2 animate-bounce"></i>
-                    <span class="text-[10px] font-mono text-red-500">RANSOMWARE_PAYLOAD</span>
+                    <span class="text-[10px] font-mono text-red-500 font-bold">RANSOMWARE_PAYLOAD</span>
+                    <span id="ransom-status" class="atk-status text-[9px] font-mono text-red-500 mt-1">[ATTACKING: ENCRYPTING]</span>
                 </div>
-                <div class="absolute top-12 right-12 flex flex-col items-center">
-                    <i class="fa-solid fa-network-wired text-4xl text-red-500 glow-text-red mb-2"></i>
-                    <span class="text-[10px] font-mono text-red-500">DDOS_BOTNET</span>
+                <div id="ddos-actor" class="attacker-container absolute top-12 right-12 flex flex-col items-center z-10">
+                    <i class="fa-solid fa-network-wired text-4xl text-red-500 glow-text-red mb-2 animate-pulse"></i>
+                    <span class="text-[10px] font-mono text-red-500 font-bold">DDOS_BOTNET</span>
+                    <span id="ddos-status" class="atk-status text-[9px] font-mono text-red-500 mt-1">[ATTACKING: FLOODING]</span>
                 </div>
 
                 <!-- Lasers (Attacks) -->
-                <div id="attack-layer">
-                    <div class="attack-particle attack-1"></div>
-                    <div class="attack-particle attack-2"></div>
-                    <div class="attack-particle attack-3"></div>
+                <div id="attack-layer" class="absolute inset-0 pointer-events-none">
+                    <div id="atk-1" class="attack-particle attack-1"></div>
+                    <div id="atk-2" class="attack-particle attack-2"></div>
+                    <div id="atk-3" class="attack-particle attack-3"></div>
                 </div>
 
                 <!-- The Target (Server) -->
@@ -196,11 +224,11 @@
                     </div>
 
                     <!-- Backup Server (A.17) -->
-                    <div id="backup-server" class="absolute -right-24 top-1/2 -translate-y-1/2 opacity-0 transition-all duration-1000 transform translate-x-10 flex flex-col items-center">
-                        <i class="fa-solid fa-database text-3xl text-blue-400"></i>
-                        <span class="text-[8px] font-mono text-blue-400 mt-1">DRP_SYNC</span>
-                        <!-- Sync line -->
-                        <div class="absolute top-1/2 right-[100%] w-12 border-t-2 border-dashed border-blue-400/50 -translate-y-1/2"></div>
+                    <div id="backup-server" class="absolute -right-32 top-1/2 -translate-y-1/2 opacity-0 transition-all duration-1000 transform translate-x-10 flex flex-col items-center">
+                        <i class="fa-solid fa-database text-3xl text-emerald-400"></i>
+                        <span class="text-[8px] font-mono text-emerald-400 mt-1">DRP_SYNC</span>
+                        <div class="absolute top-1/2 right-[100%] w-16 border-t-2 border-dashed border-emerald-400/50 -translate-y-1/2"></div>
+                        <div class="absolute top-1/2 right-[100%] w-4 h-2 bg-emerald-400 -translate-y-1/2 rounded shadow-[0_0_10px_#10b981]" style="animation: moveSync 1s infinite linear;"></div>
                     </div>
                 </div>
             </div>
@@ -227,7 +255,7 @@
                     <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-800/50 border border-slate-700 hover:border-blue-500/50 transition-colors">
                         <div class="pr-4">
                             <h4 class="font-bold text-white text-sm flex items-center gap-2"><span class="bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded text-xs border border-blue-500/30">A.9</span> Control de Acceso</h4>
-                            <p class="text-xs text-gray-400 mt-1">Implementar autenticación MFA, políticas de contraseñas robustas y privilegios mínimos (Zero Trust).</p>
+                            <p class="text-xs text-gray-400 mt-1">Implementar autenticación MFA y privilegios mínimos. <span class="text-blue-400 text-[10px] block mt-1"><i class="fa-solid fa-bolt mr-1"></i>Bloquea ataques APT directos.</span></p>
                         </div>
                         <label class="cyber-switch">
                             <input type="checkbox" id="toggle-a9" class="policy-toggle" data-val="25">
@@ -239,7 +267,7 @@
                     <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-800/50 border border-slate-700 hover:border-purple-500/50 transition-colors">
                         <div class="pr-4">
                             <h4 class="font-bold text-white text-sm flex items-center gap-2"><span class="bg-purple-500/20 text-purple-400 px-2 py-0.5 rounded text-xs border border-purple-500/30">A.16</span> Gestión de Incidentes</h4>
-                            <p class="text-xs text-gray-400 mt-1">Activar centro de operaciones SIEM y equipo CSIRT para detectar y mitigar anomalías automáticamente.</p>
+                            <p class="text-xs text-gray-400 mt-1">Activar centro de operaciones SIEM y equipo CSIRT. <span class="text-purple-400 text-[10px] block mt-1"><i class="fa-solid fa-bolt mr-1"></i>Detecta y mitiga botnets DDoS.</span></p>
                         </div>
                         <label class="cyber-switch">
                             <input type="checkbox" id="toggle-a16" class="policy-toggle" data-val="25">
@@ -251,7 +279,7 @@
                     <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-800/50 border border-slate-700 hover:border-emerald-500/50 transition-colors">
                         <div class="pr-4">
                             <h4 class="font-bold text-white text-sm flex items-center gap-2"><span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded text-xs border border-emerald-500/30">A.10</span> Criptografía</h4>
-                            <p class="text-xs text-gray-400 mt-1">Cifrado de datos en reposo (AES-256) y en tránsito (TLS 1.3) para proteger la confidencialidad.</p>
+                            <p class="text-xs text-gray-400 mt-1">Cifrado de datos en reposo (AES-256) y en tránsito. <span class="text-emerald-400 text-[10px] block mt-1"><i class="fa-solid fa-bolt mr-1"></i>Inutiliza payloads de Ransomware.</span></p>
                         </div>
                         <label class="cyber-switch">
                             <input type="checkbox" id="toggle-a10" class="policy-toggle" data-val="25">
@@ -263,7 +291,7 @@
                     <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-800/50 border border-slate-700 hover:border-cyan-500/50 transition-colors">
                         <div class="pr-4">
                             <h4 class="font-bold text-white text-sm flex items-center gap-2"><span class="bg-cyan-500/20 text-cyan-400 px-2 py-0.5 rounded text-xs border border-cyan-500/30">A.17</span> Continuidad de Negocio</h4>
-                            <p class="text-xs text-gray-400 mt-1">Activar Plan de Recuperación ante Desastres (DRP) con backups inmutables off-site.</p>
+                            <p class="text-xs text-gray-400 mt-1">Activar Plan de Recuperación ante Desastres (DRP). <span class="text-cyan-400 text-[10px] block mt-1"><i class="fa-solid fa-bolt mr-1"></i>Asegura integridad de datos (Backups).</span></p>
                         </div>
                         <label class="cyber-switch">
                             <input type="checkbox" id="toggle-a17" class="policy-toggle" data-val="25">
@@ -276,6 +304,9 @@
 
         </div>
     </main>
+    <style>
+        @keyframes moveSync { from { right: 100%; opacity: 0; } 50% { opacity: 1; } to { right: 0%; opacity: 0; } }
+    </style>
 
     <script>
         // DOM Elements
@@ -289,13 +320,23 @@
         const coreServer = document.getElementById('core-server');
         const coreIcon = document.getElementById('core-icon');
         const coreText = document.getElementById('core-text');
-        const attackLayer = document.getElementById('attack-layer');
 
         // Shields
         const shieldA9 = document.getElementById('shield-a9');
         const shieldA10 = document.getElementById('shield-a10');
         const shieldA16 = document.getElementById('shield-a16');
         const backupServer = document.getElementById('backup-server');
+
+        // Attackers & Lasers
+        const atk1 = document.getElementById('atk-1');
+        const atk2 = document.getElementById('atk-2');
+        const atk3 = document.getElementById('atk-3');
+        const aptStatus = document.getElementById('apt-status');
+        const ransomStatus = document.getElementById('ransom-status');
+        const ddosStatus = document.getElementById('ddos-status');
+        const aptActor = document.getElementById('apt-actor');
+        const ransomActor = document.getElementById('ransom-actor');
+        const ddosActor = document.getElementById('ddos-actor');
 
         function updateSystem() {
             let score = 0;
@@ -337,32 +378,54 @@
                 navStatus.innerText = "SYSTEM_OPTIMAL"; navStatus.className = "text-emerald-500";
             }
 
-            // Visual Simulation Logic (The WOW Factor)
+            // Visual Simulation Logic (The Multi-Layer WOW Factor)
             
-            // A.9 Access Control
+            // A.9 Access Control (Blocks APT Group / Attack 1)
             if(document.getElementById('toggle-a9').checked) {
                 shieldA9.classList.add('active');
-                attackLayer.classList.add('blocked'); // Lasers disappear
+                atk1.style.animation = 'deflect1 1.2s infinite';
+                aptStatus.innerText = '[BLOCKED: ACCESS_DENIED]';
+                aptStatus.className = 'atk-status text-[9px] font-mono text-blue-400 mt-1 glow-text-blue';
+                aptActor.classList.add('blocked');
             } else {
                 shieldA9.classList.remove('active');
-                attackLayer.classList.remove('blocked');
+                atk1.style.animation = 'shoot1 1.5s infinite';
+                aptStatus.innerText = '[ATTACKING: BRUTE_FORCE]';
+                aptStatus.className = 'atk-status text-[9px] font-mono text-red-500 mt-1';
+                aptActor.classList.remove('blocked');
             }
 
-            // A.16 SIEM
+            // A.16 SIEM / Incident Mgt (Blocks DDOS / Attack 3)
             if(document.getElementById('toggle-a16').checked) {
                 shieldA16.classList.add('active');
+                atk3.style.animation = 'deflect3 1.5s infinite 0.2s';
+                ddosStatus.innerText = '[MITIGATED: SIEM_DETECTED]';
+                ddosStatus.className = 'atk-status text-[9px] font-mono text-purple-400 mt-1 glow-text-purple';
+                ddosActor.classList.add('blocked');
             } else {
                 shieldA16.classList.remove('active');
+                atk3.style.animation = 'shoot3 1.8s infinite 0.2s';
+                ddosStatus.innerText = '[ATTACKING: FLOODING]';
+                ddosStatus.className = 'atk-status text-[9px] font-mono text-red-500 mt-1';
+                ddosActor.classList.remove('blocked');
             }
 
-            // A.10 Crypto
+            // A.10 Crypto (Blocks Ransomware / Attack 2)
             if(document.getElementById('toggle-a10').checked) {
                 shieldA10.classList.add('active');
+                atk2.style.animation = 'deflect2 1.4s infinite 0.5s';
+                ransomStatus.innerText = '[NULLIFIED: DATA_ENCRYPTED]';
+                ransomStatus.className = 'atk-status text-[9px] font-mono text-emerald-400 mt-1 glow-text-emerald';
+                ransomActor.classList.add('blocked');
             } else {
                 shieldA10.classList.remove('active');
+                atk2.style.animation = 'shoot2 2.1s infinite 0.5s';
+                ransomStatus.innerText = '[ATTACKING: ENCRYPTING]';
+                ransomStatus.className = 'atk-status text-[9px] font-mono text-red-500 mt-1';
+                ransomActor.classList.remove('blocked');
             }
 
-            // A.17 Continuity
+            // A.17 Continuity (Spins up Backup)
             if(document.getElementById('toggle-a17').checked) {
                 backupServer.classList.remove('opacity-0', 'translate-x-10');
                 backupServer.classList.add('opacity-100', 'translate-x-0');
