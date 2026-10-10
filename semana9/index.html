@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caso 02 | ISO 27001 - Procedimiento de Seguridad</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0f172a',
+                        cardBg: '#1e293b',
+                        accentBlue: '#3b82f6',
+                        accentGreen: '#10b981',
+                        accentRed: '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; font-family: 'Segoe UI', system-ui, sans-serif; overflow-x: hidden; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #3b82f6, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .animated-bg {
+            position: absolute; width: 500px; height: 500px;
+            background: #3b82f6; border-radius: 50%; filter: blur(150px);
+            opacity: 0.15; animation: float 12s infinite alternate; z-index: -1;
+        }
+        @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(150px, 80px); } }
+        
+        /* Checkbox styling */
+        .check-container { position: relative; cursor: pointer; user-select: none; }
+        .check-container input { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
+        .checkmark { position: absolute; top: 0; left: 0; height: 24px; width: 24px; background-color: #334155; border-radius: 6px; border: 1px solid #475569; transition: all 0.3s; }
+        .check-container:hover input ~ .checkmark { background-color: #475569; }
+        .check-container input:checked ~ .checkmark { background-color: #10b981; border-color: #10b981; }
+        .checkmark:after { content: ""; position: absolute; display: none; }
+        .check-container input:checked ~ .checkmark:after { display: block; }
+        .check-container .checkmark:after {
+            left: 8px; top: 4px; width: 6px; height: 12px;
+            border: solid white; border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.8s ease-in-out;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+    </style>
+</head>
+<body class="antialiased relative min-h-screen flex flex-col">
+    <!-- Animated background blobs -->
+    <div class="animated-bg top-0 left-0"></div>
+    <div class="animated-bg bottom-0 right-0" style="background: #10b981; animation-delay: -6s;"></div>
+
+    <nav class="glass-panel sticky top-0 z-50 px-6 py-4 border-b border-white/10">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="../index.html" class="text-xl font-bold hover:text-accentBlue transition text-gray-300"><i class="fa-solid fa-arrow-left mr-2"></i> Volver</a>
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-shield-halved text-2xl text-accentBlue"></i>
+                <span class="text-xl font-bold text-white tracking-wide">ISO 27001 <span class="font-light text-gray-400">| Compliance Tracker</span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-7xl mx-auto w-full p-6 mt-8">
+        
+        <header class="mb-10 text-center lg:text-left">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Procedimiento de <span class="text-gradient">Gestión de Incidentes</span></h1>
+            <p class="text-lg text-gray-400 max-w-3xl">Implementación interactiva de políticas de seguridad basadas en el estándar internacional ISO/IEC 27001. Marca los controles implementados para verificar el nivel de cumplimiento de tu organización.</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full">
+            
+            <!-- Panel Izquierdo: Métricas y Cumplimiento -->
+            <aside class="lg:col-span-4 space-y-6">
+                <!-- Tarjeta de Progreso -->
+                <div class="glass-panel rounded-3xl p-8 flex flex-col items-center justify-center text-center relative overflow-hidden">
+                    <div class="absolute top-0 w-full h-1 bg-gray-700">
+                        <div id="top-progress-bar" class="h-full bg-accentBlue transition-all duration-700" style="width: 0%"></div>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-300 mb-6">Nivel de Cumplimiento</h3>
+                    
+                    <!-- Circular Progress -->
+                    <div class="relative w-48 h-48 mb-6 flex items-center justify-center">
+                        <svg class="w-full h-full" viewBox="0 0 120 120">
+                            <circle class="text-gray-700 stroke-current" stroke-width="8" cx="60" cy="60" r="50" fill="transparent"></circle>
+                            <circle id="progress-circle" class="text-accentBlue progress-ring__circle stroke-current" stroke-width="8" stroke-linecap="round" cx="60" cy="60" r="50" fill="transparent" stroke-dasharray="314.159" stroke-dashoffset="314.159"></circle>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span id="progress-text" class="text-4xl font-extrabold text-white">0%</span>
+                            <span id="status-text" class="text-xs font-semibold uppercase tracking-wider text-red-400 mt-1">Crítico</span>
+                        </div>
+                    </div>
+                    
+                    <p class="text-sm text-gray-400">Controles implementados: <strong id="controls-count" class="text-white">0 / 12</strong></p>
+                </div>
+
+                <!-- Detalles ISO -->
+                <div class="glass-panel rounded-3xl p-6">
+                    <h4 class="font-bold text-white mb-4 border-b border-gray-700 pb-2"><i class="fa-solid fa-file-contract mr-2 text-accentBlue"></i> Marco Normativo</h4>
+                    <ul class="space-y-4 text-sm text-gray-300">
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-check-circle text-accentGreen mt-1 mr-3"></i>
+                            <span><strong>A.16 Gestión de Incidentes:</strong> Establece un enfoque coherente para gestionar incidentes de seguridad.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-check-circle text-accentGreen mt-1 mr-3"></i>
+                            <span><strong>A.9 Control de Acceso:</strong> Limita el acceso a información crítica según el principio de mínimo privilegio.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-check-circle text-accentGreen mt-1 mr-3"></i>
+                            <span><strong>A.12 Seguridad de Operaciones:</strong> Garantiza el funcionamiento correcto y seguro de las instalaciones de procesamiento de datos.</span>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Panel Derecho: Checklists Interactivos -->
+            <section class="lg:col-span-8 space-y-6">
+                
+                <!-- Fase 1 -->
+                <div class="glass-panel rounded-3xl p-6 border-l-4 border-l-accentBlue">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-accentBlue font-bold text-xl">1</div>
+                        <h2 class="text-2xl font-bold text-white">Preparación y Detección</h2>
+                    </div>
+                    
+                    <div class="space-y-4 ml-13">
+                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
+                            <div class="check-container pt-1">
+                                <input type="checkbox" class="control-check" onchange="updateProgress()">
+                                <span class="checkmark"></span>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Clasificación de Activos</h4>
+                                <p class="text-sm text-gray-400">Todos los activos de información están inventariados y clasificados según su criticidad.</p>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
+                            <div class="check-container pt-1">
+                                <input type="checkbox" class="control-check" onchange="updateProgress()">
+                                <span class="checkmark"></span>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Monitoreo 24/7 (SIEM)</h4>
+                                <p class="text-sm text-gray-400">Implementación de un sistema centralizado de correlación de eventos y detección de anomalías.</p>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
+                            <div class="check-container pt-1">
+                                <input type="checkbox" class="control-check" onchange="updateProgress()">
+                                <span class="checkmark"></span>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Canal de Reporte</h4>
+                                <p class="text-sm text-gray-400">Existe un mecanismo formal (HelpDesk / Email) para que los usuarios reporten eventos de seguridad sospechosos.</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Fase 2 -->
+                <div class="glass-panel rounded-3xl p-6 border-l-4 border-l-amber-500">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-500 font-bold text-xl">2</div>
+                        <h2 class="text-2xl font-bold text-white">Análisis y Priorización</h2>
+                    </div>
+                    
+                    <div class="space-y-4 ml-13">
+                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
+                            <div class="check-container pt-1">
+                                <input type="checkbox" class="control-check" onchange="updateProgress()">
+                                <span class="checkmark"></span>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Matriz de Evaluación de Riesgos</h4>
+                                <p class="text-sm text-gray-400">Los incidentes se categorizan mediante una matriz documentada de Impacto vs Probabilidad.</p>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
+                            <div class="check-container pt-1">
+                                <input type="checkbox" class="control-check" onchange="updateProgress()">
+                                <span class="checkmark"></span>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Equipo de Respuesta (CSIRT)</h4>
+                                <p class="text-sm text-gray-400">Se han asignado roles y responsabilidades claras para el tratamiento de incidentes.</p>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
+                            <div class="check-container pt-1">
+                                <input type="checkbox" class="control-check" onchange="updateProgress()">
+                                <span class="checkmark"></span>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Escalamiento Definido</h4>
+                                <p class="text-sm text-gray-400">Procedimiento documentado para notificar a la alta gerencia o entidades regulatorias si el riesgo es severo.</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Fase 3 -->
+                <div class="glass-panel rounded-3xl p-6 border-l-4 border-l-accentRed">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center text-accentRed font-bold text-xl">3</div>
+                        <h2 class="text-2xl font-bold text-white">Contención y Recuperación</h2>
+                    </div>
+                    
+                    <div class="space-y-4 ml-13">
+                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
+                            <div class="check-container pt-1">
+                                <input type="checkbox" class="control-check" onchange="updateProgress()">
+                                <span class="checkmark"></span>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Aislamiento de Red</h4>
+                                <p class="text-sm text-gray-400">Capacidad técnica para desconectar inmediatamente los activos comprometidos y prevenir propagación.</p>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
+                            <div class="check-container pt-1">
+                                <input type="checkbox" class="control-check" onchange="updateProgress()">
+                                <span class="checkmark"></span>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Plan de Continuidad (BCP/DRP)</h4>
+                                <p class="text-sm text-gray-400">Respaldos (Backups) probados periódicamente y almacenados fuera del sitio (Off-site).</p>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
+                            <div class="check-container pt-1">
+                                <input type="checkbox" class="control-check" onchange="updateProgress()">
+                                <span class="checkmark"></span>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Restauración Segura</h4>
+                                <p class="text-sm text-gray-400">Verificación de vulnerabilidades parcheadas antes de regresar los sistemas a producción.</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Fase 4 -->
+                <div class="glass-panel rounded-3xl p-6 border-l-4 border-l-accentGreen">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-accentGreen font-bold text-xl">4</div>
+                        <h2 class="text-2xl font-bold text-white">Post-Incidente</h2>
+                    </div>
+                    
+                    <div class="space-y-4 ml-13">
+                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
+                            <div class="check-container pt-1">
+                                <input type="checkbox" class="control-check" onchange="updateProgress()">
+                                <span class="checkmark"></span>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Análisis Forense Básico</h4>
+                                <p class="text-sm text-gray-400">Preservación de logs y evidencias digitales asegurando su cadena de custodia.</p>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
+                            <div class="check-container pt-1">
+                                <input type="checkbox" class="control-check" onchange="updateProgress()">
+                                <span class="checkmark"></span>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Lecciones Aprendidas</h4>
+                                <p class="text-sm text-gray-400">Reunión formal tras el incidente para documentar fallos y oportunidades de mejora.</p>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
+                            <div class="check-container pt-1">
+                                <input type="checkbox" class="control-check" onchange="updateProgress()">
+                                <span class="checkmark"></span>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Actualización de Políticas</h4>
+                                <p class="text-sm text-gray-400">El procedimiento de seguridad es revisado y actualizado en base al conocimiento adquirido.</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </main>
+
+    <footer class="text-center p-6 text-gray-500 border-t border-white/10 mt-12 glass-panel">
+        <p>&copy; 2026 - Sistemas de Información Empresarial. Evaluador ISO 27001.</p>
+    </footer>
+
+    <script>
+        const checkboxes = document.querySelectorAll('.control-check');
+        const totalControls = checkboxes.length;
+        const circle = document.getElementById('progress-circle');
+        const radius = circle.r.baseVal.value;
+        const circumference = radius * 2 * Math.PI;
+        
+        circle.style.strokeDasharray = `${circumference} ${circumference}`;
+        
+        function setProgress(percent) {
+            const offset = circumference - percent / 100 * circumference;
+            circle.style.strokeDashoffset = offset;
+            
+            const circleEl = document.getElementById('progress-circle');
+            const textEl = document.getElementById('status-text');
+            const topBar = document.getElementById('top-progress-bar');
+            
+            topBar.style.width = `${percent}%`;
+
+            if(percent < 33) {
+                circleEl.classList.remove('text-amber-400', 'text-emerald-500');
+                circleEl.classList.add('text-red-500');
+                textEl.className = "text-xs font-semibold uppercase tracking-wider text-red-500 mt-1";
+                textEl.innerText = "Crítico";
+                topBar.className = "h-full bg-red-500 transition-all duration-700";
+            } else if(percent < 75) {
+                circleEl.classList.remove('text-red-500', 'text-emerald-500');
+                circleEl.classList.add('text-amber-400');
+                textEl.className = "text-xs font-semibold uppercase tracking-wider text-amber-400 mt-1";
+                textEl.innerText = "Moderado";
+                topBar.className = "h-full bg-amber-400 transition-all duration-700";
+            } else if(percent < 100) {
+                circleEl.classList.remove('text-red-500', 'text-amber-400');
+                circleEl.classList.add('text-emerald-500');
+                textEl.className = "text-xs font-semibold uppercase tracking-wider text-emerald-500 mt-1";
+                textEl.innerText = "Aceptable";
+                topBar.className = "h-full bg-emerald-500 transition-all duration-700";
+            } else {
+                circleEl.classList.remove('text-red-500', 'text-amber-400');
+                circleEl.classList.add('text-emerald-500');
+                textEl.className = "text-xs font-semibold uppercase tracking-wider text-emerald-400 mt-1 drop-shadow-[0_0_8px_rgba(16,185,129,0.8)]";
+                textEl.innerText = "Certificado";
+                topBar.className = "h-full bg-emerald-400 transition-all duration-700 drop-shadow-[0_0_8px_rgba(16,185,129,0.8)]";
+            }
+        }
+
+        function updateProgress() {
+            let checked = 0;
+            checkboxes.forEach(cb => {
+                if (cb.checked) checked++;
+            });
+            
+            const percent = Math.round((checked / totalControls) * 100);
+            
+            document.getElementById('progress-text').innerText = `${percent}%`;
+            document.getElementById('controls-count').innerText = `${checked} / ${totalControls}`;
+            
+            setProgress(percent);
+        }
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
