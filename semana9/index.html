@@ -1,385 +1,398 @@
-<!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+﻿<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caso 02 | ISO 27001 - Procedimiento de Seguridad</title>
+    <title>ISO 27001 | Cyber Defense Simulator</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        darkBg: '#0f172a',
-                        cardBg: '#1e293b',
-                        accentBlue: '#3b82f6',
-                        accentGreen: '#10b981',
-                        accentRed: '#ef4444'
-                    }
-                }
-            }
-        }
-    </script>
     <style>
-        body { background-color: #0f172a; color: #f8fafc; font-family: 'Segoe UI', system-ui, sans-serif; overflow-x: hidden; }
+        body { background-color: #020617; color: #f8fafc; font-family: 'Segoe UI', system-ui, sans-serif; overflow-x: hidden; }
         .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
-        .text-gradient {
-            background: linear-gradient(to right, #3b82f6, #10b981);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .animated-bg {
-            position: absolute; width: 500px; height: 500px;
-            background: #3b82f6; border-radius: 50%; filter: blur(150px);
-            opacity: 0.15; animation: float 12s infinite alternate; z-index: -1;
-        }
-        @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(150px, 80px); } }
         
-        /* Checkbox styling */
-        .check-container { position: relative; cursor: pointer; user-select: none; }
-        .check-container input { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
-        .checkmark { position: absolute; top: 0; left: 0; height: 24px; width: 24px; background-color: #334155; border-radius: 6px; border: 1px solid #475569; transition: all 0.3s; }
-        .check-container:hover input ~ .checkmark { background-color: #475569; }
-        .check-container input:checked ~ .checkmark { background-color: #10b981; border-color: #10b981; }
-        .checkmark:after { content: ""; position: absolute; display: none; }
-        .check-container input:checked ~ .checkmark:after { display: block; }
-        .check-container .checkmark:after {
-            left: 8px; top: 4px; width: 6px; height: 12px;
-            border: solid white; border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
+        /* Cyberspace Grid */
+        .cyber-grid {
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
+            animation: moveGrid 15s linear infinite;
+        }
+        @keyframes moveGrid { from { background-position: 0 0; } to { background-position: 0 40px; } }
+
+        /* Glowing text */
+        .glow-text-red { text-shadow: 0 0 10px rgba(239, 68, 68, 0.8), 0 0 20px rgba(239, 68, 68, 0.4); }
+        .glow-text-blue { text-shadow: 0 0 10px rgba(56, 189, 248, 0.8), 0 0 20px rgba(56, 189, 248, 0.4); }
+        .glow-text-green { text-shadow: 0 0 10px rgba(16, 185, 129, 0.8), 0 0 20px rgba(16, 185, 129, 0.4); }
+
+        /* The Core Server */
+        .core { transition: all 1s ease; }
+        .core.vulnerable {
+            box-shadow: 0 0 30px rgba(239,68,68,0.6), inset 0 0 20px rgba(239,68,68,0.4);
+            border-color: #ef4444;
+            animation: pulse-red 2s infinite;
+        }
+        .core.secured {
+            box-shadow: 0 0 40px rgba(16,185,129,0.5), inset 0 0 20px rgba(16,185,129,0.3);
+            border-color: #10b981;
+        }
+        @keyframes pulse-red { 0% { box-shadow: 0 0 30px rgba(239,68,68,0.6); } 50% { box-shadow: 0 0 60px rgba(239,68,68,0.9); } 100% { box-shadow: 0 0 30px rgba(239,68,68,0.6); } }
+
+        /* Shields */
+        .shield {
+            position: absolute; border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5);
+            opacity: 0; transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none;
+        }
+        
+        /* Access Control Shield (A.9) */
+        .shield-a9.active {
+            opacity: 1; transform: translate(-50%, -50%) scale(1);
+            width: 250px; height: 250px;
+            border: 2px dashed #3b82f6;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.4) inset;
+            animation: spin-slow 20s linear infinite;
         }
 
-        .progress-ring__circle {
-            transition: stroke-dashoffset 0.8s ease-in-out;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
+        /* Encryption Shield (A.10) */
+        .shield-a10.active {
+            opacity: 1; transform: translate(-50%, -50%) scale(1);
+            width: 180px; height: 180px;
+            background: radial-gradient(circle, rgba(16,185,129,0.2) 0%, transparent 70%);
+            border: 4px solid rgba(16, 185, 129, 0.6);
+            box-shadow: 0 0 20px #10b981;
+            backdrop-filter: blur(4px);
         }
+
+        /* SIEM Radar (A.16) */
+        .shield-a16 {
+            width: 320px; height: 320px; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: conic-gradient(from 0deg, transparent 70%, rgba(139, 92, 246, 0.4) 100%);
+            opacity: 0; pointer-events: none; transition: opacity 1s;
+        }
+        .shield-a16.active { opacity: 1; animation: radar-spin 3s linear infinite; }
+
+        @keyframes spin-slow { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes radar-spin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+        /* Attack Particles */
+        .attack-particle {
+            position: absolute; width: 4px; height: 20px; background: #ef4444; border-radius: 2px;
+            box-shadow: 0 0 10px #ef4444; opacity: 0;
+        }
+        .attack-1 { top: 10%; left: 10%; transform: rotate(45deg); animation: shoot1 1.5s infinite; }
+        .attack-2 { bottom: 10%; right: 10%; transform: rotate(225deg); animation: shoot2 2s infinite 0.5s; }
+        .attack-3 { top: 10%; right: 10%; transform: rotate(-45deg); animation: shoot3 1.2s infinite 0.2s; }
+
+        @keyframes shoot1 { 0% { top: 10%; left: 10%; opacity: 1; } 100% { top: 40%; left: 40%; opacity: 0; } }
+        @keyframes shoot2 { 0% { bottom: 10%; right: 10%; opacity: 1; } 100% { bottom: 40%; right: 40%; opacity: 0; } }
+        @keyframes shoot3 { 0% { top: 10%; right: 10%; opacity: 1; } 100% { top: 40%; right: 40%; opacity: 0; } }
+
+        /* Blocked Attacks */
+        .blocked .attack-particle { animation-play-state: paused; opacity: 0; }
+
+        /* Custom Toggle Switch */
+        .cyber-switch { position: relative; width: 60px; height: 32px; display: inline-block; flex-shrink: 0; }
+        .cyber-switch input { opacity: 0; width: 0; height: 0; }
+        .cyber-slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #1e293b; transition: .4s; border-radius: 34px;
+            border: 1px solid #334155;
+        }
+        .cyber-slider:before {
+            position: absolute; content: ""; height: 24px; width: 24px; left: 3px; bottom: 3px;
+            background-color: #94a3b8; transition: .4s; border-radius: 50%;
+        }
+        input:checked + .cyber-slider { background-color: #10b981; box-shadow: 0 0 15px rgba(16, 185, 129, 0.5); border-color: #10b981; }
+        input:checked + .cyber-slider:before { transform: translateX(28px); background-color: #fff; }
+
+        /* Progress Bar */
+        .progress-bar { width: 0%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
     </style>
 </head>
-<body class="antialiased relative min-h-screen flex flex-col">
-    <!-- Animated background blobs -->
-    <div class="animated-bg top-0 left-0"></div>
-    <div class="animated-bg bottom-0 right-0" style="background: #10b981; animation-delay: -6s;"></div>
-
-    <nav class="glass-panel sticky top-0 z-50 px-6 py-4 border-b border-white/10">
+<body class="flex flex-col min-h-screen">
+    
+    <!-- Navbar -->
+    <nav class="glass-panel sticky top-0 z-50 px-6 py-4 border-b border-white/5">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="../index.html" class="text-xl font-bold hover:text-accentBlue transition text-gray-300"><i class="fa-solid fa-arrow-left mr-2"></i> Volver</a>
+            <a href="../index.html" class="text-gray-400 hover:text-white transition"><i class="fa-solid fa-arrow-left mr-2"></i> Portafolio</a>
             <div class="flex items-center gap-3">
-                <i class="fa-solid fa-shield-halved text-2xl text-accentBlue"></i>
-                <span class="text-xl font-bold text-white tracking-wide">ISO 27001 <span class="font-light text-gray-400">| Compliance Tracker</span></span>
+                <i class="fa-solid fa-shield-cat text-3xl text-emerald-500"></i>
+                <span class="text-2xl font-black text-white tracking-widest">ISO 27001 <span class="font-light text-emerald-500">SIMULATOR</span></span>
             </div>
+            <div class="text-xs font-mono text-gray-500 hidden md:block">SYS_STATUS: <span id="nav-status" class="text-red-500 animate-pulse">CRITICAL_THREAT</span></div>
         </div>
     </nav>
 
-    <main class="flex-grow max-w-7xl mx-auto w-full p-6 mt-8">
+    <!-- Main Content -->
+    <main class="flex-grow max-w-[1400px] mx-auto w-full p-4 lg:p-8 flex flex-col">
         
-        <header class="mb-10 text-center lg:text-left">
-            <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Procedimiento de <span class="text-gradient">Gestión de Incidentes</span></h1>
-            <p class="text-lg text-gray-400 max-w-3xl">Implementación interactiva de políticas de seguridad basadas en el estándar internacional ISO/IEC 27001. Marca los controles implementados para verificar el nivel de cumplimiento de tu organización.</p>
+        <header class="mb-6">
+            <h1 class="text-3xl font-bold text-white mb-2">Implementación de Políticas de Seguridad</h1>
+            <p class="text-gray-400 text-sm">Aplica los controles de la norma ISO/IEC 27001 para mitigar ataques en tiempo real y asegurar la continuidad del negocio.</p>
         </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow">
             
-            <!-- Panel Izquierdo: Métricas y Cumplimiento -->
-            <aside class="lg:col-span-4 space-y-6">
-                <!-- Tarjeta de Progreso -->
-                <div class="glass-panel rounded-3xl p-8 flex flex-col items-center justify-center text-center relative overflow-hidden">
-                    <div class="absolute top-0 w-full h-1 bg-gray-700">
-                        <div id="top-progress-bar" class="h-full bg-accentBlue transition-all duration-700" style="width: 0%"></div>
-                    </div>
-                    
-                    <h3 class="text-xl font-bold text-gray-300 mb-6">Nivel de Cumplimiento</h3>
-                    
-                    <!-- Circular Progress -->
-                    <div class="relative w-48 h-48 mb-6 flex items-center justify-center">
-                        <svg class="w-full h-full" viewBox="0 0 120 120">
-                            <circle class="text-gray-700 stroke-current" stroke-width="8" cx="60" cy="60" r="50" fill="transparent"></circle>
-                            <circle id="progress-circle" class="text-accentBlue progress-ring__circle stroke-current" stroke-width="8" stroke-linecap="round" cx="60" cy="60" r="50" fill="transparent" stroke-dasharray="314.159" stroke-dashoffset="314.159"></circle>
-                        </svg>
-                        <div class="absolute inset-0 flex flex-col items-center justify-center">
-                            <span id="progress-text" class="text-4xl font-extrabold text-white">0%</span>
-                            <span id="status-text" class="text-xs font-semibold uppercase tracking-wider text-red-400 mt-1">Crítico</span>
-                        </div>
-                    </div>
-                    
-                    <p class="text-sm text-gray-400">Controles implementados: <strong id="controls-count" class="text-white">0 / 12</strong></p>
-                </div>
-
-                <!-- Detalles ISO -->
-                <div class="glass-panel rounded-3xl p-6">
-                    <h4 class="font-bold text-white mb-4 border-b border-gray-700 pb-2"><i class="fa-solid fa-file-contract mr-2 text-accentBlue"></i> Marco Normativo</h4>
-                    <ul class="space-y-4 text-sm text-gray-300">
-                        <li class="flex items-start">
-                            <i class="fa-solid fa-check-circle text-accentGreen mt-1 mr-3"></i>
-                            <span><strong>A.16 Gestión de Incidentes:</strong> Establece un enfoque coherente para gestionar incidentes de seguridad.</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fa-solid fa-check-circle text-accentGreen mt-1 mr-3"></i>
-                            <span><strong>A.9 Control de Acceso:</strong> Limita el acceso a información crítica según el principio de mínimo privilegio.</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fa-solid fa-check-circle text-accentGreen mt-1 mr-3"></i>
-                            <span><strong>A.12 Seguridad de Operaciones:</strong> Garantiza el funcionamiento correcto y seguro de las instalaciones de procesamiento de datos.</span>
-                        </li>
-                    </ul>
-                </div>
-            </aside>
-
-            <!-- Panel Derecho: Checklists Interactivos -->
-            <section class="lg:col-span-8 space-y-6">
+            <!-- Left: Simulation Canvas (WOW Factor) -->
+            <div class="lg:col-span-7 glass-panel rounded-3xl relative overflow-hidden flex flex-col items-center justify-center min-h-[500px]">
                 
-                <!-- Fase 1 -->
-                <div class="glass-panel rounded-3xl p-6 border-l-4 border-l-accentBlue">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-accentBlue font-bold text-xl">1</div>
-                        <h2 class="text-2xl font-bold text-white">Preparación y Detección</h2>
-                    </div>
+                <!-- HUD Overlays -->
+                <div class="absolute top-4 left-6 font-mono text-xs text-gray-500 z-20">
+                    <div class="mb-1">NETWORK_TOPOLOGY: <span class="text-blue-400">CORPORATE_MAIN</span></div>
+                    <div>THREAT_LEVEL: <span id="hud-threat" class="text-red-500 font-bold glow-text-red">EXTREME</span></div>
+                </div>
+                <div class="absolute bottom-4 right-6 font-mono text-xs text-gray-500 z-20 text-right">
+                    <div class="mb-1">SYSTEM_INTEGRITY</div>
+                    <div id="hud-integrity" class="text-3xl font-black text-red-500 glow-text-red">0%</div>
+                </div>
+
+                <!-- Environment -->
+                <div class="absolute inset-0 overflow-hidden flex justify-center items-center">
+                    <div class="cyber-grid w-[200%] h-[200%] absolute"></div>
+                </div>
+
+                <!-- Threat Actors -->
+                <div class="absolute top-12 left-12 flex flex-col items-center">
+                    <i class="fa-solid fa-user-secret text-4xl text-red-500 glow-text-red mb-2"></i>
+                    <span class="text-[10px] font-mono text-red-500">APT_GROUP_X</span>
+                </div>
+                <div class="absolute bottom-12 right-12 flex flex-col items-center">
+                    <i class="fa-solid fa-virus text-4xl text-red-500 glow-text-red mb-2 animate-bounce"></i>
+                    <span class="text-[10px] font-mono text-red-500">RANSOMWARE_PAYLOAD</span>
+                </div>
+                <div class="absolute top-12 right-12 flex flex-col items-center">
+                    <i class="fa-solid fa-network-wired text-4xl text-red-500 glow-text-red mb-2"></i>
+                    <span class="text-[10px] font-mono text-red-500">DDOS_BOTNET</span>
+                </div>
+
+                <!-- Lasers (Attacks) -->
+                <div id="attack-layer">
+                    <div class="attack-particle attack-1"></div>
+                    <div class="attack-particle attack-2"></div>
+                    <div class="attack-particle attack-3"></div>
+                </div>
+
+                <!-- The Target (Server) -->
+                <div class="relative z-10 w-40 h-40 flex items-center justify-center">
+                    <!-- Dynamic Shields -->
+                    <div id="shield-a16" class="shield-a16"></div> <!-- Radar -->
+                    <div id="shield-a9" class="shield shield-a9"></div> <!-- Firewall Ring -->
+                    <div id="shield-a10" class="shield shield-a10"></div> <!-- Encryption Bubble -->
                     
-                    <div class="space-y-4 ml-13">
-                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
-                            <div class="check-container pt-1">
-                                <input type="checkbox" class="control-check" onchange="updateProgress()">
-                                <span class="checkmark"></span>
-                            </div>
-                            <div>
-                                <h4 class="text-white font-semibold mb-1">Clasificación de Activos</h4>
-                                <p class="text-sm text-gray-400">Todos los activos de información están inventariados y clasificados según su criticidad.</p>
-                            </div>
-                        </label>
+                    <!-- Core Server -->
+                    <div id="core-server" class="core vulnerable relative z-20 w-24 h-24 bg-slate-900 rounded-2xl border-2 flex flex-col items-center justify-center">
+                        <i id="core-icon" class="fa-solid fa-server text-4xl text-red-500 mb-1"></i>
+                        <span id="core-text" class="text-[9px] font-bold text-red-500 tracking-wider">BREACHED</span>
+                    </div>
 
-                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
-                            <div class="check-container pt-1">
-                                <input type="checkbox" class="control-check" onchange="updateProgress()">
-                                <span class="checkmark"></span>
-                            </div>
-                            <div>
-                                <h4 class="text-white font-semibold mb-1">Monitoreo 24/7 (SIEM)</h4>
-                                <p class="text-sm text-gray-400">Implementación de un sistema centralizado de correlación de eventos y detección de anomalías.</p>
-                            </div>
-                        </label>
+                    <!-- Backup Server (A.17) -->
+                    <div id="backup-server" class="absolute -right-24 top-1/2 -translate-y-1/2 opacity-0 transition-all duration-1000 transform translate-x-10 flex flex-col items-center">
+                        <i class="fa-solid fa-database text-3xl text-blue-400"></i>
+                        <span class="text-[8px] font-mono text-blue-400 mt-1">DRP_SYNC</span>
+                        <!-- Sync line -->
+                        <div class="absolute top-1/2 right-[100%] w-12 border-t-2 border-dashed border-blue-400/50 -translate-y-1/2"></div>
+                    </div>
+                </div>
+            </div>
 
-                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
-                            <div class="check-container pt-1">
-                                <input type="checkbox" class="control-check" onchange="updateProgress()">
-                                <span class="checkmark"></span>
-                            </div>
-                            <div>
-                                <h4 class="text-white font-semibold mb-1">Canal de Reporte</h4>
-                                <p class="text-sm text-gray-400">Existe un mecanismo formal (HelpDesk / Email) para que los usuarios reporten eventos de seguridad sospechosos.</p>
-                            </div>
-                        </label>
+            <!-- Right: Interactive Control Panel -->
+            <div class="lg:col-span-5 flex flex-col space-y-4">
+                
+                <!-- Integrity Progress -->
+                <div class="glass-panel p-6 rounded-3xl">
+                    <div class="flex justify-between items-end mb-3">
+                        <h3 class="font-bold text-gray-300">Cumplimiento ISO 27001</h3>
+                        <span id="progress-text" class="text-xl font-black text-red-500">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-800 rounded-full h-3">
+                        <div id="progress-bar" class="progress-bar bg-red-500 h-3 rounded-full shadow-[0_0_10px_#ef4444]"></div>
                     </div>
                 </div>
 
-                <!-- Fase 2 -->
-                <div class="glass-panel rounded-3xl p-6 border-l-4 border-l-amber-500">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-500 font-bold text-xl">2</div>
-                        <h2 class="text-2xl font-bold text-white">Análisis y Priorización</h2>
-                    </div>
+                <!-- ISO Controls List -->
+                <div class="glass-panel p-6 rounded-3xl flex-grow flex flex-col gap-4">
+                    <h3 class="font-bold text-white mb-2 border-b border-white/10 pb-2"><i class="fa-solid fa-sliders text-accentBlue mr-2"></i> Panel de Políticas de Seguridad</h3>
                     
-                    <div class="space-y-4 ml-13">
-                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
-                            <div class="check-container pt-1">
-                                <input type="checkbox" class="control-check" onchange="updateProgress()">
-                                <span class="checkmark"></span>
-                            </div>
-                            <div>
-                                <h4 class="text-white font-semibold mb-1">Matriz de Evaluación de Riesgos</h4>
-                                <p class="text-sm text-gray-400">Los incidentes se categorizan mediante una matriz documentada de Impacto vs Probabilidad.</p>
-                            </div>
-                        </label>
-
-                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
-                            <div class="check-container pt-1">
-                                <input type="checkbox" class="control-check" onchange="updateProgress()">
-                                <span class="checkmark"></span>
-                            </div>
-                            <div>
-                                <h4 class="text-white font-semibold mb-1">Equipo de Respuesta (CSIRT)</h4>
-                                <p class="text-sm text-gray-400">Se han asignado roles y responsabilidades claras para el tratamiento de incidentes.</p>
-                            </div>
-                        </label>
-
-                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
-                            <div class="check-container pt-1">
-                                <input type="checkbox" class="control-check" onchange="updateProgress()">
-                                <span class="checkmark"></span>
-                            </div>
-                            <div>
-                                <h4 class="text-white font-semibold mb-1">Escalamiento Definido</h4>
-                                <p class="text-sm text-gray-400">Procedimiento documentado para notificar a la alta gerencia o entidades regulatorias si el riesgo es severo.</p>
-                            </div>
+                    <!-- Control 1 -->
+                    <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-800/50 border border-slate-700 hover:border-blue-500/50 transition-colors">
+                        <div class="pr-4">
+                            <h4 class="font-bold text-white text-sm flex items-center gap-2"><span class="bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded text-xs border border-blue-500/30">A.9</span> Control de Acceso</h4>
+                            <p class="text-xs text-gray-400 mt-1">Implementar autenticación MFA, políticas de contraseñas robustas y privilegios mínimos (Zero Trust).</p>
+                        </div>
+                        <label class="cyber-switch">
+                            <input type="checkbox" id="toggle-a9" class="policy-toggle" data-val="25">
+                            <span class="cyber-slider"></span>
                         </label>
                     </div>
+
+                    <!-- Control 2 -->
+                    <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-800/50 border border-slate-700 hover:border-purple-500/50 transition-colors">
+                        <div class="pr-4">
+                            <h4 class="font-bold text-white text-sm flex items-center gap-2"><span class="bg-purple-500/20 text-purple-400 px-2 py-0.5 rounded text-xs border border-purple-500/30">A.16</span> Gestión de Incidentes</h4>
+                            <p class="text-xs text-gray-400 mt-1">Activar centro de operaciones SIEM y equipo CSIRT para detectar y mitigar anomalías automáticamente.</p>
+                        </div>
+                        <label class="cyber-switch">
+                            <input type="checkbox" id="toggle-a16" class="policy-toggle" data-val="25">
+                            <span class="cyber-slider"></span>
+                        </label>
+                    </div>
+
+                    <!-- Control 3 -->
+                    <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-800/50 border border-slate-700 hover:border-emerald-500/50 transition-colors">
+                        <div class="pr-4">
+                            <h4 class="font-bold text-white text-sm flex items-center gap-2"><span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded text-xs border border-emerald-500/30">A.10</span> Criptografía</h4>
+                            <p class="text-xs text-gray-400 mt-1">Cifrado de datos en reposo (AES-256) y en tránsito (TLS 1.3) para proteger la confidencialidad.</p>
+                        </div>
+                        <label class="cyber-switch">
+                            <input type="checkbox" id="toggle-a10" class="policy-toggle" data-val="25">
+                            <span class="cyber-slider"></span>
+                        </label>
+                    </div>
+
+                    <!-- Control 4 -->
+                    <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-800/50 border border-slate-700 hover:border-cyan-500/50 transition-colors">
+                        <div class="pr-4">
+                            <h4 class="font-bold text-white text-sm flex items-center gap-2"><span class="bg-cyan-500/20 text-cyan-400 px-2 py-0.5 rounded text-xs border border-cyan-500/30">A.17</span> Continuidad de Negocio</h4>
+                            <p class="text-xs text-gray-400 mt-1">Activar Plan de Recuperación ante Desastres (DRP) con backups inmutables off-site.</p>
+                        </div>
+                        <label class="cyber-switch">
+                            <input type="checkbox" id="toggle-a17" class="policy-toggle" data-val="25">
+                            <span class="cyber-slider"></span>
+                        </label>
+                    </div>
+
                 </div>
+            </div>
 
-                <!-- Fase 3 -->
-                <div class="glass-panel rounded-3xl p-6 border-l-4 border-l-accentRed">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center text-accentRed font-bold text-xl">3</div>
-                        <h2 class="text-2xl font-bold text-white">Contención y Recuperación</h2>
-                    </div>
-                    
-                    <div class="space-y-4 ml-13">
-                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
-                            <div class="check-container pt-1">
-                                <input type="checkbox" class="control-check" onchange="updateProgress()">
-                                <span class="checkmark"></span>
-                            </div>
-                            <div>
-                                <h4 class="text-white font-semibold mb-1">Aislamiento de Red</h4>
-                                <p class="text-sm text-gray-400">Capacidad técnica para desconectar inmediatamente los activos comprometidos y prevenir propagación.</p>
-                            </div>
-                        </label>
-
-                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
-                            <div class="check-container pt-1">
-                                <input type="checkbox" class="control-check" onchange="updateProgress()">
-                                <span class="checkmark"></span>
-                            </div>
-                            <div>
-                                <h4 class="text-white font-semibold mb-1">Plan de Continuidad (BCP/DRP)</h4>
-                                <p class="text-sm text-gray-400">Respaldos (Backups) probados periódicamente y almacenados fuera del sitio (Off-site).</p>
-                            </div>
-                        </label>
-
-                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
-                            <div class="check-container pt-1">
-                                <input type="checkbox" class="control-check" onchange="updateProgress()">
-                                <span class="checkmark"></span>
-                            </div>
-                            <div>
-                                <h4 class="text-white font-semibold mb-1">Restauración Segura</h4>
-                                <p class="text-sm text-gray-400">Verificación de vulnerabilidades parcheadas antes de regresar los sistemas a producción.</p>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Fase 4 -->
-                <div class="glass-panel rounded-3xl p-6 border-l-4 border-l-accentGreen">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-accentGreen font-bold text-xl">4</div>
-                        <h2 class="text-2xl font-bold text-white">Post-Incidente</h2>
-                    </div>
-                    
-                    <div class="space-y-4 ml-13">
-                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
-                            <div class="check-container pt-1">
-                                <input type="checkbox" class="control-check" onchange="updateProgress()">
-                                <span class="checkmark"></span>
-                            </div>
-                            <div>
-                                <h4 class="text-white font-semibold mb-1">Análisis Forense Básico</h4>
-                                <p class="text-sm text-gray-400">Preservación de logs y evidencias digitales asegurando su cadena de custodia.</p>
-                            </div>
-                        </label>
-
-                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
-                            <div class="check-container pt-1">
-                                <input type="checkbox" class="control-check" onchange="updateProgress()">
-                                <span class="checkmark"></span>
-                            </div>
-                            <div>
-                                <h4 class="text-white font-semibold mb-1">Lecciones Aprendidas</h4>
-                                <p class="text-sm text-gray-400">Reunión formal tras el incidente para documentar fallos y oportunidades de mejora.</p>
-                            </div>
-                        </label>
-
-                        <label class="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700">
-                            <div class="check-container pt-1">
-                                <input type="checkbox" class="control-check" onchange="updateProgress()">
-                                <span class="checkmark"></span>
-                            </div>
-                            <div>
-                                <h4 class="text-white font-semibold mb-1">Actualización de Políticas</h4>
-                                <p class="text-sm text-gray-400">El procedimiento de seguridad es revisado y actualizado en base al conocimiento adquirido.</p>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-            </section>
         </div>
     </main>
 
-    <footer class="text-center p-6 text-gray-500 border-t border-white/10 mt-12 glass-panel">
-        <p>&copy; 2026 - Sistemas de Información Empresarial. Evaluador ISO 27001.</p>
-    </footer>
-
     <script>
-        const checkboxes = document.querySelectorAll('.control-check');
-        const totalControls = checkboxes.length;
-        const circle = document.getElementById('progress-circle');
-        const radius = circle.r.baseVal.value;
-        const circumference = radius * 2 * Math.PI;
+        // DOM Elements
+        const toggles = document.querySelectorAll('.policy-toggle');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const hudThreat = document.getElementById('hud-threat');
+        const hudIntegrity = document.getElementById('hud-integrity');
+        const navStatus = document.getElementById('nav-status');
         
-        circle.style.strokeDasharray = `${circumference} ${circumference}`;
-        
-        function setProgress(percent) {
-            const offset = circumference - percent / 100 * circumference;
-            circle.style.strokeDashoffset = offset;
-            
-            const circleEl = document.getElementById('progress-circle');
-            const textEl = document.getElementById('status-text');
-            const topBar = document.getElementById('top-progress-bar');
-            
-            topBar.style.width = `${percent}%`;
+        const coreServer = document.getElementById('core-server');
+        const coreIcon = document.getElementById('core-icon');
+        const coreText = document.getElementById('core-text');
+        const attackLayer = document.getElementById('attack-layer');
 
-            if(percent < 33) {
-                circleEl.classList.remove('text-amber-400', 'text-emerald-500');
-                circleEl.classList.add('text-red-500');
-                textEl.className = "text-xs font-semibold uppercase tracking-wider text-red-500 mt-1";
-                textEl.innerText = "Crítico";
-                topBar.className = "h-full bg-red-500 transition-all duration-700";
-            } else if(percent < 75) {
-                circleEl.classList.remove('text-red-500', 'text-emerald-500');
-                circleEl.classList.add('text-amber-400');
-                textEl.className = "text-xs font-semibold uppercase tracking-wider text-amber-400 mt-1";
-                textEl.innerText = "Moderado";
-                topBar.className = "h-full bg-amber-400 transition-all duration-700";
-            } else if(percent < 100) {
-                circleEl.classList.remove('text-red-500', 'text-amber-400');
-                circleEl.classList.add('text-emerald-500');
-                textEl.className = "text-xs font-semibold uppercase tracking-wider text-emerald-500 mt-1";
-                textEl.innerText = "Aceptable";
-                topBar.className = "h-full bg-emerald-500 transition-all duration-700";
+        // Shields
+        const shieldA9 = document.getElementById('shield-a9');
+        const shieldA10 = document.getElementById('shield-a10');
+        const shieldA16 = document.getElementById('shield-a16');
+        const backupServer = document.getElementById('backup-server');
+
+        function updateSystem() {
+            let score = 0;
+            
+            // Calculate Score
+            toggles.forEach(t => {
+                if(t.checked) score += parseInt(t.dataset.val);
+            });
+
+            // Update Metrics UI
+            progressBar.style.width = ${score}%;
+            progressText.innerText = ${score}%;
+            hudIntegrity.innerText = ${score}%;
+
+            // Color logic
+            const elementsToColor = [progressBar, progressText, hudIntegrity];
+            
+            elementsToColor.forEach(el => {
+                el.classList.remove('bg-red-500', 'bg-amber-500', 'bg-emerald-500', 'text-red-500', 'text-amber-500', 'text-emerald-500', 'shadow-[0_0_10px_#ef4444]', 'shadow-[0_0_10px_#f59e0b]', 'shadow-[0_0_10px_#10b981]', 'glow-text-red', 'glow-text-emerald');
+            });
+
+            if(score < 50) {
+                progressBar.classList.add('bg-red-500', 'shadow-[0_0_10px_#ef4444]');
+                progressText.classList.add('text-red-500');
+                hudIntegrity.classList.add('text-red-500', 'glow-text-red');
+                hudThreat.innerText = "EXTREME"; hudThreat.className = "text-red-500 font-bold glow-text-red";
+                navStatus.innerText = "CRITICAL_THREAT"; navStatus.className = "text-red-500 animate-pulse";
+            } else if(score < 100) {
+                progressBar.classList.add('bg-amber-500', 'shadow-[0_0_10px_#f59e0b]');
+                progressText.classList.add('text-amber-500');
+                hudIntegrity.classList.add('text-amber-500');
+                hudThreat.innerText = "ELEVATED"; hudThreat.className = "text-amber-500 font-bold";
+                navStatus.innerText = "DEFENSES_ACTIVE"; navStatus.className = "text-amber-500";
             } else {
-                circleEl.classList.remove('text-red-500', 'text-amber-400');
-                circleEl.classList.add('text-emerald-500');
-                textEl.className = "text-xs font-semibold uppercase tracking-wider text-emerald-400 mt-1 drop-shadow-[0_0_8px_rgba(16,185,129,0.8)]";
-                textEl.innerText = "Certificado";
-                topBar.className = "h-full bg-emerald-400 transition-all duration-700 drop-shadow-[0_0_8px_rgba(16,185,129,0.8)]";
+                progressBar.classList.add('bg-emerald-500', 'shadow-[0_0_10px_#10b981]');
+                progressText.classList.add('text-emerald-500');
+                hudIntegrity.classList.add('text-emerald-500', 'glow-text-emerald');
+                hudThreat.innerText = "SECURE (ISO COMPLIANT)"; hudThreat.className = "text-emerald-500 font-bold glow-text-emerald";
+                navStatus.innerText = "SYSTEM_OPTIMAL"; navStatus.className = "text-emerald-500";
+            }
+
+            // Visual Simulation Logic (The WOW Factor)
+            
+            // A.9 Access Control
+            if(document.getElementById('toggle-a9').checked) {
+                shieldA9.classList.add('active');
+                attackLayer.classList.add('blocked'); // Lasers disappear
+            } else {
+                shieldA9.classList.remove('active');
+                attackLayer.classList.remove('blocked');
+            }
+
+            // A.16 SIEM
+            if(document.getElementById('toggle-a16').checked) {
+                shieldA16.classList.add('active');
+            } else {
+                shieldA16.classList.remove('active');
+            }
+
+            // A.10 Crypto
+            if(document.getElementById('toggle-a10').checked) {
+                shieldA10.classList.add('active');
+            } else {
+                shieldA10.classList.remove('active');
+            }
+
+            // A.17 Continuity
+            if(document.getElementById('toggle-a17').checked) {
+                backupServer.classList.remove('opacity-0', 'translate-x-10');
+                backupServer.classList.add('opacity-100', 'translate-x-0');
+            } else {
+                backupServer.classList.add('opacity-0', 'translate-x-10');
+                backupServer.classList.remove('opacity-100', 'translate-x-0');
+            }
+
+            // Core Status
+            if(score === 100) {
+                coreServer.classList.remove('vulnerable');
+                coreServer.classList.add('secured');
+                coreIcon.className = "fa-solid fa-server text-4xl text-emerald-400 mb-1";
+                coreText.innerText = "SECURED";
+                coreText.className = "text-[9px] font-bold text-emerald-400 tracking-wider";
+            } else {
+                coreServer.classList.add('vulnerable');
+                coreServer.classList.remove('secured');
+                coreIcon.className = "fa-solid fa-server text-4xl text-red-500 mb-1";
+                coreText.innerText = "VULNERABLE";
+                coreText.className = "text-[9px] font-bold text-red-500 tracking-wider";
             }
         }
 
-        function updateProgress() {
-            let checked = 0;
-            checkboxes.forEach(cb => {
-                if (cb.checked) checked++;
-            });
-            
-            const percent = Math.round((checked / totalControls) * 100);
-            
-            document.getElementById('progress-text').innerText = `${percent}%`;
-            document.getElementById('controls-count').innerText = `${checked} / ${totalControls}`;
-            
-            setProgress(percent);
-        }
+        // Add Listeners
+        toggles.forEach(t => t.addEventListener('change', updateSystem));
+        
+        // Initial setup
+        updateSystem();
 
-        // Initialize
-        updateProgress();
     </script>
 </body>
 </html>
