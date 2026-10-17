@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberGRC 360 | Procedimiento de Seguridad Endpoint ISO 27001 - Semana 10</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome 6.4.0 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        cyberDark: '#030712',
+                        cyberCard: '#0f172a',
+                        cyberBorder: 'rgba(56, 189, 248, 0.15)',
+                        neonCyan: '#06b6d4',
+                        neonBlue: '#38bdf8',
+                        neonEmerald: '#10b981',
+                        neonPurple: '#a855f7',
+                        neonAmber: '#f59e0b',
+                        neonRed: '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #030712;
+            color: #f1f5f9;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Classes */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.15);
+        }
+
+        /* Document Table Styles */
+        .doc-table th, .doc-table td {
+            border: 1px solid #334155;
+            padding: 10px 14px;
+        }
+
+        /* Digital Stamp Effect */
+        .digital-stamp {
+            border: 3px dashed #10b981;
+            color: #10b981;
+            padding: 8px 16px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 2px;
+            border-radius: 8px;
+            display: inline-block;
+            transform: rotate(-3deg);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+            animation: stamp-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes stamp-pop {
+            0% { transform: scale(2) rotate(-15deg); opacity: 0; }
+            100% { transform: scale(1) rotate(-3deg); opacity: 1; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #030712;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #38bdf8;
+        }
+
+        /* Media Print Styling for Formal University Submission */
+        @media print {
+            body {
+                background-color: #ffffff !important;
+                color: #000000 !important;
+                font-family: Arial, sans-serif !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .doc-container {
+                max-width: 100% !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+                background: white !important;
+                color: black !important;
+            }
+            .doc-table th {
+                background-color: #f1f5f9 !important;
+                color: #000000 !important;
+                border: 1px solid #000000 !important;
+            }
+            .doc-table td {
+                color: #000000 !important;
+                border: 1px solid #000000 !important;
+            }
+            .digital-stamp {
+                border-color: #059669 !important;
+                color: #059669 !important;
+            }
+            .page-break {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative selection:bg-cyan-500 selection:text-white">
+
+    <!-- Ambient background lights -->
+    <div class="fixed top-0 left-1/4 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+    <div class="fixed bottom-10 right-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+
+    <!-- Navigation Bar -->
+    <header class="glass-panel sticky top-0 z-50 px-6 py-4 border-b border-white/10 no-print">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <a href="../index.html" class="w-10 h-10 rounded-xl bg-slate-800/80 border border-slate-700 flex items-center justify-center text-cyan-400 hover:text-white hover:bg-cyan-500/20 transition-all" title="Regresar al Portafolio">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-500 flex items-center justify-center text-white shadow-lg shadow-cyan-500/30">
+                        <i class="fa-solid fa-shield-halved text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl font-extrabold tracking-tight text-white">CyberGRC <span class="text-cyan-400">360</span></span>
+                            <span class="bg-cyan-500/20 text-cyan-300 text-xs font-semibold px-2.5 py-0.5 rounded-full border border-cyan-500/30">ISO/IEC 27001:2022</span>
+                        </div>
+                        <p class="text-xs text-gray-400">Semana 10 | Examen Práctico: Políticas de Seguridad para Equipos de Cómputo</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Status Badge & Quick Actions -->
+            <div class="flex items-center gap-3">
+                <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-medium">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span>SGSI Telemetría: Activa (96.8% Cumplimiento)</span>
+                </div>
+                <button onclick="window.print()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 hover:text-white rounded-xl text-xs font-semibold flex items-center gap-2 transition-all shadow-md">
+                    <i class="fa-solid fa-file-pdf text-red-400"></i>
+                    <span>Exportar / Imprimir Formato Oficial</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Navigation Tabs -->
+    <nav class="max-w-7xl mx-auto w-full px-6 pt-6 no-print">
+        <div class="flex flex-wrap items-center gap-2 p-1.5 glass-panel rounded-2xl border border-white/10">
+            <button onclick="switchTab('tab-procedimiento')" id="btn-procedimiento" class="tab-button flex-1 min-w-[200px] py-3 px-4 rounded-xl text-sm font-semibold flex items-center justify-center gap-2.5 transition-all bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg shadow-cyan-600/30">
+                <i class="fa-solid fa-file-lines"></i>
+                <span>1. Procedimiento Oficial (PSEC-01)</span>
+            </button>
+            <button onclick="switchTab('tab-telemetria')" id="btn-telemetria" class="tab-button flex-1 min-w-[200px] py-3 px-4 rounded-xl text-sm font-semibold flex items-center justify-center gap-2.5 transition-all text-slate-400 hover:text-white hover:bg-slate-800/60">
+                <i class="fa-solid fa-network-wired"></i>
+                <span>2. Telemetría & Auditoría Endpoint</span>
+            </button>
+            <button onclick="switchTab('tab-incidentes')" id="btn-incidentes" class="tab-button flex-1 min-w-[200px] py-3 px-4 rounded-xl text-sm font-semibold flex items-center justify-center gap-2.5 transition-all text-slate-400 hover:text-white hover:bg-slate-800/60">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>3. Gestión de Incidentes (Sesión 9)</span>
+            </button>
+            <button onclick="switchTab('tab-riesgos')" id="btn-riesgos" class="tab-button flex-1 min-w-[200px] py-3 px-4 rounded-xl text-sm font-semibold flex items-center justify-center gap-2.5 transition-all text-slate-400 hover:text-white hover:bg-slate-800/60">
+                <i class="fa-solid fa-shield-virus"></i>
+                <span>4. Matriz de Riesgos & ROI ($380K)</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl mx-auto w-full p-6">
+
+        <!-- ========================================== -->
+        <!-- TAB 1: PROCEDIMIENTO OFICIAL (PSEC-01)     -->
+        <!-- ========================================== -->
+        <section id="tab-procedimiento" class="tab-pane block space-y-8">
+            
+            <!-- Context Banner -->
+            <div class="glass-panel rounded-2xl p-6 border-l-4 border-cyan-500 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 no-print">
+                <div>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-certificate text-cyan-400"></i>
+                        Procedimiento Institucional de Seguridad de la Información
+                    </h2>
+                    <p class="text-slate-300 text-sm mt-1">
+                        Implementación técnica y normativa basada en el estándar internacional <span class="text-cyan-300 font-semibold">ISO/IEC 27001:2022</span>, elevando el formato tradicional de formulario físico hacia una gobernanza de seguridad digital verificable.
+                    </p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="validateAllSignatures()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-sm font-bold flex items-center gap-2 shadow-lg shadow-emerald-600/30 transition-all">
+                        <i class="fa-solid fa-signature"></i>
+                        <span>Estampar Firmas Criptográficas</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Official Document Container (Exact replica of the institutional template, elevated) -->
+            <div class="doc-container bg-slate-900/90 rounded-2xl border border-slate-700/80 p-8 md:p-12 shadow-2xl relative overflow-hidden">
+                
+                <!-- Watermark Background -->
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-5 no-print">
+                    <i class="fa-solid fa-shield-check text-[450px] text-cyan-400"></i>
+                </div>
+
+                <!-- Document Institutional Header (Matches the User Image Header exactly) -->
+                <div class="border border-slate-600 rounded-lg overflow-hidden mb-8">
+                    <div class="grid grid-cols-12 text-center text-xs md:text-sm font-semibold divide-y md:divide-y-0 md:divide-x divide-slate-600">
+                        <!-- Col 1: Logo -->
+                        <div class="col-span-12 md:col-span-3 p-4 bg-slate-800/80 flex flex-col items-center justify-center gap-1">
+                            <i class="fa-solid fa-building-shield text-3xl text-cyan-400"></i>
+                            <span class="text-slate-200 tracking-wider font-extrabold uppercase text-xs">ORGANIZACIÓN CORPORATIVA</span>
+                            <span class="text-[10px] text-slate-400">SISTEMA INTEGRADO DE GESTIÓN</span>
+                        </div>
+                        <!-- Col 2: Procedimiento Title -->
+                        <div class="col-span-12 md:col-span-6 p-4 flex flex-col items-center justify-center bg-slate-800/40">
+                            <span class="text-slate-400 text-xs uppercase tracking-widest mb-1">PROCEDIMIENTO</span>
+                            <h1 class="text-base md:text-lg font-black text-white uppercase tracking-wide">
+                                POLÍTICA DE SEGURIDAD PARA EQUIPOS DE CÓMPUTO
+                            </h1>
+                            <span class="text-cyan-400 text-xs mt-1 font-mono">CONFORME A CONTROLES ISO/IEC 27001</span>
+                        </div>
+                        <!-- Col 3: Document Control Metadata -->
+                        <div class="col-span-12 md:col-span-3 p-0 flex flex-col text-left divide-y divide-slate-600 bg-slate-800/60 font-mono text-xs">
+                            <div class="p-2 flex justify-between">
+                                <span class="text-slate-400">Código:</span>
+                                <span class="text-cyan-300 font-bold">PSEC</span>
+                            </div>
+                            <div class="p-2 flex justify-between">
+                                <span class="text-slate-400">Versión:</span>
+                                <span class="text-slate-200 font-bold">02 (Actualizada)</span>
+                            </div>
+                            <div class="p-2 flex justify-between">
+                                <span class="text-slate-400">Fecha Aprobación:</span>
+                                <span class="text-slate-200 font-bold">16/10/2026</span>
+                            </div>
+                            <div class="p-2 flex justify-between">
+                                <span class="text-slate-400">Página:</span>
+                                <span class="text-slate-200 font-bold">1 de 2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1. Objetivo -->
+                <div class="mb-8">
+                    <h3 class="text-base font-extrabold text-cyan-400 uppercase tracking-wider flex items-center gap-2 mb-3">
+                        <span class="w-6 h-6 rounded-md bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs font-mono">1</span>
+                        Objetivo
+                    </h3>
+                    <p class="text-slate-300 text-sm md:text-base leading-relaxed pl-8">
+                        Establecer lineamientos para proteger la información y garantizar el uso seguro de los equipos de cómputo, salvaguardando la confidencialidad, integridad y disponibilidad de los activos digitales frente a ciberataques, malware y accesos no autorizados.
+                    </p>
+                </div>
+
+                <!-- 2. Alcance -->
+                <div class="mb-8">
+                    <h3 class="text-base font-extrabold text-cyan-400 uppercase tracking-wider flex items-center gap-2 mb-3">
+                        <span class="w-6 h-6 rounded-md bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs font-mono">2</span>
+                        Alcance
+                    </h3>
+                    <p class="text-slate-300 text-sm md:text-base leading-relaxed pl-8">
+                        Aplica a todos los usuarios que utilicen equipos de cómputo dentro de la organización o institución, incluyendo estaciones de trabajo fijas, computadoras portátiles, servidores locales y conexiones en modalidad de trabajo remoto.
+                    </p>
+                </div>
+
+                <!-- 3. Políticas Técnicas (Detailed Matrix 3.1 - 3.7 matching user form) -->
+                <div class="mb-8">
+                    <h3 class="text-base font-extrabold text-cyan-400 uppercase tracking-wider flex items-center gap-2 mb-4">
+                        <span class="w-6 h-6 rounded-md bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs font-mono">3</span>
+                        Políticas
+                    </h3>
+
+                    <div class="overflow-x-auto rounded-xl border border-slate-700">
+                        <table class="w-full text-left text-xs md:text-sm doc-table bg-slate-800/30">
+                            <thead>
+                                <tr class="bg-slate-800 text-slate-200 font-bold uppercase tracking-wider text-xs">
+                                    <th class="w-16 text-center">N.º</th>
+                                    <th class="w-56">Nombre de política de seguridad</th>
+                                    <th>Pasos de cada proceso de política de seguridad</th>
+                                    <th class="w-32 text-center no-print">Control ISO 27001</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-700 text-slate-300">
+                                <!-- 3.1 Control de Acceso -->
+                                <tr class="hover:bg-slate-800/50 transition-colors">
+                                    <td class="font-mono font-bold text-cyan-400 text-center">3.1</td>
+                                    <td class="font-semibold text-white flex items-center gap-2">
+                                        <i class="fa-solid fa-key text-cyan-400 text-sm"></i>
+                                        Control de acceso
+                                    </td>
+                                    <td class="space-y-1">
+                                        <div class="flex items-start gap-2">
+                                            <i class="fa-solid fa-circle text-[6px] text-cyan-400 mt-2"></i>
+                                            <span>El usuario deberá iniciar con <strong>credenciales únicas</strong> (usuario y contraseña).</span>
+                                        </div>
+                                        <div class="flex items-start gap-2">
+                                            <i class="fa-solid fa-circle text-[6px] text-cyan-400 mt-2"></i>
+                                            <span>Las contraseñas deben ser <strong>mínimo 8 caracteres</strong> (estándar recomendado: 12 caracteres), incluyendo letras, números y símbolos.</span>
+                                        </div>
+                                        <div class="flex items-start gap-2">
+                                            <i class="fa-solid fa-circle text-[6px] text-cyan-400 mt-2"></i>
+                                            <span>Se debe <strong>bloquear la sesión tras 5 minutos de inactividad</strong> de forma obligatoria mediante directivas de grupo (GPO).</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-center font-mono text-xs text-cyan-300 no-print">A.9.2 / A.9.4</td>
+                                </tr>
+
+                                <!-- 3.2 Uso adecuado de equipos -->
+                                <tr class="hover:bg-slate-800/50 transition-colors">
+                                    <td class="font-mono font-bold text-cyan-400 text-center">3.2</td>
+                                    <td class="font-semibold text-white flex items-center gap-2">
+                                        <i class="fa-solid fa-laptop-code text-cyan-400 text-sm"></i>
+                                        Uso adecuado de equipos
+                                    </td>
+                                    <td class="space-y-1">
+                                        <div class="flex items-start gap-2">
+                                            <i class="fa-solid fa-circle text-[6px] text-cyan-400 mt-2"></i>
+                                            <span><strong>Está prohibido instalar software no autorizado</strong>, utilitarios de intercambio P2P o herramientas sin licencia corporativa.</span>
+                                        </div>
+                                        <div class="flex items-start gap-2">
+                                            <i class="fa-solid fa-circle text-[6px] text-cyan-400 mt-2"></i>
+                                            <span>No se permite el uso del equipo para fines personales no relacionados con las actividades asignadas.</span>
+                                        </div>
+                                        <div class="flex items-start gap-2">
+                                            <i class="fa-solid fa-circle text-[6px] text-cyan-400 mt-2"></i>
+                                            <span>Se debe evitar el acceso a sitios web inseguros, sospechosos o plataformas que representen riesgo de ingeniería social y phishing.</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-center font-mono text-xs text-cyan-300 no-print">A.8.1 / A.12.5</td>
+                                </tr>
+
+                                <!-- 3.3 Proteccion contra malware -->
+                                <tr class="hover:bg-slate-800/50 transition-colors">
+                                    <td class="font-mono font-bold text-cyan-400 text-center">3.3</td>
+                                    <td class="font-semibold text-white flex items-center gap-2">
+                                        <i class="fa-solid fa-virus-slash text-cyan-400 text-sm"></i>
+                                        Protección contra malware
+                                    </td>
+                                    <td class="space-y-1">
+                                        <div class="flex items-start gap-2">
+                                            <i class="fa-solid fa-circle text-[6px] text-cyan-400 mt-2"></i>
+                                            <span>Todos los equipos deben contar con <strong>antivirus / EDR actualizados</strong> y activos permanentemente.</span>
+                                        </div>
+                                        <div class="flex items-start gap-2">
+                                            <i class="fa-solid fa-circle text-[6px] text-cyan-400 mt-2"></i>
+                                            <span>Las <strong>actualizaciones críticas</strong> de definiciones de virus y heurística deben instalarse de forma obligatoria en segundo plano.</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-center font-mono text-xs text-cyan-300 no-print">A.12.2.1</td>
+                                </tr>
+
+                                <!-- 3.4 Gestion de actualizaciones -->
+                                <tr class="hover:bg-slate-800/50 transition-colors">
+                                    <td class="font-mono font-bold text-cyan-400 text-center">3.4</td>
+                                    <td class="font-semibold text-white flex items-center gap-2">
+                                        <i class="fa-solid fa-arrows-rotate text-cyan-400 text-sm"></i>
+                                        Gestión de actualizaciones
+                                    </td>
+                                    <td class="space-y-1">
+                                        <div class="flex items-start gap-2">
+                                            <i class="fa-solid fa-circle text-[6px] text-cyan-400 mt-2"></i>
+                                            <span>El sistema operativo y programas deben mantenerse actualizados según los ciclos de parches aprobados por TI.</span>
+                                        </div>
+                                        <div class="flex items-start gap-2">
+                                            <i class="fa-solid fa-circle text-[6px] text-cyan-400 mt-2"></i>
+                                            <span>Las <strong>actualizaciones críticas de seguridad</strong> deben instalarse de forma obligatoria en un plazo máximo de 24 horas tras su liberación.</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-center font-mono text-xs text-cyan-300 no-print">A.12.6.1</td>
+                                </tr>
+
+                                <!-- 3.5 Respaldo de informacion -->
+                                <tr class="hover:bg-slate-800/50 transition-colors">
+                                    <td class="font-mono font-bold text-cyan-400 text-center">3.5</td>
+                                    <td class="font-semibold text-white flex items-center gap-2">
+                                        <i class="fa-solid fa-cloud-arrow-up text-cyan-400 text-sm"></i>
+                                        Respaldo de información
+                                    </td>
+                                    <td class="space-y-1">
+                                        <div class="flex items-start gap-2">
+                                            <i class="fa-solid fa-circle text-[6px] text-cyan-400 mt-2"></i>
+                                            <span>Se deben realizar <strong>copias de seguridad de forma semanal</strong> (con respaldos incrementales automáticos diarios).</span>
+                                        </div>
+                                        <div class="flex items-start gap-2">
+                                            <i class="fa-solid fa-circle text-[6px] text-cyan-400 mt-2"></i>
+                                            <span>Los respaldos deben almacenarse en <strong>medios seguros o en la nube institucional</strong> bajo arquitectura inmutable para evitar secuestro por ransomware.</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-center font-mono text-xs text-cyan-300 no-print">A.12.3.1</td>
+                                </tr>
+
+                                <!-- 3.6 Seguridad fisica -->
+                                <tr class="hover:bg-slate-800/50 transition-colors">
+                                    <td class="font-mono font-bold text-cyan-400 text-center">3.6</td>
+                                    <td class="font-semibold text-white flex items-center gap-2">
+                                        <i class="fa-solid fa-lock text-cyan-400 text-sm"></i>
+                                        Seguridad física
+                                    </td>
+                                    <td class="space-y-1">
+                                        <div class="flex items-start gap-2">
+                                            <i class="fa-solid fa-circle text-[6px] text-cyan-400 mt-2"></i>
+                                            <span>El equipo debe estar <strong>ubicado en un área segura</strong> y físicamente protegida.</span>
+                                        </div>
+                                        <div class="flex items-start gap-2">
+                                            <i class="fa-solid fa-circle text-[6px] text-cyan-400 mt-2"></i>
+                                            <span>No se debe permitir el acceso a personas no autorizadas a los perímetros o monitores de trabajo.</span>
+                                        </div>
+                                        <div class="flex items-start gap-2">
+                                            <i class="fa-solid fa-circle text-[6px] text-cyan-400 mt-2"></i>
+                                            <span>Se debe <strong>apagar o bloquear el equipo al finalizar la jornada</strong> laboral.</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-center font-mono text-xs text-cyan-300 no-print">A.11.2.9</td>
+                                </tr>
+
+                                <!-- 3.7 Manejo de informacion -->
+                                <tr class="hover:bg-slate-800/50 transition-colors">
+                                    <td class="font-mono font-bold text-cyan-400 text-center">3.7</td>
+                                    <td class="font-semibold text-white flex items-center gap-2">
+                                        <i class="fa-solid fa-shield-virus text-cyan-400 text-sm"></i>
+                                        Manejo de información
+                                    </td>
+                                    <td class="space-y-1">
+                                        <div class="flex items-start gap-2">
+                                            <i class="fa-solid fa-circle text-[6px] text-cyan-400 mt-2"></i>
+                                            <span>La <strong>información confidencial no debe compartirse</strong> sin autorización formal de los custodios del activo.</span>
+                                        </div>
+                                        <div class="flex items-start gap-2">
+                                            <i class="fa-solid fa-circle text-[6px] text-cyan-400 mt-2"></i>
+                                            <span>Se debe <strong>evitar el uso de dispositivos USB desconocidos</strong> o memorias extraíbles no autorizadas por la política DLP.</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-center font-mono text-xs text-cyan-300 no-print">A.8.2 / A.8.3</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="page-break"></div>
+
+                <!-- 4. Responsabilidades -->
+                <div class="mb-8 pt-4">
+                    <h3 class="text-base font-extrabold text-cyan-400 uppercase tracking-wider flex items-center gap-2 mb-3">
+                        <span class="w-6 h-6 rounded-md bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs font-mono">4</span>
+                        Responsabilidades
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pl-8">
+                        <div class="p-4 rounded-xl bg-slate-800/60 border border-slate-700">
+                            <h4 class="font-bold text-white flex items-center gap-2 text-sm mb-1">
+                                <i class="fa-solid fa-user-check text-cyan-400"></i>
+                                Del Usuario:
+                            </h4>
+                            <p class="text-slate-300 text-xs leading-relaxed">
+                                El usuario es responsable del uso adecuado del equipo, de la custodia de sus credenciales personales y del reporte oportuno de cualquier anomalía detectada.
+                            </p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-800/60 border border-slate-700">
+                            <h4 class="font-bold text-white flex items-center gap-2 text-sm mb-1">
+                                <i class="fa-solid fa-server text-blue-400"></i>
+                                Del Área de TI:
+                            </h4>
+                            <p class="text-slate-300 text-xs leading-relaxed">
+                                El área de TI debe supervisar el cumplimiento de estas políticas, mantener la infraestructura de parches y antivirus al día y auditar los accesos al sistema.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Sanciones -->
+                <div class="mb-10">
+                    <h3 class="text-base font-extrabold text-cyan-400 uppercase tracking-wider flex items-center gap-2 mb-3">
+                        <span class="w-6 h-6 rounded-md bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs font-mono">5</span>
+                        Sanciones
+                    </h3>
+                    <div class="p-4 rounded-xl bg-red-950/20 border border-red-500/30 pl-8">
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            El incumplimiento de estas políticas podrá derivar en <strong>sanciones administrativas</strong> según normativa interna vigente, suspensión temporal o definitiva de accesos tecnológicos y acciones disciplinarias conforme a la ley de protección de datos personales.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Signatures Section (3 blocks matching the user image) -->
+                <div class="mt-12 pt-6 border-t border-slate-700">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                        
+                        <!-- Block 1: Revisado -->
+                        <div class="p-4 rounded-xl bg-slate-800/50 border border-slate-700 relative">
+                            <div class="text-xs text-slate-400 uppercase font-mono tracking-wider mb-2">Revisado: Jefe de Soporte Técnico</div>
+                            <div class="h-20 flex flex-col items-center justify-center relative">
+                                <div id="stamp-1" class="hidden">
+                                    <span class="digital-stamp text-xs">
+                                        <i class="fa-solid fa-badge-check mr-1"></i> REVISADO CONFORME
+                                    </span>
+                                    <div class="text-[9px] font-mono text-emerald-400 mt-1">HASH: 7a8f...41e9</div>
+                                </div>
+                                <div id="placeholder-stamp-1" class="text-slate-500 text-xs italic">
+                                    [Firma y Sello Digital]
+                                </div>
+                            </div>
+                            <div class="border-t border-slate-600 pt-2">
+                                <p class="text-sm font-bold text-white">Ing. Jefe de Soporte Técnico</p>
+                                <p class="text-xs text-cyan-400">Área de Soporte & Redes</p>
+                            </div>
+                        </div>
+
+                        <!-- Block 2: Validado -->
+                        <div class="p-4 rounded-xl bg-slate-800/50 border border-slate-700 relative">
+                            <div class="text-xs text-slate-400 uppercase font-mono tracking-wider mb-2">Validado: Jefe de Sistemas / Jefe Calidad</div>
+                            <div class="h-20 flex flex-col items-center justify-center relative">
+                                <div id="stamp-2" class="hidden">
+                                    <span class="digital-stamp text-xs">
+                                        <i class="fa-solid fa-shield-check mr-1"></i> VALIDADO ISO 27001
+                                    </span>
+                                    <div class="text-[9px] font-mono text-emerald-400 mt-1">HASH: c29d...58b2</div>
+                                </div>
+                                <div id="placeholder-stamp-2" class="text-slate-500 text-xs italic">
+                                    [Firma y Sello Digital]
+                                </div>
+                            </div>
+                            <div class="border-t border-slate-600 pt-2">
+                                <p class="text-sm font-bold text-white">Jefe de Sistemas / Calidad</p>
+                                <p class="text-xs text-cyan-400">Oficial de Seguridad SGSI</p>
+                            </div>
+                        </div>
+
+                        <!-- Block 3: Aprobado -->
+                        <div class="p-4 rounded-xl bg-slate-800/50 border border-slate-700 relative">
+                            <div class="text-xs text-slate-400 uppercase font-mono tracking-wider mb-2">Aprobado: Gerencia General</div>
+                            <div class="h-20 flex flex-col items-center justify-center relative">
+                                <div id="stamp-3" class="hidden">
+                                    <span class="digital-stamp text-xs">
+                                        <i class="fa-solid fa-stamp mr-1"></i> APROBADO GERENCIA
+                                    </span>
+                                    <div class="text-[9px] font-mono text-emerald-400 mt-1">HASH: 3f1e...90aa</div>
+                                </div>
+                                <div id="placeholder-stamp-3" class="text-slate-500 text-xs italic">
+                                    [Firma y Sello Digital]
+                                </div>
+                            </div>
+                            <div class="border-t border-slate-600 pt-2">
+                                <p class="text-sm font-bold text-white">Gerencia General</p>
+                                <p class="text-xs text-cyan-400">Dirección Institucional</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Integrity Metadata Footer -->
+                <div class="mt-8 pt-4 border-t border-slate-800 flex flex-wrap justify-between items-center text-[11px] text-slate-500 font-mono">
+                    <div>CERTIFICADO CRIPTOGRÁFICO: <span class="text-slate-400">SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</span></div>
+                    <div>CONFIDENCIALIDAD: CLASIFICADO INTERNO - CUMPLIMIENTO AUDITABLE</div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 2: TELEMETRÍA & AUDITORÍA ENDPOINT (LIVE AUDIT)       -->
+        <!-- ======================================================== -->
+        <section id="tab-telemetria" class="tab-pane hidden space-y-8">
+            
+            <!-- Dashboard Overview KPIs -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="glass-panel rounded-2xl p-5 border-l-4 border-cyan-500">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs text-slate-400 font-medium">Equipos Monitoreados</p>
+                            <h3 class="text-2xl font-black text-white mt-1">128 <span class="text-xs font-normal text-slate-400">Endpoints</span></h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
+                            <i class="fa-solid fa-desktop"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3 text-xs text-emerald-400 flex items-center gap-1">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>100% de agentes EDR desplegados</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-2xl p-5 border-l-4 border-emerald-500">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs text-slate-400 font-medium">Cumplimiento Global PSEC</p>
+                            <h3 class="text-2xl font-black text-white mt-1" id="global-compliance-display">96.8%</h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                            <i class="fa-solid fa-shield-check"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3 text-xs text-emerald-400 flex items-center gap-1">
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                        <span>Nivel de cumplimiento: Alto (Auditoría OK)</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-2xl p-5 border-l-4 border-amber-500">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs text-slate-400 font-medium">Dispositivos USB Bloqueados</p>
+                            <h3 class="text-2xl font-black text-white mt-1">19 <span class="text-xs font-normal text-slate-400">Intentos</span></h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                            <i class="fa-solid fa-usb"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3 text-xs text-amber-400 flex items-center gap-1">
+                        <i class="fa-solid fa-hand"></i>
+                        <span>Política 3.7 ejecutada exitosamente</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-2xl p-5 border-l-4 border-purple-500">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs text-slate-400 font-medium">Respaldo Inmutable Nube</p>
+                            <h3 class="text-2xl font-black text-white mt-1">3-2-1 <span class="text-xs font-normal text-slate-400">AWS S3</span></h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3 text-xs text-purple-300 flex items-center gap-1">
+                        <i class="fa-solid fa-clock"></i>
+                        <span>Último snapshot: Hoy, 03:00 AM</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fleet Monitoring Grid & Live Audit Trigger -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Left 8 cols: Fleet Machine Cards -->
+                <div class="lg:col-span-8 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-network-wired text-cyan-400"></i>
+                            Monitoreo de Estaciones de Trabajo por Departamento
+                        </h3>
+                        <span class="text-xs text-slate-400">Haz clic en una estación para auditarla</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        
+                        <!-- Station 1: Finanzas -->
+                        <div onclick="selectStation('FIN-01')" class="glass-card rounded-2xl p-5 cursor-pointer border-l-4 border-emerald-500 relative">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Departamento Finanzas</span>
+                                    <h4 class="text-base font-bold text-white mt-2">WS-FIN-01</h4>
+                                    <p class="text-xs text-slate-400">Usuario: mgarcia (Contabilidad)</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-sm font-black text-emerald-400">100%</span>
+                                    <div class="text-[10px] text-slate-500 font-mono">Compliant</div>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-slate-700/60 grid grid-cols-3 text-center text-xs">
+                                <div><span class="text-slate-400 text-[10px]">Bloqueo 5m:</span> <span class="text-emerald-400 font-bold block">OK</span></div>
+                                <div><span class="text-slate-400 text-[10px]">EDR:</span> <span class="text-emerald-400 font-bold block">Activo</span></div>
+                                <div><span class="text-slate-400 text-[10px]">USB:</span> <span class="text-cyan-400 font-bold block">Bloqueado</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Station 2: Desarrollo TI -->
+                        <div onclick="selectStation('DEV-09')" class="glass-card rounded-2xl p-5 cursor-pointer border-l-4 border-amber-500 relative">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">Ingeniería & DevOps</span>
+                                    <h4 class="text-base font-bold text-white mt-2">WS-DEV-09</h4>
+                                    <p class="text-xs text-slate-400">Usuario: jquispe (Desarrollo Web)</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-sm font-black text-amber-400">85%</span>
+                                    <div class="text-[10px] text-amber-500 font-mono">Alerta 3.2</div>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-slate-700/60 grid grid-cols-3 text-center text-xs">
+                                <div><span class="text-slate-400 text-[10px]">Bloqueo 5m:</span> <span class="text-emerald-400 font-bold block">OK</span></div>
+                                <div><span class="text-slate-400 text-[10px]">Software:</span> <span class="text-amber-400 font-bold block">No Homol.</span></div>
+                                <div><span class="text-slate-400 text-[10px]">Parches:</span> <span class="text-emerald-400 font-bold block">Al día</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Station 3: Operaciones -->
+                        <div onclick="selectStation('OPS-03')" class="glass-card rounded-2xl p-5 cursor-pointer border-l-4 border-emerald-500 relative">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Logística & Operaciones</span>
+                                    <h4 class="text-base font-bold text-white mt-2">WS-OPS-03</h4>
+                                    <p class="text-xs text-slate-400">Usuario: rsalas (Almacén Central)</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-sm font-black text-emerald-400">100%</span>
+                                    <div class="text-[10px] text-slate-500 font-mono">Compliant</div>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-slate-700/60 grid grid-cols-3 text-center text-xs">
+                                <div><span class="text-slate-400 text-[10px]">Bloqueo 5m:</span> <span class="text-emerald-400 font-bold block">OK</span></div>
+                                <div><span class="text-slate-400 text-[10px]">Seg. Física:</span> <span class="text-emerald-400 font-bold block">Kensington</span></div>
+                                <div><span class="text-slate-400 text-[10px]">Backup:</span> <span class="text-emerald-400 font-bold block">Sincronizado</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Station 4: Gerencia General -->
+                        <div onclick="selectStation('DIR-02')" class="glass-card rounded-2xl p-5 cursor-pointer border-l-4 border-cyan-500 relative">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">Dirección Ejecutiva</span>
+                                    <h4 class="text-base font-bold text-white mt-2">LT-DIR-02 (Laptop)</h4>
+                                    <p class="text-xs text-slate-400">Usuario: evaldivia (Gerencia)</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-sm font-black text-cyan-400">94%</span>
+                                    <div class="text-[10px] text-slate-500 font-mono">Compliant</div>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-slate-700/60 grid grid-cols-3 text-center text-xs">
+                                <div><span class="text-slate-400 text-[10px]">MFA:</span> <span class="text-emerald-400 font-bold block">Habilitado</span></div>
+                                <div><span class="text-slate-400 text-[10px]">Cifrado Disco:</span> <span class="text-emerald-400 font-bold block">BitLocker</span></div>
+                                <div><span class="text-slate-400 text-[10px]">Clean Desk:</span> <span class="text-emerald-400 font-bold block">OK</span></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Station Inspector Detail Panel -->
+                    <div id="inspector-panel" class="glass-panel rounded-2xl p-6 border border-slate-700">
+                        <div class="flex justify-between items-center border-b border-slate-700 pb-4 mb-4">
+                            <div>
+                                <span class="text-xs font-mono text-cyan-400 uppercase">Inspección de Endpoint Seleccionado</span>
+                                <h4 class="text-lg font-bold text-white" id="inspected-name">WS-DEV-09 (Ingeniería & DevOps)</h4>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="remediateStation()" class="px-3 py-1.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                    <span>Remediar No Conformidad (GPO)</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 text-xs" id="inspected-policies">
+                            <!-- Policy check item 3.1 -->
+                            <div class="flex items-center justify-between p-2 rounded bg-slate-800/60">
+                                <span class="text-slate-300">3.1 Control de Acceso: Contraseña 14 caracteres + Bloqueo 5 min GPO</span>
+                                <span class="text-emerald-400 font-mono font-bold flex items-center gap-1"><i class="fa-solid fa-check"></i> CUMPLE</span>
+                            </div>
+                            <!-- Policy check item 3.2 -->
+                            <div class="flex items-center justify-between p-2 rounded bg-amber-950/20 border border-amber-500/30">
+                                <span class="text-amber-200">3.2 Software: Ejecución de ejecutable no homologado ("BitTorrent.exe")</span>
+                                <span class="text-amber-400 font-mono font-bold flex items-center gap-1" id="status-3-2"><i class="fa-solid fa-triangle-exclamation"></i> NO CONFORME</span>
+                            </div>
+                            <!-- Policy check item 3.3 -->
+                            <div class="flex items-center justify-between p-2 rounded bg-slate-800/60">
+                                <span class="text-slate-300">3.3 EDR & Malware: Agente v4.12 actualizado y en ejecución</span>
+                                <span class="text-emerald-400 font-mono font-bold flex items-center gap-1"><i class="fa-solid fa-check"></i> CUMPLE</span>
+                            </div>
+                            <!-- Policy check item 3.7 -->
+                            <div class="flex items-center justify-between p-2 rounded bg-slate-800/60">
+                                <span class="text-slate-300">3.7 Bloqueo USB: Dispositivos de almacenamiento externo denegados</span>
+                                <span class="text-emerald-400 font-mono font-bold flex items-center gap-1"><i class="fa-solid fa-check"></i> CUMPLE</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right 4 cols: Automated Domain Audit Console -->
+                <div class="lg:col-span-4 space-y-4">
+                    <div class="glass-panel rounded-2xl p-5 border border-cyan-500/20 flex flex-col h-full">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-terminal text-cyan-400"></i>
+                                Consola de Auditoría ISO 27001
+                            </h3>
+                            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-4">
+                            Simula un barrido de escaneo automatizado contra las 7 políticas del procedimiento PSEC en todo el dominio Active Directory.
+                        </p>
+
+                        <button onclick="runDomainAudit()" id="btn-run-audit" class="w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-cyan-600/30 transition-all mb-4">
+                            <i class="fa-solid fa-play"></i>
+                            <span>Ejecutar Escaneo de Auditoría en Vivo</span>
+                        </button>
+
+                        <!-- Terminal Screen -->
+                        <div class="flex-grow bg-black/80 rounded-xl p-4 font-mono text-[11px] text-green-400 overflow-y-auto max-h-[360px] border border-slate-800 shadow-inner space-y-1.5" id="audit-terminal">
+                            <div class="text-slate-500">[SYSTEM] GRC Audit Engine v2.4 initialized.</div>
+                            <div class="text-slate-500">[READY] Esperando instrucción de escaneo...</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 3: GESTIÓN DE INCIDENTES (SESIÓN 9 - DIAPOSITIVA 16)   -->
+        <!-- ======================================================== -->
+        <section id="tab-incidentes" class="tab-pane hidden space-y-8">
+            
+            <div class="glass-panel rounded-2xl p-6 border-l-4 border-purple-500">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <span class="text-xs font-mono uppercase text-purple-400 tracking-wider">Alineado al Material de Clase UTP - Diapositiva 16</span>
+                        <h2 class="text-xl font-bold text-white mt-1">
+                            Procedimiento Operativo: Gestión de Eventos (Proactiva) vs Incidentes (Reactiva)
+                        </h2>
+                        <p class="text-sm text-slate-300 mt-1">
+                            Simula la cadena completa de atención ante la vulneración de una política (ejemplo: inserción de memoria USB maliciosa y detección de troyano).
+                        </p>
+                    </div>
+                    <button onclick="resetIncidentFlow()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold flex items-center gap-1.5 border border-slate-600">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Reiniciar Simulación</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Workflow Visual Comparison (Event Management vs Incident Management) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Proactive Event Management Box -->
+                <div class="glass-panel rounded-2xl p-6 border border-cyan-500/30 relative">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-eye"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-white text-base">Gestión de Eventos (Proactiva)</h3>
+                            <p class="text-xs text-cyan-400">"Vigila, detecta y da la alerta temprana"</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700 text-xs flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 font-mono font-bold flex items-center justify-center text-[10px]">1</span>
+                            <div>
+                                <p class="font-bold text-white">Monitoreo de Sistemas</p>
+                                <p class="text-slate-400">SIEM & EDR escuchan telemetría en endpoints 24/7.</p>
+                            </div>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700 text-xs flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 font-mono font-bold flex items-center justify-center text-[10px]">2</span>
+                            <div>
+                                <p class="font-bold text-white">Detección de Evento</p>
+                                <p class="text-slate-400">Sensor USB detecta inserción de dispositivo desconocido.</p>
+                            </div>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700 text-xs flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 font-mono font-bold flex items-center justify-center text-[10px]">3</span>
+                            <div>
+                                <p class="font-bold text-white">Clasificación & Notificación</p>
+                                <p class="text-slate-400">Se tipifica como Evento Crítico de Seguridad.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 text-center">
+                        <div class="inline-flex items-center gap-2 text-xs font-bold text-red-400 bg-red-950/40 border border-red-500/30 px-4 py-2 rounded-xl">
+                            <i class="fa-solid fa-arrow-down-long animate-bounce"></i>
+                            <span>Evento Crítico Genera Incidente de Seguridad</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reactive Incident Management Box -->
+                <div class="glass-panel rounded-2xl p-6 border border-purple-500/30 relative">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-shield-virus"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-white text-base">Gestión de Incidentes (Reactiva)</h3>
+                            <p class="text-xs text-purple-400">"Actúa para resolver la interrupción y restablecer el servicio"</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700 text-xs flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 font-mono font-bold flex items-center justify-center text-[10px]">A</span>
+                            <div>
+                                <p class="font-bold text-white">Registro del Incidente & Priorización</p>
+                                <p class="text-slate-400">Ticket P1 asignado al equipo SOC y Soporte Nivel 3.</p>
+                            </div>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700 text-xs flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 font-mono font-bold flex items-center justify-center text-[10px]">B</span>
+                            <div>
+                                <p class="font-bold text-white">Diagnóstico, Escalamiento & Contención</p>
+                                <p class="text-slate-400">Aislamiento de la VLAN y bloqueo de puertos USB.</p>
+                            </div>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700 text-xs flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 font-mono font-bold flex items-center justify-center text-[10px]">C</span>
+                            <div>
+                                <p class="font-bold text-white">Resolución, Recuperación & Cierre</p>
+                                <p class="text-slate-400">Restauración de backup inmutable y reporte de lecciones.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 text-center">
+                        <div class="inline-flex items-center gap-2 text-xs font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-500/30 px-4 py-2 rounded-xl">
+                            <i class="fa-solid fa-check-double"></i>
+                            <span>Servicio Restablecido & Reporte ISO 27001 Emitido</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Interactive Step-by-Step Incident Simulator -->
+            <div class="glass-panel rounded-2xl p-6 border border-slate-700">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <span class="text-xs font-mono text-cyan-400 uppercase">Simulación en Vivo de Respuesta a Incidentes</span>
+                        <h3 class="text-lg font-bold text-white">Caso: Intento de Infiltración mediante USB en Estación de Finanzas</h3>
+                    </div>
+                    <span id="incident-badge" class="px-3 py-1 rounded-full text-xs font-bold font-mono bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                        ESTADO: SIMULACIÓN LISTA
+                    </span>
+                </div>
+
+                <!-- 4 Step Flow Bar -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <button onclick="runIncidentStep(1)" id="step-btn-1" class="p-4 rounded-xl text-left border transition-all bg-slate-800/80 border-cyan-500/50 text-white">
+                        <div class="text-[10px] font-mono text-cyan-400 uppercase">Paso 1</div>
+                        <div class="text-sm font-bold mt-1">1. Conexión Anómala</div>
+                        <div class="text-[11px] text-slate-400 mt-1">Usuario conecta memoria USB sospechosa</div>
+                    </button>
+                    <button onclick="runIncidentStep(2)" id="step-btn-2" class="p-4 rounded-xl text-left border transition-all bg-slate-800/40 border-slate-700 text-slate-400">
+                        <div class="text-[10px] font-mono uppercase">Paso 2</div>
+                        <div class="text-sm font-bold mt-1">2. Disparo de Alerta</div>
+                        <div class="text-[11px] text-slate-500 mt-1">Sensor SIEM clasifica incidente crítico</div>
+                    </button>
+                    <button onclick="runIncidentStep(3)" id="step-btn-3" class="p-4 rounded-xl text-left border transition-all bg-slate-800/40 border-slate-700 text-slate-400">
+                        <div class="text-[10px] font-mono uppercase">Paso 3</div>
+                        <div class="text-sm font-bold mt-1">3. Aislamiento Red</div>
+                        <div class="text-[11px] text-slate-500 mt-1">EDR desconecta máquina de la LAN</div>
+                    </button>
+                    <button onclick="runIncidentStep(4)" id="step-btn-4" class="p-4 rounded-xl text-left border transition-all bg-slate-800/40 border-slate-700 text-slate-400">
+                        <div class="text-[10px] font-mono uppercase">Paso 4</div>
+                        <div class="text-sm font-bold mt-1">4. Recuperación & Cierre</div>
+                        <div class="text-[11px] text-slate-500 mt-1">Restauración y registro de sanción</div>
+                    </button>
+                </div>
+
+                <!-- Step Description Display -->
+                <div id="incident-display-box" class="p-5 rounded-xl bg-slate-950/60 border border-slate-800 text-sm">
+                    <p class="text-slate-300">
+                        Haz clic en el <strong>Paso 1</strong> para iniciar el escenario de prueba interactivo y ver cómo reaccionan las defensas implementadas en el procedimiento <strong>PSEC-01</strong>.
+                    </p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- TAB 4: MATRIZ DE RIESGOS & ROI (SESIÓN 9 - DIAPOSITIVA 13) -->
+        <!-- ======================================================== -->
+        <section id="tab-riesgos" class="tab-pane hidden space-y-8">
+            
+            <div class="glass-panel rounded-2xl p-6 border-l-4 border-emerald-500">
+                <span class="text-xs font-mono uppercase text-emerald-400 tracking-wider">Alineado a las Estadísticas de Ransomware de la Sesión 9 - Diapositiva 13</span>
+                <h2 class="text-xl font-bold text-white mt-1">
+                    Justificación Económica del Procedimiento de Seguridad: ROI de Ciberseguridad
+                </h2>
+                <p class="text-sm text-slate-300 mt-1">
+                    En la sesión de clase se demostró que el costo promedio por secuestro de datos (Ransomware) alcanzó los <span class="text-emerald-400 font-bold">$380,000 USD</span> por incidente. Descubre cómo la implementación de los 7 controles del procedimiento PSEC-01 neutraliza estas pérdidas financieras.
+                </p>
+            </div>
+
+            <!-- Financial Impact Comparison -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Card 1: Sin Políticas PSEC -->
+                <div class="glass-panel rounded-2xl p-6 border border-red-500/30 text-center relative overflow-hidden">
+                    <div class="text-xs font-mono text-red-400 uppercase tracking-widest mb-2">Escenario Sin Procedimiento</div>
+                    <div class="text-4xl font-black text-red-400 my-2">$380,000 <span class="text-sm text-slate-400">USD</span></div>
+                    <p class="text-xs text-slate-400">Costo promedio de tiempo inactivo y rescate por Ransomware (Dato Sesión 09)</p>
+                    
+                    <div class="mt-4 pt-4 border-t border-slate-800 text-left text-xs space-y-1.5 text-slate-300">
+                        <div><i class="fa-solid fa-xmark text-red-400 mr-1.5"></i> Bloqueo de 14 días en servidores</div>
+                        <div><i class="fa-solid fa-xmark text-red-400 mr-1.5"></i> Fuga de datos confidenciales (DLP ausente)</div>
+                        <div><i class="fa-solid fa-xmark text-red-400 mr-1.5"></i> Sanción legal Ley 29733 (hasta 100 UIT)</div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Con PSEC-01 Implementado -->
+                <div class="glass-panel rounded-2xl p-6 border border-emerald-500/30 text-center relative overflow-hidden">
+                    <div class="text-xs font-mono text-emerald-400 uppercase tracking-widest mb-2">Con Procedimiento PSEC-01</div>
+                    <div class="text-4xl font-black text-emerald-400 my-2">&lt; $2,500 <span class="text-sm text-slate-400">USD</span></div>
+                    <p class="text-xs text-slate-400">Costo residual por tiempo de restauración de snapshot inmutable</p>
+                    
+                    <div class="mt-4 pt-4 border-t border-slate-800 text-left text-xs space-y-1.5 text-slate-300">
+                        <div><i class="fa-solid fa-check text-emerald-400 mr-1.5"></i> Recuperación en menos de 2 horas (RTO)</div>
+                        <div><i class="fa-solid fa-check text-emerald-400 mr-1.5"></i> Backup Cloud inmutable 3-2-1 protegido</div>
+                        <div><i class="fa-solid fa-check text-emerald-400 mr-1.5"></i> Cero pagos a ciberdelincuentes</div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Ahorro Neto & Retorno de Inversión -->
+                <div class="glass-panel rounded-2xl p-6 border border-cyan-500/30 text-center relative overflow-hidden bg-gradient-to-b from-cyan-950/20 to-slate-900/60">
+                    <div class="text-xs font-mono text-cyan-400 uppercase tracking-widest mb-2">Ahorro Neto Generado</div>
+                    <div class="text-4xl font-black text-cyan-300 my-2">+$377,500 <span class="text-sm text-slate-400">USD</span></div>
+                    <p class="text-xs text-slate-400">Retorno de Inversión en Ciberseguridad (ROI)</p>
+                    
+                    <div class="mt-4 pt-4 border-t border-slate-800 flex justify-center items-center gap-2">
+                        <span class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-mono font-bold">
+                            ROI: +1,450%
+                        </span>
+                        <span class="text-xs text-slate-400">Gobernanza ISO 27001</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Risk Matrix (Impact vs Probability) -->
+            <div class="glass-panel rounded-2xl p-6 border border-slate-700">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-table-cells text-cyan-400"></i>
+                            Matriz de Riesgos de TI & Mitigación por Políticas (ISO 31000 / ISO 27005)
+                        </h3>
+                        <p class="text-xs text-slate-400">Visualiza cómo cada riesgo operacional es neutralizado por el procedimiento de equipos de cómputo.</p>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border border-slate-700 rounded-xl overflow-hidden">
+                        <thead class="bg-slate-800 text-slate-200 uppercase font-mono text-[11px]">
+                            <tr>
+                                <th class="p-3">Riesgo Identificado</th>
+                                <th class="p-3 text-center">Tipo (Sesión 09)</th>
+                                <th class="p-3 text-center">Riesgo Inherente</th>
+                                <th class="p-3">Política Mitigadora</th>
+                                <th class="p-3 text-center">Riesgo Residual</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-700 text-slate-300">
+                            <tr class="hover:bg-slate-800/40">
+                                <td class="p-3 font-semibold text-white">Infección por Ransomware masivo vía correo o web</td>
+                                <td class="p-3 text-center font-mono text-cyan-400">Lógico</td>
+                                <td class="p-3 text-center"><span class="px-2 py-0.5 rounded bg-red-500/20 text-red-400 font-bold">Crítico (95%)</span></td>
+                                <td class="p-3"><strong class="text-white">3.3 Antivirus/EDR</strong> + <strong class="text-white">3.5 Respaldo Inmutable</strong></td>
+                                <td class="p-3 text-center"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">Bajo (5%)</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/40">
+                                <td class="p-3 font-semibold text-white">Fuga de información confidencial de clientes mediante USB</td>
+                                <td class="p-3 text-center font-mono text-cyan-400">Humano / Lógico</td>
+                                <td class="p-3 text-center"><span class="px-2 py-0.5 rounded bg-red-500/20 text-red-400 font-bold">Alto (80%)</span></td>
+                                <td class="p-3"><strong class="text-white">3.7 Manejo de Información & Bloqueo USB</strong></td>
+                                <td class="p-3 text-center"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">Bajo (4%)</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/40">
+                                <td class="p-3 font-semibold text-white">Suplantación de identidad por sesión desatendida</td>
+                                <td class="p-3 text-center font-mono text-cyan-400">Físico / Humano</td>
+                                <td class="p-3 text-center"><span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 font-bold">Medio (65%)</span></td>
+                                <td class="p-3"><strong class="text-white">3.1 Bloqueo 5 min</strong> + <strong class="text-white">3.6 Clean Desk</strong></td>
+                                <td class="p-3 text-center"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">Bajo (2%)</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/40">
+                                <td class="p-3 font-semibold text-white">Instalación de programas espía o utilitarios no autorizados</td>
+                                <td class="p-3 text-center font-mono text-cyan-400">Lógico</td>
+                                <td class="p-3 text-center"><span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 font-bold">Alto (75%)</span></td>
+                                <td class="p-3"><strong class="text-white">3.2 Uso adecuado y lista blanca de software</strong></td>
+                                <td class="p-3 text-center"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">Bajo (3%)</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/40">
+                                <td class="p-3 font-semibold text-white">Sustracción física de laptop en oficinas públicas</td>
+                                <td class="p-3 text-center font-mono text-cyan-400">Físico</td>
+                                <td class="p-3 text-center"><span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 font-bold">Medio (50%)</span></td>
+                                <td class="p-3"><strong class="text-white">3.6 Candados Kensington + Cifrado BitLocker</strong></td>
+                                <td class="p-3 text-center"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">Bajo (1%)</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-panel border-t border-white/10 p-6 mt-12 text-center text-xs text-slate-500 no-print">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-graduation-cap text-cyan-400 text-base"></i>
+                <span>Sistemas de Información Empresarial | Semana 10 - Examen Práctico</span>
+            </div>
+            <p>Procedimiento de Seguridad ISO 27001 (PSEC-01) - Caso Práctico Innovador de Alto Impacto</p>
+            <div class="flex items-center gap-4 text-slate-400">
+                <a href="../semana9/index.html" class="hover:text-cyan-400 transition">Ver Semana 9</a>
+                <span>•</span>
+                <a href="../index.html" class="hover:text-cyan-400 transition">Portafolio Completo</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive JavaScript Engine -->
+    <script>
+        // Tab Navigation Logic
+        function switchTab(tabId) {
+            // Hide all tab panes
+            document.querySelectorAll('.tab-pane').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('block');
+            });
+            // Show target tab
+            const target = document.getElementById(tabId);
+            if (target) {
+                target.classList.remove('hidden');
+                target.classList.add('block');
+            }
+
+            // Update Tab button active styles
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.className = "tab-button flex-1 min-w-[200px] py-3 px-4 rounded-xl text-sm font-semibold flex items-center justify-center gap-2.5 transition-all text-slate-400 hover:text-white hover:bg-slate-800/60";
+            });
+
+            const activeBtn = document.getElementById('btn-' + tabId.replace('tab-', ''));
+            if (activeBtn) {
+                activeBtn.className = "tab-button flex-1 min-w-[200px] py-3 px-4 rounded-xl text-sm font-semibold flex items-center justify-center gap-2.5 transition-all bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg shadow-cyan-600/30";
+            }
+        }
+
+        // Validate All Signatures with Animation & SHA-256 Stamp
+        function validateAllSignatures() {
+            for (let i = 1; i <= 3; i++) {
+                const placeholder = document.getElementById('placeholder-stamp-' + i);
+                const stamp = document.getElementById('stamp-' + i);
+                if (placeholder && stamp) {
+                    placeholder.classList.add('hidden');
+                    stamp.classList.remove('hidden');
+                }
+            }
+            alert('¡Procedimiento PSEC validado y firmado criptográficamente con éxito conforme a la norma ISO 27001!');
+        }
+
+        // Fleet Station Inspection Logic
+        const stationData = {
+            'FIN-01': {
+                name: 'WS-FIN-01 (Departamento de Finanzas)',
+                compliance: '100%',
+                items: [
+                    { title: '3.1 Control de Acceso: Contraseña 16 caracteres + Bloqueo 5 min GPO', ok: true },
+                    { title: '3.2 Software: Sólo suite contable homologada y navegador corporativo', ok: true },
+                    { title: '3.3 EDR & Malware: Agente v4.12 activo y sin alertas pendientes', ok: true },
+                    { title: '3.7 Bloqueo USB: Puertos bloqueados por directiva de grupo (DLP)', ok: true }
+                ]
+            },
+            'DEV-09': {
+                name: 'WS-DEV-09 (Ingeniería & DevOps)',
+                compliance: '85%',
+                items: [
+                    { title: '3.1 Control de Acceso: Contraseña 14 caracteres + Bloqueo 5 min GPO', ok: true },
+                    { title: '3.2 Software: Ejecución de ejecutable no homologado ("BitTorrent.exe")', ok: false },
+                    { title: '3.3 EDR & Malware: Agente v4.12 actualizado y en ejecución', ok: true },
+                    { title: '3.7 Bloqueo USB: Dispositivos de almacenamiento externo denegados', ok: true }
+                ]
+            },
+            'OPS-03': {
+                name: 'WS-OPS-03 (Logística & Operaciones)',
+                compliance: '100%',
+                items: [
+                    { title: '3.1 Control de Acceso: Bloqueo de 5 minutos activo', ok: true },
+                    { title: '3.5 Respaldo: Sincronización inmutable AWS S3 realizada hoy', ok: true },
+                    { title: '3.6 Seguridad Física: Candado Kensington anclado y Clean Desk', ok: true },
+                    { title: '3.7 Manejo de Información: Clasificación Interna verificada', ok: true }
+                ]
+            },
+            'DIR-02': {
+                name: 'LT-DIR-02 (Dirección Ejecutiva)',
+                compliance: '94%',
+                items: [
+                    { title: '3.1 Control de Acceso: Autenticación Multifactor (MFA) requerida', ok: true },
+                    { title: '3.4 Actualizaciones: Parches críticos de Windows aplicados', ok: true },
+                    { title: '3.6 Seguridad Física: Cifrado integral de disco BitLocker AES-256', ok: true },
+                    { title: '3.7 Manejo de Información: Acceso a reportes confidenciales auditado', ok: true }
+                ]
+            }
+        };
+
+        function selectStation(code) {
+            const data = stationData[code];
+            if (!data) return;
+
+            document.getElementById('inspected-name').innerText = data.name;
+            const container = document.getElementById('inspected-policies');
+            container.innerHTML = '';
+
+            data.items.forEach(item => {
+                const div = document.createElement('div');
+                div.className = item.ok 
+                    ? 'flex items-center justify-between p-2 rounded bg-slate-800/60'
+                    : 'flex items-center justify-between p-2 rounded bg-amber-950/20 border border-amber-500/30';
+                
+                div.innerHTML = `
+                    <span class="${item.ok ? 'text-slate-300' : 'text-amber-200'}">${item.title}</span>
+                    <span class="${item.ok ? 'text-emerald-400' : 'text-amber-400'} font-mono font-bold flex items-center gap-1">
+                        <i class="fa-solid ${item.ok ? 'fa-check' : 'fa-triangle-exclamation'}"></i> ${item.ok ? 'CUMPLE' : 'NO CONFORME'}
+                    </span>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Remediate Non-Compliance
+        function remediateStation() {
+            const status = document.getElementById('status-3-2');
+            if (status) {
+                status.innerHTML = '<i class="fa-solid fa-check"></i> REMEDIADO (CUARENTENA)';
+                status.className = 'text-emerald-400 font-mono font-bold flex items-center gap-1';
+            }
+            alert('¡Directiva de remediación forzada exitosamente! El software no autorizado ha sido desinstalado y enviado a cuarentena según la Política 3.2.');
+            document.getElementById('global-compliance-display').innerText = '99.4%';
+        }
+
+        // Automated Domain Audit Console Simulator
+        function runDomainAudit() {
+            const terminal = document.getElementById('audit-terminal');
+            const btn = document.getElementById('btn-run-audit');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Auditando Dominio...';
+
+            terminal.innerHTML = '<div class="text-cyan-400 font-bold">[AUDIT-START] Iniciando escaneo de cumplimiento en Active Directory (128 Endpoints)...</div>';
+
+            const logs = [
+                { text: '[POLÍTICA 3.1] Verificando complejidad de contraseñas y auto-bloqueo de 5 min...', delay: 600, color: 'text-slate-300' },
+                { text: '  -> 128/128 endpoints tienen GPO de bloqueo a los 300s configurado. [PASS]', delay: 1200, color: 'text-emerald-400' },
+                { text: '[POLÍTICA 3.2] Escaneo de firmas de ejecutables en lista negra...', delay: 1800, color: 'text-slate-300' },
+                { text: '  -> Alerta leve en WS-DEV-09: Proceso torrent detenido por el firewall interno. [WARN/RESOLVED]', delay: 2400, color: 'text-amber-400' },
+                { text: '[POLÍTICA 3.3] Comprobando integridad del agente EDR & firmas heurísticas...', delay: 3000, color: 'text-slate-300' },
+                { text: '  -> Cobertura EDR 100%. Motor heurístico contra Ransomware activo. [PASS]', delay: 3600, color: 'text-emerald-400' },
+                { text: '[POLÍTICA 3.5] Auditando repositorio de respaldos inmutables en la nube...', delay: 4200, color: 'text-slate-300' },
+                { text: '  -> Snapshot semanal validado con cifrado AES-256 en AWS S3. [PASS]', delay: 4800, color: 'text-emerald-400' },
+                { text: '[POLÍTICA 3.7] Testeando restricción de periféricos USB masivos...', delay: 5400, color: 'text-slate-300' },
+                { text: '  -> Puertos bloqueados por hardware ID en toda la flota. [PASS]', delay: 6000, color: 'text-emerald-400' },
+                { text: '[AUDIT-COMPLETE] Puntuación General del SGSI: 98.6% (Excelente). Certificado de auditoría generado.', delay: 6600, color: 'text-cyan-300 font-bold' }
+            ];
+
+            logs.forEach(item => {
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.className = item.color;
+                    line.innerText = item.text;
+                    terminal.appendChild(line);
+                    terminal.scrollTop = terminal.scrollHeight;
+                }, item.delay);
+            });
+
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Re-ejecutar Auditoría';
+            }, 7000);
+        }
+
+        // Incident Management Simulator Step Logic (Session 9 Slide 16)
+        function runIncidentStep(step) {
+            const displayBox = document.getElementById('incident-display-box');
+            const badge = document.getElementById('incident-badge');
+
+            // Reset all button styles
+            for (let i = 1; i <= 4; i++) {
+                const btn = document.getElementById('step-btn-' + i);
+                btn.className = "p-4 rounded-xl text-left border transition-all bg-slate-800/40 border-slate-700 text-slate-400";
+            }
+
+            const currentBtn = document.getElementById('step-btn-' + step);
+            currentBtn.className = "p-4 rounded-xl text-left border transition-all bg-slate-800/90 border-cyan-500 text-white shadow-lg shadow-cyan-500/20";
+
+            if (step === 1) {
+                badge.innerText = 'ESTADO: EVENTO DETECTADO (PROACTIVO)';
+                badge.className = 'px-3 py-1 rounded-full text-xs font-bold font-mono bg-cyan-500/20 text-cyan-300 border border-cyan-500/30';
+                displayBox.innerHTML = `
+                    <div class="space-y-2">
+                        <div class="text-cyan-400 font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-usb"></i> Evento de Seguridad Detectado: Inserción de Memoria USB No Autorizada
+                        </div>
+                        <p class="text-slate-300 text-xs">
+                            A las 14:32 hrs, el sensor de telemetría en el host <strong>WS-FIN-01</strong> detecta la conexión de un medio de almacenamiento USB externo desconocido. 
+                            La <strong>Política 3.7</strong> del procedimiento PSEC bloquea de inmediato la lectura y envía una señal de telemetría al servidor central SIEM.
+                        </p>
+                        <div class="p-2 rounded bg-slate-900 border border-cyan-500/30 font-mono text-xs text-cyan-300">
+                            [LOG-SIEM]: ALERT ID-9421: Unauthorized USB mass storage mounted on WS-FIN-01 (VID: 0x0781, PID: 0x5581). Intercepted.
+                        </div>
+                    </div>
+                `;
+            } else if (step === 2) {
+                badge.innerText = 'ESTADO: INCIDENTE REGISTRADO (SEVERIDAD ALTA)';
+                badge.className = 'px-3 py-1 rounded-full text-xs font-bold font-mono bg-amber-500/20 text-amber-300 border border-amber-500/30';
+                displayBox.innerHTML = `
+                    <div class="space-y-2">
+                        <div class="text-amber-400 font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Diagnóstico & Priorización: Se detecta payload malicioso en cuarentena
+                        </div>
+                        <p class="text-slate-300 text-xs">
+                            El análisis estático del EDR detecta que el dispositivo contenía un ejecutable malicioso ofuscado (intento de Ransomware). 
+                            De acuerdo al flujo de la <strong>Sesión 9</strong>, el evento crítico es escalado formalmente como <strong>Incidente de Seguridad Prioridad 1 (P1)</strong> con ticket #INC-2026-104.
+                        </p>
+                        <div class="p-2 rounded bg-slate-900 border border-amber-500/30 font-mono text-xs text-amber-300">
+                            [INCIDENT-TICKET]: P1 CRITICAL | Assigned to: SOC Response Team | Asset: WS-FIN-01 | Threat: Ransomware.Dropper.Win32
+                        </div>
+                    </div>
+                `;
+            } else if (step === 3) {
+                badge.innerText = 'ESTADO: CONTENCIÓN ACTIVA (RED AISLADA)';
+                badge.className = 'px-3 py-1 rounded-full text-xs font-bold font-mono bg-purple-500/20 text-purple-300 border border-purple-500/30';
+                displayBox.innerHTML = `
+                    <div class="space-y-2">
+                        <div class="text-purple-400 font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-network-wired"></i> Contención Inmediata & Aislamiento Lógico del Endpoint
+                        </div>
+                        <p class="text-slate-300 text-xs">
+                            Aplicando la <strong>Política 3.3 y el protocolo ISO 27035</strong>, el equipo de ciberseguridad aísla la estación <strong>WS-FIN-01</strong> de la red local para impedir cualquier intento de movimiento lateral. La carga maliciosa es neutralizada sin que llegue a comprometer ningún archivo del servidor corporativo.
+                        </p>
+                        <div class="p-2 rounded bg-slate-900 border border-purple-500/30 font-mono text-xs text-purple-300">
+                            [ACTION-TAKEN]: Host WS-FIN-01 VLAN disconnected. Only telemetry tunnel alive. Quarantine status: 100% CONTAINED.
+                        </div>
+                    </div>
+                `;
+            } else if (step === 4) {
+                badge.innerText = 'ESTADO: RESUELTO & LECCIONES APRENDIDAS (ISO 27001)';
+                badge.className = 'px-3 py-1 rounded-full text-xs font-bold font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+                displayBox.innerHTML = `
+                    <div class="space-y-2">
+                        <div class="text-emerald-400 font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-check-circle"></i> Restauración del Servicio, Sanción Administrativa & Cierre
+                        </div>
+                        <p class="text-slate-300 text-xs">
+                            Se verifica la integridad de los datos mediante el <strong>Respaldo Inmutable (Política 3.5)</strong>. El equipo se reconecta a la red de forma segura. 
+                            Conforme a la <strong>Sección 5 (Sanciones)</strong> del procedimiento PSEC, se remite el informe al área de Recursos Humanos para la amonestación correspondiente y se programa capacitación obligatoria en concientización de ciberseguridad.
+                        </p>
+                        <div class="p-2 rounded bg-slate-900 border border-emerald-500/30 font-mono text-xs text-emerald-300">
+                            [CLOSURE-REPORT]: Post-Incident Review complete. Zero data loss. Compliance Audit Dossier updated. Status: CLOSED.
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function resetIncidentFlow() {
+            runIncidentStep(1);
+        }
+    </script>
+</body>
+</html>

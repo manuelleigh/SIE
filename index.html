@@ -1,103 +1,190 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistemas de Información Empresarial | Portafolio</title>
+    <title>Sistemas de Información Empresarial | Portafolio Interactivo</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
                     colors: {
-                        darkBg: '#0f172a',
-                        cardBg: '#1e293b',
+                        darkBg: '#030712',
+                        cardBg: '#0f172a',
                         neonBlue: '#38bdf8',
-                        neonPurple: '#a855f7'
+                        neonPurple: '#a855f7',
+                        neonCyan: '#06b6d4',
+                        neonEmerald: '#10b981'
                     }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #0f172a; color: #f8fafc; overflow-x: hidden; }
+        body { background-color: #030712; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
         .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
         }
         .text-gradient {
-            background: linear-gradient(to right, #38bdf8, #a855f7);
+            background: linear-gradient(to right, #38bdf8, #a855f7, #06b6d4);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .animated-bg {
-            position: absolute; width: 300px; height: 300px;
-            background: #a855f7; border-radius: 50%; filter: blur(100px);
-            opacity: 0.3; animation: float 10s infinite alternate; z-index: -1;
+            position: absolute; width: 400px; height: 400px;
+            background: #a855f7; border-radius: 50%; filter: blur(120px);
+            opacity: 0.2; animation: float 12s infinite alternate; z-index: -1;
         }
         @keyframes float {
             0% { transform: translate(0, 0); }
-            100% { transform: translate(100px, 50px); }
+            100% { transform: translate(120px, 60px); }
         }
     </style>
 </head>
 <body class="antialiased relative min-h-screen flex flex-col">
-    <!-- Animated background blobs -->
+    <!-- Animated background ambient lights -->
     <div class="animated-bg top-0 left-0"></div>
-    <div class="animated-bg bottom-0 right-0" style="background: #38bdf8; animation-delay: -5s;"></div>
+    <div class="animated-bg bottom-0 right-0" style="background: #38bdf8; animation-delay: -6s;"></div>
 
+    <!-- Navigation -->
     <nav class="glass-panel sticky top-0 z-50 px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="text-2xl font-bold text-gradient"><i class="fa-solid fa-layer-group mr-2"></i>SIE Portafolio</div>
-            <div>
-                <a href="https://github.com/manuelleigh/SIE" target="_blank" class="text-gray-300 hover:text-white transition"><i class="fa-brands fa-github text-2xl"></i></a>
+            <div class="text-2xl font-black text-gradient flex items-center gap-2">
+                <i class="fa-solid fa-layer-group text-cyan-400"></i>
+                <span>SIE Portafolio</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-xs font-mono text-cyan-400 hidden sm:inline-block bg-cyan-950/40 px-3 py-1 rounded-full border border-cyan-500/30">
+                    Ciclo 2026 | UTP
+                </span>
+                <a href="https://github.com/manuelleigh/SIE" target="_blank" class="w-10 h-10 rounded-xl bg-slate-800/80 border border-slate-700 flex items-center justify-center text-gray-300 hover:text-white hover:bg-slate-700 transition" title="Repositorio en GitHub">
+                    <i class="fa-brands fa-github text-lg"></i>
+                </a>
             </div>
         </div>
     </nav>
 
-    <main class="flex-grow flex flex-col items-center justify-center p-6 mt-10">
-        <div class="text-center max-w-3xl" data-aos="fade-up" data-aos-duration="1000">
-            <h1 class="text-5xl md:text-7xl font-extrabold mb-6">Sistemas de Información <span class="text-gradient">Empresarial</span></h1>
-            <p class="text-xl text-gray-400 mb-10">Repositorio interactivo para la presentación de casos prácticos de innovación tecnológica, metodologías ágiles y DevOps.</p>
+    <!-- Hero Header -->
+    <main class="flex-grow flex flex-col items-center justify-center p-6 mt-6">
+        <div class="text-center max-w-4xl" data-aos="fade-up" data-aos-duration="1000">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider mb-4">
+                <i class="fa-solid fa-microchip"></i> Portafolio de Casos Prácticos & Innovación Tecnológica
+            </div>
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-black mb-6 tracking-tight">
+                Sistemas de Información <span class="text-gradient">Empresarial</span>
+            </h1>
+            <p class="text-base sm:text-lg text-slate-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+                Plataforma interactiva de aplicaciones web que transforman la teoría académica en simuladores corporativos de alto estándar, metodologías ágiles, Big Data y gobernanza ISO 27001.
+            </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl mt-10" data-aos="fade-up" data-aos-delay="300">
-            <!-- Card Semana 5 -->
-            <div class="glass-panel rounded-2xl p-6 hover:-translate-y-2 transition-transform duration-300 group cursor-pointer border-t border-neonBlue">
-                <div class="w-14 h-14 rounded-full bg-blue-500/20 flex items-center justify-center mb-4 text-neonBlue group-hover:scale-110 transition-transform">
-                    <i class="fa-solid fa-rocket text-2xl"></i>
+        <!-- Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl mt-4" data-aos="fade-up" data-aos-delay="200">
+            
+            <!-- Card Semana 10 (DESTACADA - EXAMEN) -->
+            <div class="glass-panel rounded-2xl p-6 hover:-translate-y-2 transition-transform duration-300 group cursor-pointer border-t-2 border-cyan-400 relative overflow-hidden md:col-span-2 lg:col-span-1 bg-gradient-to-b from-cyan-950/20 to-slate-900/70">
+                <div class="absolute top-4 right-4">
+                    <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase font-mono bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 animate-pulse">
+                        Examen Semana 10
+                    </span>
                 </div>
-                <h3 class="text-2xl font-bold mb-2">Semana 5</h3>
-                <p class="text-gray-400 mb-6">Implementación de E-Commerce usando Scrum, CI/CD, Docker y estándares ISO 27001/9001.</p>
-                <a href="semana5/index.html" class="inline-flex items-center text-neonBlue font-semibold hover:text-neonPurple transition-colors">
-                    Ver Proyecto Innovador <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                <div class="w-14 h-14 rounded-2xl bg-cyan-500/20 flex items-center justify-center mb-4 text-cyan-400 group-hover:scale-110 transition-transform shadow-lg shadow-cyan-500/20">
+                    <i class="fa-solid fa-shield-halved text-2xl"></i>
+                </div>
+                <h3 class="text-2xl font-black mb-2 text-white">Semana 10</h3>
+                <p class="text-xs font-mono text-cyan-400 mb-2 uppercase">CyberGRC 360 | Procedimiento Endpoint ISO 27001</p>
+                <p class="text-slate-300 text-sm mb-6 leading-relaxed">
+                    Elevación del formulario PSEC a plataforma GRC interactiva: auditoría en vivo con telemetría en endpoints, resolución paso a paso de incidentes y cálculo de ROI ($380K prevenidos).
+                </p>
+                <a href="semana10/index.html" class="inline-flex items-center text-cyan-400 font-bold hover:text-white transition-colors text-sm">
+                    Ver Examen Práctico <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
                 </a>
             </div>
-            
-                        <!-- Card Semana 6 -->
-            <div class="glass-panel rounded-2xl p-6 hover:-translate-y-2 transition-transform duration-300 group cursor-pointer border-t border-neonPurple">
-                <div class="w-14 h-14 rounded-full bg-purple-500/20 flex items-center justify-center mb-4 text-neonPurple group-hover:scale-110 transition-transform">
+
+            <!-- Card Semana 9 -->
+            <div class="glass-panel rounded-2xl p-6 hover:-translate-y-2 transition-transform duration-300 group cursor-pointer border-t-2 border-emerald-400">
+                <div class="w-14 h-14 rounded-2xl bg-emerald-500/20 flex items-center justify-center mb-4 text-emerald-400 group-hover:scale-110 transition-transform shadow-lg shadow-emerald-500/20">
+                    <i class="fa-solid fa-shield-virus text-2xl"></i>
+                </div>
+                <h3 class="text-2xl font-black mb-2 text-white">Semana 9</h3>
+                <p class="text-xs font-mono text-emerald-400 mb-2 uppercase">Cyber Defense Simulator | ISO 27001</p>
+                <p class="text-slate-300 text-sm mb-6 leading-relaxed">
+                    Simulador por capas (Defensa en Profundidad): interceptación dinámica de ataques APT, Ransomware y DDoS mediante políticas activas A.9, A.10, A.16 y A.17.
+                </p>
+                <a href="semana9/index.html" class="inline-flex items-center text-emerald-400 font-bold hover:text-white transition-colors text-sm">
+                    Ver Simulador de Defensa <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </a>
+            </div>
+
+            <!-- Card Semana 7 -->
+            <div class="glass-panel rounded-2xl p-6 hover:-translate-y-2 transition-transform duration-300 group cursor-pointer border-t-2 border-blue-400">
+                <div class="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-4 text-blue-400 group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/20">
+                    <i class="fa-solid fa-chart-line text-2xl"></i>
+                </div>
+                <h3 class="text-2xl font-black mb-2 text-white">Semana 7</h3>
+                <p class="text-xs font-mono text-blue-400 mb-2 uppercase">Big Data & Escalabilidad Empresarial</p>
+                <p class="text-slate-300 text-sm mb-6 leading-relaxed">
+                    Suite interactiva con Dashboard de ventas a gran escala en tiempo real (Chart.js) y Mapa Conceptual Dinámico con zoom y navegación por capas.
+                </p>
+                <a href="semana7/index.html" class="inline-flex items-center text-blue-400 font-bold hover:text-white transition-colors text-sm">
+                    Ver Suite Big Data <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </a>
+            </div>
+
+            <!-- Card Semana 6 -->
+            <div class="glass-panel rounded-2xl p-6 hover:-translate-y-2 transition-transform duration-300 group cursor-pointer border-t-2 border-purple-400">
+                <div class="w-14 h-14 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-4 text-purple-400 group-hover:scale-110 transition-transform shadow-lg shadow-purple-500/20">
                     <i class="fa-solid fa-network-wired text-2xl"></i>
                 </div>
-                <h3 class="text-2xl font-bold mb-2">Semana 6</h3>
-                <p class="text-gray-400 mb-6">Gestión de Riesgos de TI y modelado de procesos (BPMN) aplicado a la atención de incidentes.</p>
-                <a href="semana6/index.html" class="inline-flex items-center text-neonPurple font-semibold hover:text-neonBlue transition-colors">
-                    Ver Proyecto <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                <h3 class="text-2xl font-black mb-2 text-white">Semana 6</h3>
+                <p class="text-xs font-mono text-purple-400 mb-2 uppercase">Riesgos TI & Modelado BPMN</p>
+                <p class="text-slate-300 text-sm mb-6 leading-relaxed">
+                    Gestión de Riesgos de TI y orquestación de procesos de atención de incidentes mediante tableros avanzados y diagramas interactivos BPMN.
+                </p>
+                <a href="semana6/index.html" class="inline-flex items-center text-purple-400 font-bold hover:text-white transition-colors text-sm">
+                    Ver Proyecto BPMN <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
                 </a>
             </div>
-                <h3 class="text-2xl font-bold mb-2 text-gray-300">Semana 6</h3>
-                <p class="text-gray-500">Próximamente disponible en las siguientes sesiones del curso.</p>
+
+            <!-- Card Semana 5 -->
+            <div class="glass-panel rounded-2xl p-6 hover:-translate-y-2 transition-transform duration-300 group cursor-pointer border-t-2 border-indigo-400">
+                <div class="w-14 h-14 rounded-2xl bg-indigo-500/20 flex items-center justify-center mb-4 text-indigo-400 group-hover:scale-110 transition-transform shadow-lg shadow-indigo-500/20">
+                    <i class="fa-solid fa-rocket text-2xl"></i>
+                </div>
+                <h3 class="text-2xl font-black mb-2 text-white">Semana 5</h3>
+                <p class="text-xs font-mono text-indigo-400 mb-2 uppercase">E-Commerce Ágil & CI/CD Docker</p>
+                <p class="text-slate-300 text-sm mb-6 leading-relaxed">
+                    Implementación de plataforma E-Commerce empleando metodología Scrum, canal de integración continua (CI/CD) y estándares ISO 27001 / 9001.
+                </p>
+                <a href="semana5/index.html" class="inline-flex items-center text-indigo-400 font-bold hover:text-white transition-colors text-sm">
+                    Ver Proyecto Ágil <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </a>
             </div>
+
         </div>
     </main>
 
-    <footer class="text-center p-6 text-gray-500 border-t border-white/10 mt-20 glass-panel">
-        <p>&copy; 2026 - Universidad / Curso SIE - Innovación Tecnológica</p>
+    <!-- Footer -->
+    <footer class="text-center p-6 text-slate-500 border-t border-white/10 mt-16 glass-panel">
+        <p>&copy; 2026 - Universidad Tecnológica del Perú | Sistemas de Información Empresarial</p>
+        <p class="text-xs text-slate-600 mt-1">Desarrollado con arquitectura web moderna, Tailwind CSS y FontAwesome</p>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -106,6 +193,3 @@
     </script>
 </body>
 </html>
-
-
-
