@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semana 11 | Liderazgo Adaptativo y Gestión de Riesgos en TI</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome 6.4.0 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- AOS Animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        cyberDark: '#030712',
+                        cyberCard: '#0f172a',
+                        neonBlue: '#38bdf8',
+                        neonIndigo: '#6366f1',
+                        neonPurple: '#a855f7',
+                        neonEmerald: '#10b981',
+                        neonAmber: '#f59e0b'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #030712; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #38bdf8, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .animated-bg {
+            position: absolute; width: 450px; height: 450px;
+            background: #6366f1; border-radius: 50%; filter: blur(140px);
+            opacity: 0.18; animation: float 12s infinite alternate; z-index: -1;
+        }
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(120px, 60px); }
+        }
+    </style>
+</head>
+<body class="antialiased relative min-h-screen flex flex-col">
+    <!-- Ambient background glows -->
+    <div class="animated-bg top-10 left-10"></div>
+    <div class="animated-bg bottom-10 right-10" style="background: #38bdf8; animation-delay: -6s;"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="glass-panel sticky top-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="../index.html" class="flex items-center gap-2 text-slate-300 hover:text-neonBlue transition font-semibold text-sm">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Volver al Portafolio</span>
+            </a>
+            <div class="flex items-center gap-3">
+                <span class="text-xs font-mono text-neonBlue bg-cyan-950/40 px-3 py-1 rounded-full border border-cyan-500/30">
+                    Sesión 11 | UTP 2026
+                </span>
+                <div class="text-xl font-black text-gradient flex items-center gap-2">
+                    <i class="fa-solid fa-people-roof text-neonBlue"></i>
+                    <span>Semana 11</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col items-center p-6 mt-8">
+        <div class="text-center max-w-4xl" data-aos="fade-up">
+            <span class="px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-bold tracking-widest uppercase mb-4 inline-flex items-center gap-2">
+                <i class="fa-solid fa-brain-circuit"></i> Sistemas de Información Empresarial
+            </span>
+            <h1 class="text-4xl sm:text-6xl font-black mb-6 tracking-tight">
+                Liderazgo Adaptativo y <span class="text-gradient">Gestión del Riesgo en TI</span>
+            </h1>
+            <p class="text-base sm:text-lg text-slate-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+                Análisis sistémico, problemología y aplicación de habilidades blandas directivas para la resolución de crisis tecnológicas y toma de decisiones bajo incertidumbre.
+            </p>
+
+            <!-- Learning Objective Pill -->
+            <div class="max-w-3xl mx-auto p-4 rounded-2xl glass-panel border border-cyan-500/20 text-xs sm:text-sm text-slate-300 text-left flex items-start gap-3 mb-10">
+                <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0 mt-0.5">
+                    <i class="fa-solid fa-bullseye text-base"></i>
+                </div>
+                <div>
+                    <strong class="text-cyan-300 block mb-1">Logro de la Sesión:</strong>
+                    Analizar críticamente la relación entre el liderazgo adaptativo, la problemología y la gestión de riesgos en proyectos complejos de TI para transformar silos organizacionales en equipos de alto rendimiento.
+                </div>
+            </div>
+        </div>
+
+        <!-- Cases Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl" data-aos="fade-up" data-aos-delay="200">
+            
+            <!-- Caso 02: Simulador de Liderazgo Adaptativo -->
+            <a href="caso02.html" class="glass-panel rounded-3xl p-8 hover:-translate-y-2 hover:shadow-[0_0_35px_rgba(56,189,248,0.25)] transition-all duration-300 group border-t-4 border-t-neonBlue block relative overflow-hidden">
+                <div class="absolute top-4 right-4">
+                    <span class="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold uppercase bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                        Caso Práctico Interactivo
+                    </span>
+                </div>
+                <div class="w-16 h-16 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-6 text-neonBlue group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/20">
+                    <i class="fa-solid fa-chess-knight text-3xl"></i>
+                </div>
+                <h3 class="text-2xl sm:text-3xl font-black mb-2 text-white">Caso 02</h3>
+                <h4 class="text-lg font-bold mb-3 text-cyan-300">Simulador de Liderazgo & Crisis DevSecOps</h4>
+                <p class="text-slate-300 text-sm mb-6 leading-relaxed">
+                    Resuelve una crisis crítica de caída de pasarela de pagos aplicando habilidades blandas, mediación de conflictos entre silos (Dev vs Sec vs Ops), análisis de causa raíz e Ishikawa.
+                </p>
+                <div class="flex items-center justify-between pt-4 border-t border-slate-700/60">
+                    <span class="text-xs text-slate-400 font-mono">
+                        <i class="fa-solid fa-handshake-angle text-cyan-400 mr-1.5"></i> Problemología & Habilidades Blandas
+                    </span>
+                    <span class="inline-flex items-center text-neonBlue font-bold text-sm group-hover:translate-x-1 transition-transform">
+                        Ingresar al Simulador <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </span>
+                </div>
+            </a>
+            
+            <!-- Caso 03: Mapa Mental / Conceptual Interactivo -->
+            <a href="caso03.html" class="glass-panel rounded-3xl p-8 hover:-translate-y-2 hover:shadow-[0_0_35px_rgba(168,85,247,0.25)] transition-all duration-300 group border-t-4 border-t-neonPurple block relative overflow-hidden">
+                <div class="absolute top-4 right-4">
+                    <span class="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold uppercase bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                        Mapa Conceptual Dinámico
+                    </span>
+                </div>
+                <div class="w-16 h-16 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-6 text-neonPurple group-hover:scale-110 transition-transform shadow-lg shadow-purple-500/20">
+                    <i class="fa-solid fa-sitemap text-3xl"></i>
+                </div>
+                <h3 class="text-2xl sm:text-3xl font-black mb-2 text-white">Caso 03</h3>
+                <h4 class="text-lg font-bold mb-3 text-purple-300">Mapa Mental de Liderazgo & Riesgo en TI</h4>
+                <p class="text-slate-300 text-sm mb-6 leading-relaxed">
+                    Visualizador conceptual interactivo con zoom y filtros de los dos pilares de la Sesión 11: Gestión del Riesgo (PMBOK/ISO 31000) y Liderazgo Adaptativo/Transformacional.
+                </p>
+                <div class="flex items-center justify-between pt-4 border-t border-slate-700/60">
+                    <span class="text-xs text-slate-400 font-mono">
+                        <i class="fa-solid fa-network-wired text-purple-400 mr-1.5"></i> Diapositiva 10 Estructurada
+                    </span>
+                    <span class="inline-flex items-center text-neonPurple font-bold text-sm group-hover:translate-x-1 transition-transform">
+                        Explorar Mapa <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </span>
+                </div>
+            </a>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center p-6 text-slate-500 border-t border-white/10 mt-16 glass-panel">
+        <p>&copy; 2026 - Universidad Tecnológica del Perú | Sistemas de Información Empresarial</p>
+        <p class="text-xs text-slate-600 mt-1">Sesión 11: Liderazgo y Gestión del Riesgo en Proyectos de TI</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ once: true });
+    </script>
+</body>
+</html>

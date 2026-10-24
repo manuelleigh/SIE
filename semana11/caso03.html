@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caso 03 | Mapa Conceptual Interactivo: Liderazgo y Gestión del Riesgo en TI</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome 6.4.0 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        cyberDark: '#030712',
+                        cyberCard: '#0f172a',
+                        neonBlue: '#38bdf8',
+                        neonCyan: '#06b6d4',
+                        neonPurple: '#a855f7',
+                        neonIndigo: '#6366f1',
+                        neonEmerald: '#10b981',
+                        neonAmber: '#f59e0b'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #030712; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #38bdf8, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Interactive Node Cards */
+        .node-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        .node-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 30px -10px rgba(56, 189, 248, 0.3);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+        .node-card.active {
+            border-color: #38bdf8;
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
+            background: rgba(30, 41, 59, 0.9);
+        }
+
+        /* SVG Line Animations */
+        .pulse-line {
+            stroke-dasharray: 8;
+            animation: dash 20s linear infinite;
+        }
+        @keyframes dash {
+            to { stroke-dashoffset: -1000; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #030712; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #38bdf8; }
+    </style>
+</head>
+<body class="antialiased relative min-h-screen flex flex-col">
+
+    <!-- Ambient background lights -->
+    <div class="fixed top-10 left-10 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+    <div class="fixed bottom-10 right-10 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+
+    <!-- Header -->
+    <header class="glass-panel sticky top-0 z-50 px-6 py-4 border-b border-white/10">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <a href="index.html" class="w-10 h-10 rounded-xl bg-slate-800/80 border border-slate-700 flex items-center justify-center text-cyan-400 hover:text-white hover:bg-cyan-500/20 transition-all" title="Regresar al Menú Semana 11">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg font-black text-white">Mapa Conceptual <span class="text-purple-400">Interactivo</span></span>
+                        <span class="bg-purple-500/20 text-purple-300 text-xs font-semibold px-2 py-0.5 rounded-full border border-purple-500/30">Caso 03</span>
+                    </div>
+                    <p class="text-xs text-slate-400">Arquitectura de la Sesión 11: Liderazgo y Gestión del Riesgo en TI (Diapositiva 10)</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <a href="caso02.html" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-xl text-xs font-semibold flex items-center gap-2 border border-slate-600 transition">
+                    <i class="fa-solid fa-chess-knight text-cyan-400"></i>
+                    <span>Ver Caso 02 (Simulador)</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Filter Pills Bar -->
+    <nav class="max-w-7xl mx-auto w-full px-6 pt-6">
+        <div class="flex flex-wrap items-center gap-2 p-1.5 glass-panel rounded-2xl border border-white/10">
+            <button onclick="filterNodes('all')" id="filter-all" class="filter-btn py-2 px-4 rounded-xl text-xs font-bold transition-all bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg">
+                <i class="fa-solid fa-layer-group mr-1.5"></i> Todos los Nodos
+            </button>
+            <button onclick="filterNodes('riesgo')" id="filter-riesgo" class="filter-btn py-2 px-4 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white hover:bg-slate-800/60">
+                <i class="fa-solid fa-shield-virus mr-1.5 text-cyan-400"></i> Pilar de Gestión del Riesgo
+            </button>
+            <button onclick="filterNodes('liderazgo')" id="filter-liderazgo" class="filter-btn py-2 px-4 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white hover:bg-slate-800/60">
+                <i class="fa-solid fa-users mr-1.5 text-purple-400"></i> Pilar de Liderazgo & Personas
+            </button>
+            <button onclick="filterNodes('problemologia')" id="filter-problemologia" class="filter-btn py-2 px-4 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white hover:bg-slate-800/60">
+                <i class="fa-solid fa-magnifying-glass-chart mr-1.5 text-amber-400"></i> Problemología & Causa Raíz
+            </button>
+            <button onclick="filterNodes('convergencia')" id="filter-convergencia" class="filter-btn py-2 px-4 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white hover:bg-slate-800/60">
+                <i class="fa-solid fa-bullseye mr-1.5 text-emerald-400"></i> Convergencia: Toma de Decisiones
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Workspace (Mind Map Tree + Inspector Drawer) -->
+    <main class="flex-grow max-w-7xl mx-auto w-full p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Left 8/12 cols: Interactive Mind Map Tree -->
+        <div class="lg:col-span-8 space-y-8">
+            
+            <!-- Central Node (Root Concept) -->
+            <div onclick="inspectConcept('root')" class="node-card rounded-2xl p-6 text-center border-2 border-cyan-400 bg-gradient-to-r from-slate-900/90 via-slate-800/80 to-slate-900/90 shadow-2xl relative overflow-hidden group">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-mono font-bold uppercase mb-2">
+                    <i class="fa-solid fa-atom animate-spin"></i> Núcleo Sistémico (Sesión 11 - UTP)
+                </div>
+                <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">
+                    LIDERAZGO Y GESTIÓN DEL RIESGO EN PROYECTOS DE TI COMPLEJOS
+                </h2>
+                <p class="text-xs text-slate-300 max-w-xl mx-auto mt-2 leading-relaxed">
+                    Integración estratégica de marcos normativos, pensamiento sistémico y habilidades blandas directivas para garantizar el éxito en entornos de alta volatilidad tecnológica.
+                </p>
+                <div class="mt-3 flex justify-center items-center gap-4 text-xs font-mono text-cyan-400">
+                    <span><i class="fa-solid fa-arrow-down-left mr-1"></i> Pilar Riesgo (ISO/PMBOK)</span>
+                    <span>•</span>
+                    <span><i class="fa-solid fa-arrow-down-right mr-1"></i> Pilar Liderazgo (Habilidades Blandas)</span>
+                </div>
+            </div>
+
+            <!-- Two Main Columns (Pillar 1: Risk & Pillar 2: Leadership) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- ============================================== -->
+                <!-- COLUMN 1: PILAR DE GESTIÓN DEL RIESGO         -->
+                <!-- ============================================== -->
+                <div id="col-riesgo" class="space-y-4">
+                    <div class="p-3 rounded-xl bg-cyan-950/30 border border-cyan-500/30 flex items-center justify-between">
+                        <span class="text-xs font-mono font-bold text-cyan-300 uppercase flex items-center gap-2">
+                            <i class="fa-solid fa-shield-virus"></i> Pilar 1: Gestión del Riesgo
+                        </span>
+                        <span class="text-[10px] bg-cyan-500/20 text-cyan-400 px-2 py-0.5 rounded font-mono">PMBOK / ISO 31000</span>
+                    </div>
+
+                    <!-- Node 1.1: Marcos de Referencia -->
+                    <div onclick="inspectConcept('marcos')" class="node-card node-item group-riesgo rounded-xl p-4 border-l-4 border-cyan-400">
+                        <div class="flex items-center gap-2.5 mb-1.5">
+                            <i class="fa-solid fa-book-bookmark text-cyan-400 text-sm"></i>
+                            <h4 class="font-bold text-white text-sm">Marcos de Referencia</h4>
+                        </div>
+                        <p class="text-xs text-slate-300">
+                            Alineación con PMBOK Guide (7 Áreas de Conocimiento) e ISO 31000:2018 para la gobernanza estandarizada.
+                        </p>
+                    </div>
+
+                    <!-- Node 1.2: Ciclo del Riesgo -->
+                    <div onclick="inspectConcept('ciclo')" class="node-card node-item group-riesgo rounded-xl p-4 border-l-4 border-cyan-400">
+                        <div class="flex items-center gap-2.5 mb-1.5">
+                            <i class="fa-solid fa-arrows-spin text-cyan-400 text-sm"></i>
+                            <h4 class="font-bold text-white text-sm">Ciclo del Riesgo en TI</h4>
+                        </div>
+                        <p class="text-xs text-slate-300">
+                            Identificación $\rightarrow$ Análisis (Cualitativo / Cuantitativo) $\rightarrow$ Plan de Respuesta (Mitigar, Transferir, Evitar, Aceptar) $\rightarrow$ Monitoreo Continuo.
+                        </p>
+                    </div>
+
+                    <!-- Node 1.3: Atributos de Complejidad -->
+                    <div onclick="inspectConcept('complejidad')" class="node-card node-item group-riesgo rounded-xl p-4 border-l-4 border-cyan-400">
+                        <div class="flex items-center gap-2.5 mb-1.5">
+                            <i class="fa-solid fa-network-wired text-cyan-400 text-sm"></i>
+                            <h4 class="font-bold text-white text-sm">Atributos de Complejidad en TI</h4>
+                        </div>
+                        <p class="text-xs text-slate-300">
+                            Volatilidad técnica, Deuda tecnológica acumulada, Ambigüedad de requisitos y Dependencias críticas entre sistemas.
+                        </p>
+                    </div>
+
+                    <!-- Node 1.4: Problemología & Pensamiento Sistémico -->
+                    <div onclick="inspectConcept('problemologia')" class="node-card node-item group-problemologia rounded-xl p-4 border-l-4 border-amber-400 bg-amber-950/10">
+                        <div class="flex items-center gap-2.5 mb-1.5">
+                            <i class="fa-solid fa-magnifying-glass-chart text-amber-400 text-sm"></i>
+                            <h4 class="font-bold text-amber-300 text-sm">Problemología & Pensamiento Sistémico</h4>
+                        </div>
+                        <p class="text-xs text-slate-300">
+                            El arte y modo de definir los problemas. Técnicas: Análisis de Causa Raíz (RCA), Diagramas de Ishikawa, Los 5 Porqués y Árboles de Fallos.
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- ============================================== -->
+                <!-- COLUMN 2: PILAR DE LIDERAZGO Y COMUNICACIÓN    -->
+                <!-- ============================================== -->
+                <div id="col-liderazgo" class="space-y-4">
+                    <div class="p-3 rounded-xl bg-purple-950/30 border border-purple-500/30 flex items-center justify-between">
+                        <span class="text-xs font-mono font-bold text-purple-300 uppercase flex items-center gap-2">
+                            <i class="fa-solid fa-people-arrows"></i> Pilar 2: Liderazgo & Personas
+                        </span>
+                        <span class="text-[10px] bg-purple-500/20 text-purple-400 px-2 py-0.5 rounded font-mono">Habilidades Blandas</span>
+                    </div>
+
+                    <!-- Node 2.1: Estilo de Liderazgo Adaptativo -->
+                    <div onclick="inspectConcept('liderazgo_adaptativo')" class="node-card node-item group-liderazgo rounded-xl p-4 border-l-4 border-purple-400">
+                        <div class="flex items-center gap-2.5 mb-1.5">
+                            <i class="fa-solid fa-chess-king text-purple-400 text-sm"></i>
+                            <h4 class="font-bold text-white text-sm">Liderazgo Adaptativo & Transformacional</h4>
+                        </div>
+                        <p class="text-xs text-slate-300">
+                            Capacidad de movilizar al equipo ante desafíos sin solución conocida, promoviendo experimentación y resiliencia emocional.
+                        </p>
+                    </div>
+
+                    <!-- Node 2.2: Gestión del Cambio Organizacional -->
+                    <div onclick="inspectConcept('cambio')" class="node-card node-item group-liderazgo rounded-xl p-4 border-l-4 border-purple-400">
+                        <div class="flex items-center gap-2.5 mb-1.5">
+                            <i class="fa-solid fa-arrows-split-up-and-left text-purple-400 text-sm"></i>
+                            <h4 class="font-bold text-white text-sm">Gestión del Cambio Organizacional</h4>
+                        </div>
+                        <p class="text-xs text-slate-300">
+                            Modelo ADKAR y Kotter para superar la resistencia al cambio cuando se migran sistemas legados a nuevas arquitecturas.
+                        </p>
+                    </div>
+
+                    <!-- Node 2.3: Romper Silos Organizacionales -->
+                    <div onclick="inspectConcept('silos')" class="node-card node-item group-liderazgo rounded-xl p-4 border-l-4 border-purple-400">
+                        <div class="flex items-center gap-2.5 mb-1.5">
+                            <i class="fa-solid fa-people-roof text-purple-400 text-sm"></i>
+                            <h4 class="font-bold text-white text-sm">Romper Silos (Cultura DevSecOps)</h4>
+                        </div>
+                        <p class="text-xs text-slate-300">
+                            Disolver las barreras entre Desarrollo, Seguridad y Operaciones instaurando objetivos y métricas compartidas (DORA).
+                        </p>
+                    </div>
+
+                    <!-- Node 2.4: Estrategias de Comunicación Efectiva -->
+                    <div onclick="inspectConcept('comunicacion')" class="node-card node-item group-liderazgo rounded-xl p-4 border-l-4 border-purple-400">
+                        <div class="flex items-center gap-2.5 mb-1.5">
+                            <i class="fa-solid fa-bullhorn text-purple-400 text-sm"></i>
+                            <h4 class="font-bold text-white text-sm">Estrategias de Comunicación & Gobernanza</h4>
+                        </div>
+                        <p class="text-xs text-slate-300">
+                            Planes de gobernanza, Matrices de escalamiento RACI, Escucha activa y Dashboards en tiempo real para stakeholders.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Convergence Bottom Node -->
+            <div id="col-convergencia" onclick="inspectConcept('convergencia')" class="node-card node-item group-convergencia rounded-2xl p-6 border-2 border-emerald-400 bg-gradient-to-r from-emerald-950/40 via-slate-900 to-emerald-950/40 shadow-xl text-center relative">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-mono font-bold uppercase mb-2">
+                    <i class="fa-solid fa-code-merge"></i> Convergencia Sistémica (Diapositiva 10)
+                </div>
+                <h3 class="text-lg sm:text-xl font-bold text-white">
+                    TOMA DE DECISIONES ESTRATÉGICAS BAJO INCERTIDUMBRE
+                </h3>
+                <p class="text-xs text-slate-300 max-w-xl mx-auto mt-2 leading-relaxed">
+                    Donde el análisis técnico del riesgo se fusiona con la empatía directiva, la seguridad psicológica del equipo y la visión de negocio para resolver problemas complejos de TI de forma sostenible.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Right 4/12 cols: Slide-In Concept Inspector Drawer -->
+        <div class="lg:col-span-4">
+            <div class="glass-panel rounded-2xl p-6 border border-slate-700 sticky top-24 space-y-5" id="inspector-drawer">
+                <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+                    <span class="text-xs font-mono text-cyan-400 uppercase font-bold flex items-center gap-1.5">
+                        <i class="fa-solid fa-circle-info"></i> Inspector Conceptual
+                    </span>
+                    <span id="badge-category" class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                        NÚCLEO
+                    </span>
+                </div>
+
+                <div id="inspector-content" class="space-y-4 text-xs">
+                    <h3 class="text-lg font-bold text-white" id="concept-title">Liderazgo & Gestión del Riesgo en TI</h3>
+                    <p class="text-slate-300 leading-relaxed" id="concept-desc">
+                        Haz clic en cualquiera de los nodos del mapa conceptual para examinar su fundamentación teórica (según la Sesión 11 de la UTP y estándares PMBOK/ISO), su aplicación práctica en proyectos de ingeniería y un caso de éxito de la industria de software.
+                    </p>
+
+                    <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1.5">
+                        <strong class="text-cyan-300 block font-bold text-xs" id="concept-sub1-title">Fundamentación Teórica:</strong>
+                        <p class="text-slate-400" id="concept-sub1-desc">
+                            Alineado a los contenidos de la Sesión 11: Liderazgo adaptativo, problemología, pensamiento sistémico y resolución de problemas.
+                        </p>
+                    </div>
+
+                    <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1.5">
+                        <strong class="text-purple-300 block font-bold text-xs" id="concept-sub2-title">Aplicación en la Industria de TI:</strong>
+                        <p class="text-slate-400" id="concept-sub2-desc">
+                            Transición hacia DevSecOps y Site Reliability Engineering (SRE) rompiendo silos tradicionales.
+                        </p>
+                    </div>
+
+                    <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1.5">
+                        <strong class="text-emerald-300 block font-bold text-xs" id="concept-sub3-title">Métrica / KPI Asociado:</strong>
+                        <p class="text-slate-400 font-mono" id="concept-sub3-desc">
+                            Mean Time to Recovery (MTTR) & Psychological Safety Score (> 85%).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-panel border-t border-white/10 p-6 mt-12 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-graduation-cap text-purple-400 text-base"></i>
+                <span>Sistemas de Información Empresarial | Semana 11 - Caso 03</span>
+            </div>
+            <p>Mapa Conceptual Dinámico de Liderazgo Adaptativo y Gestión del Riesgo en TI</p>
+            <div class="flex items-center gap-4 text-slate-400">
+                <a href="caso02.html" class="hover:text-cyan-400 transition">Ver Caso 02 (Simulador)</a>
+                <span>•</span>
+                <a href="index.html" class="hover:text-cyan-400 transition">Menú Semana 11</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Concept Database & Filter Engine -->
+    <script>
+        const conceptDB = {
+            'root': {
+                title: 'Liderazgo y Gestión del Riesgo en Proyectos de TI Complejos',
+                category: 'NÚCLEO SISTÉMICO',
+                color: 'cyan',
+                desc: 'Representa el punto neurálgico de la Sesión 11 de la UTP. Establece que los proyectos tecnológicos de alta complejidad (arquitecturas cloud, microservicios, transformación digital) no fracasan por falta de herramientas técnicas, sino por incapacidad de liderazgo adaptativo y mala gestión del riesgo en la dimensión humana y organizacional.',
+                sub1Title: 'Fundamento Teórico:',
+                sub1Desc: 'Integración del modelo de Liderazgo Adaptativo de Ronald Heifetz con los estándares PMBOK Guide 7ma Edición e ISO 31000 de Gestión de Riesgos.',
+                sub2Title: 'Aplicación Práctica:',
+                sub2Desc: 'Permite al Tech Lead o CIO orquestar equipos multidisciplinarios bajo alta incertidumbre, guiando la toma de decisiones sin recurrir a la coerción o al pánico.',
+                sub3Title: 'Métrica Clave:',
+                sub3Desc: 'Tasa de éxito de proyectos TI (Project Success Rate) & Reducción de Rotación Voluntaria (Turnover < 5%).'
+            },
+            'marcos': {
+                title: 'Marcos de Referencia (PMBOK / ISO 31000)',
+                category: 'GESTIÓN DEL RIESGO',
+                color: 'cyan',
+                desc: 'Estructuras normativas internacionales que guían la ejecución de proyectos y la identificación sistemática de incertidumbres.',
+                sub1Title: 'PMBOK (Project Management Body of Knowledge):',
+                sub1Desc: 'Define el ciclo de vida del proyecto (Inicio, Planificación, Ejecución, Monitoreo/Control, Cierre) y las áreas clave como Integración, Alcance, Cronograma, Costos y Riesgos.',
+                sub2Title: 'ISO 31000:2018:',
+                sub2Desc: 'Estándar global que define el riesgo como "el efecto de la incertidumbre sobre los objetivos", estableciendo principios para su tratamiento proactivo.',
+                sub3Title: 'Métrica Clave:',
+                sub3Desc: 'Madurez del SGSI / PMM (Project Management Maturity Model Nivel 4 o 5).'
+            },
+            'ciclo': {
+                title: 'Ciclo del Riesgo en Proyectos de TI',
+                category: 'GESTIÓN DEL RIESGO',
+                color: 'cyan',
+                desc: 'Secuencia metodológica continua para anticipar eventos adversos antes de que impacten en los entregables.',
+                sub1Title: 'Fases del Ciclo:',
+                sub1Desc: '1. Identificación (Taxonomía de riesgos) -> 2. Análisis Cualitativo (Probabilidad x Impacto) y Cuantitativo (Simulación Monte Carlo) -> 3. Plan de Respuesta (Mitigar, Evitar, Transferir o Aceptar) -> 4. Monitoreo continuo.',
+                sub2Title: 'Caso Práctico:',
+                sub2Desc: 'Anticipar la sobrecarga de un clúster Kubernetes en quincena y definir auto-escalado horizontal (HPA) como estrategia de mitigación previa.',
+                sub3Title: 'Métrica Clave:',
+                sub3Desc: 'Riesgo Residual aceptable (< 10% de impacto crítico).'
+            },
+            'complejidad': {
+                title: 'Atributos de Complejidad en Tecnologías de Información',
+                category: 'GESTIÓN DEL RIESGO',
+                color: 'cyan',
+                desc: 'Factores intrínsecos de los sistemas informáticos modernos que multiplican la incertidumbre y dificultan la predictibilidad lineal.',
+                sub1Title: 'Los 4 Atributos (Diapositiva 10):',
+                sub1Desc: '• Volatilidad Técnica (obsolescencia de frameworks) • Deuda Tecnológica (parches acumulados) • Ambigüedad de Requisitos (scope creep) • Dependencias Críticas (APIs de pasarelas externas).',
+                sub2Title: 'Estrategia de Mitigación:',
+                sub2Desc: 'Arquitecturas desacopladas basadas en eventos (Event-Driven) y contratos de API estrictos (Swagger/OpenAPI).',
+                sub3Title: 'Métrica Clave:',
+                sub3Desc: 'Technical Debt Ratio (SonarQube < 5%).'
+            },
+            'problemologia': {
+                title: 'Problemología & Pensamiento Sistémico',
+                category: 'PROBLEMOLOGÍA',
+                color: 'amber',
+                desc: 'Disciplina del pensamiento sistémico que estudia "el arte y modo de definir los problemas". La Diapositiva 12 destaca: "La consecuencia de un error al definir un problema, sería proponer soluciones inadecuadas fuera de contexto del sistema".',
+                sub1Title: 'Técnicas de Análisis Riguroso:',
+                sub1Desc: '• Análisis de Causa Raíz (RCA) • Diagrama de Causa-Efecto (Ishikawa / Espina de Pescado) • Los 5 Porqués • Árboles de Fallos (Fault Tree Analysis).',
+                sub2Title: 'Aplicación Práctica:',
+                sub2Desc: 'Diferenciar el síntoma superficial ("el servidor arrojó error 500") de la causa raíz ("ausencia de pruebas de carga en el pipeline CI/CD por falta de acuerdos entre áreas").',
+                sub3Title: 'Métrica Clave:',
+                sub3Desc: 'Root Cause Resolution Rate (> 95% de problemas no reincidentes).'
+            },
+            'liderazgo_adaptativo': {
+                title: 'Liderazgo Adaptativo & Transformacional',
+                category: 'LIDERAZGO & PERSONAS',
+                color: 'purple',
+                desc: 'Estilo de liderazgo que se diferencia del liderazgo técnico tradicional. Mientras el técnico aplica soluciones conocidas a problemas conocidos, el líder adaptativo guía a la organización cuando el problema requiere que las personas cambien sus prioridades, creencias o hábitos.',
+                sub1Title: 'Principios de Ronald Heifetz:',
+                sub1Desc: '1. "Subirse al balcón" para observar el sistema con perspectiva. 2. Regular la tensión sin caer en el pánico. 3. Devolver el trabajo a la gente con seguridad psicológica.',
+                sub2Title: 'Aplicación Práctica:',
+                sub2Desc: 'Liderar una migración a la nube donde los ingenieros tienen miedo de perder sus puestos o no dominar las nuevas tecnologías.',
+                sub3Title: 'Métrica Clave:',
+                sub3Desc: 'Psychological Safety Index (Encuesta Amy Edmondson > 4.5/5).'
+            },
+            'cambio': {
+                title: 'Gestión del Cambio Organizacional',
+                category: 'LIDERAZGO & PERSONAS',
+                color: 'purple',
+                desc: 'Metodología estructurada para apoyar a los colaboradores en la adopción exitosa de transformaciones en procesos y herramientas de TI.',
+                sub1Title: 'Modelo Prosci ADKAR:',
+                sub1Desc: 'Conciencia (Awareness), Deseo (Desire), Conocimiento (Knowledge), Habilidad (Ability) y Refuerzo (Reinforcement).',
+                sub2Title: 'Manejo de la Resistencia:',
+                sub2Desc: 'Involucrar a los líderes de opinión informales dentro de los equipos de desarrollo para actuar como agentes evangelizadores del cambio.',
+                sub3Title: 'Métrica Clave:',
+                sub3Desc: 'Adoption Rate de nuevas herramientas corporativas (> 90% a 60 días).'
+            },
+            'silos': {
+                title: 'Romper Silos Organizacionales (Cultura DevSecOps)',
+                category: 'LIDERAZGO & PERSONAS',
+                color: 'purple',
+                desc: 'Desmantelar los muros invisibles donde cada departamento (Desarrollo, Seguridad, Operaciones, Negocio) defiende únicamente sus intereses individuales a expensas del sistema global.',
+                sub1Title: 'Cultura DevSecOps:',
+                sub1Desc: 'Seguridad integrada desde el primer día (Shift-Left). Desarrollo y Operaciones asumen corresponsabilidad compartida sobre la disponibilidad del servicio.',
+                sub2Title: 'Blameless Post-Mortem:',
+                sub2Desc: 'Análisis de fallas sin culpables individuales, enfocado exclusivamente en robustecer el sistema y la automatización.',
+                sub3Title: 'Métrica Clave:',
+                sub3Desc: 'DORA Metrics (Change Failure Rate < 5% & Lead Time < 1 hora).'
+            },
+            'comunicacion': {
+                title: 'Estrategias de Comunicación & Gobernanza',
+                category: 'LIDERAZGO & PERSONAS',
+                color: 'purple',
+                desc: 'Mecanismos formales e informales que aseguran la alineación de expectativas, la resolución rápida de bloqueos y la transparencia institucional.',
+                sub1Title: 'Herramientas de Comunicación:',
+                sub1Desc: '• Matrices de Escalamiento RACI • Planes de Gobernanza de TI (COBIT/ITIL) • Escucha Activa empática • Dashboards en tiempo real con datos objetivos.',
+                sub2Title: 'Manejo de Stakeholders:',
+                sub2Desc: 'Traducir métricas técnicas (latencia, IOPS, CVEs) al lenguaje de negocio (ingresos, costo de inactividad, cumplimiento legal).',
+                sub3Title: 'Métrica Clave:',
+                sub3Desc: 'Stakeholder Satisfaction Score (> 90%).'
+            },
+            'convergencia': {
+                title: 'Toma de Decisiones Estratégicas bajo Incertidumbre',
+                category: 'CONVERGENCIA SISTÉMICA',
+                color: 'emerald',
+                desc: 'La cúspide del modelo de la Diapositiva 10. Es el punto de unión donde la rigurosidad analítica de la Gestión del Riesgo se articula armónicamente con las Habilidades Blandas del Liderazgo.',
+                sub1Title: 'Impacto en la Organización:',
+                sub1Desc: 'Permite a los ingenieros de sistemas resolver problemas empresariales de forma holística, integrando código, arquitectura, leyes de protección de datos (Ley 29733) y factor humano.',
+                sub2Title: 'Respuesta a la Pregunta Retadora (Diapositiva 18):',
+                sub2Desc: '"¿De qué otra forma soluciona un problema un ingeniero de sistemas?" -> No solo programando, sino rediseñando procesos, liderando personas, mediando conflictos y alineando la tecnología a los objetivos del negocio.',
+                sub3Title: 'Métrica Clave:',
+                sub3Desc: 'Enterprise Business Value Delivered & Operational Resilience.'
+            }
+        };
+
+        function inspectConcept(id) {
+            const data = conceptDB[id];
+            if (!data) return;
+
+            document.getElementById('concept-title').innerText = data.title;
+            document.getElementById('concept-desc').innerText = data.desc;
+            document.getElementById('badge-category').innerText = data.category;
+            
+            document.getElementById('concept-sub1-title').innerText = data.sub1Title;
+            document.getElementById('concept-sub1-desc').innerText = data.sub1Desc;
+            
+            document.getElementById('concept-sub2-title').innerText = data.sub2Title;
+            document.getElementById('concept-sub2-desc').innerText = data.sub2Desc;
+            
+            document.getElementById('concept-sub3-title').innerText = data.sub3Title;
+            document.getElementById('concept-sub3-desc').innerText = data.sub3Desc;
+
+            // Highlight active node
+            document.querySelectorAll('.node-card').forEach(n => n.classList.remove('active'));
+            const target = event.currentTarget;
+            if (target) target.classList.add('active');
+        }
+
+        function filterNodes(type) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.className = "filter-btn py-2 px-4 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white hover:bg-slate-800/60";
+            });
+            const activeBtn = document.getElementById('filter-' + type);
+            if (activeBtn) {
+                activeBtn.className = "filter-btn py-2 px-4 rounded-xl text-xs font-bold transition-all bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg";
+            }
+
+            const colRiesgo = document.getElementById('col-riesgo');
+            const colLiderazgo = document.getElementById('col-liderazgo');
+            const colConvergencia = document.getElementById('col-convergencia');
+
+            if (type === 'all') {
+                colRiesgo.style.display = 'block';
+                colLiderazgo.style.display = 'block';
+                colConvergencia.style.display = 'block';
+            } else if (type === 'riesgo') {
+                colRiesgo.style.display = 'block';
+                colLiderazgo.style.display = 'none';
+                colConvergencia.style.display = 'none';
+            } else if (type === 'liderazgo') {
+                colRiesgo.style.display = 'none';
+                colLiderazgo.style.display = 'block';
+                colConvergencia.style.display = 'none';
+            } else if (type === 'problemologia') {
+                colRiesgo.style.display = 'block';
+                colLiderazgo.style.display = 'none';
+                colConvergencia.style.display = 'none';
+                inspectConcept('problemologia');
+            } else if (type === 'convergencia') {
+                colRiesgo.style.display = 'none';
+                colLiderazgo.style.display = 'none';
+                colConvergencia.style.display = 'block';
+                inspectConcept('convergencia');
+            }
+        }
+    </script>
+</body>
+</html>
