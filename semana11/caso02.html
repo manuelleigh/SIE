@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caso 02 | Simulador de Liderazgo Adaptativo y Gestión de Crisis TI</title>
+    <title>TechCrisis Command Center | Simulador de Liderazgo Adaptativo - Caso 02</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome 6.4.0 -->
@@ -11,7 +11,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -23,385 +23,709 @@
                         mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
-                        cyberDark: '#030712',
-                        cyberCard: '#0f172a',
+                        commandBg: '#020617',
+                        commandPanel: '#0b1329',
+                        commandCard: '#111c44',
+                        neonCyan: '#00f0ff',
                         neonBlue: '#38bdf8',
-                        neonCyan: '#06b6d4',
                         neonPurple: '#a855f7',
                         neonEmerald: '#10b981',
                         neonAmber: '#f59e0b',
-                        neonRed: '#ef4444'
+                        neonCrimson: '#ef4444'
                     }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #030712; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+        body {
+            background-color: #020617;
+            color: #f1f5f9;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
         }
+
+        /* Glassmorphism Command Center */
+        .glass-panel {
+            background: rgba(11, 19, 41, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+        }
+
         .glass-card {
-            background: rgba(30, 41, 59, 0.5);
+            background: rgba(17, 28, 68, 0.5);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         .glass-card:hover {
-            transform: translateY(-2px);
-            border-color: rgba(56, 189, 248, 0.3);
+            border-color: rgba(0, 240, 255, 0.35);
+            box-shadow: 0 10px 25px -5px rgba(0, 240, 255, 0.15);
         }
-        .text-gradient {
-            background: linear-gradient(to right, #38bdf8, #818cf8, #c084fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+
+        /* Ambient Radar Pulse */
+        .radar-pulse-crimson {
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            animation: pulse-crimson 2s infinite;
         }
+        @keyframes pulse-crimson {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        .radar-pulse-emerald {
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            animation: pulse-emerald 2s infinite;
+        }
+        @keyframes pulse-emerald {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        /* Slack Chat Scroll */
+        #chat-stream {
+            scrollbar-width: thin;
+            scrollbar-color: #1e293b #020617;
+        }
+        #chat-stream::-webkit-scrollbar { width: 5px; }
+        #chat-stream::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+
+        /* Media Print Styling for Executive Dossier */
         @media print {
             .no-print { display: none !important; }
             body { background: white !important; color: black !important; }
-            .print-clean { background: white !important; color: black !important; border: 1px solid black !important; box-shadow: none !important; }
+            .print-only { display: block !important; }
+            .print-clean {
+                background: white !important;
+                color: black !important;
+                border: 1px solid #334155 !important;
+                box-shadow: none !important;
+            }
         }
     </style>
 </head>
-<body class="antialiased relative min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col relative selection:bg-cyan-500 selection:text-white">
 
-    <!-- Ambient background lights -->
-    <div class="fixed top-0 left-1/4 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
-    <div class="fixed bottom-10 right-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+    <!-- Ambient background neon blobs -->
+    <div class="fixed top-0 left-1/4 w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[140px] pointer-events-none -z-10"></div>
+    <div class="fixed bottom-0 right-1/4 w-[500px] h-[500px] bg-red-600/10 rounded-full blur-[140px] pointer-events-none -z-10" id="ambient-danger"></div>
 
-    <!-- Header -->
-    <header class="glass-panel sticky top-0 z-50 px-6 py-4 border-b border-white/10 no-print">
+    <!-- Top War Room Command HUD -->
+    <header class="glass-panel sticky top-0 z-50 px-6 py-3 border-b border-white/10 no-print">
         <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
+            
+            <!-- Brand & Return -->
             <div class="flex items-center gap-3">
-                <a href="index.html" class="w-10 h-10 rounded-xl bg-slate-800/80 border border-slate-700 flex items-center justify-center text-cyan-400 hover:text-white hover:bg-cyan-500/20 transition-all" title="Regresar al Menú Semana 11">
+                <a href="index.html" class="w-9 h-9 rounded-xl bg-slate-800/80 border border-slate-700 flex items-center justify-center text-cyan-400 hover:text-white hover:bg-cyan-500/20 transition-all" title="Regresar al Hub Semana 11">
                     <i class="fa-solid fa-arrow-left"></i>
                 </a>
                 <div>
                     <div class="flex items-center gap-2">
-                        <span class="text-lg font-black text-white">TechCrisis <span class="text-cyan-400">Leadership</span></span>
-                        <span class="bg-cyan-500/20 text-cyan-300 text-xs font-semibold px-2 py-0.5 rounded-full border border-cyan-500/30">Caso 02</span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-500 radar-pulse-crimson" id="hud-status-dot"></span>
+                        <span class="text-base font-black tracking-wide text-white font-mono">INCIDENT COMMAND CENTER // <span class="text-cyan-400">NOVAPAY</span></span>
+                        <span class="bg-red-500/20 text-red-300 text-[10px] font-mono font-bold px-2 py-0.5 rounded border border-red-500/30" id="hud-severity-badge">P1 CRITICAL</span>
                     </div>
-                    <p class="text-xs text-slate-400">Habilidades Blandas de Liderazgo & Problemología en Proyectos Complejos de TI</p>
+                    <p class="text-[11px] text-slate-400 font-mono">Simulador de Liderazgo Adaptativo & Mediación DevSecOps | Sesión 11</p>
                 </div>
             </div>
 
-            <!-- Dynamic Team Health Badges -->
-            <div class="flex items-center gap-4 font-mono text-xs">
-                <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700">
-                    <span class="text-slate-400">Seguridad Psicológica:</span>
-                    <span id="metric-trust" class="text-emerald-400 font-bold">85%</span>
+            <!-- Real-Time Crisis Telemetry Bar -->
+            <div class="flex flex-wrap items-center gap-3 font-mono text-xs">
+                
+                <!-- Financial Loss Live Counter -->
+                <div class="px-3.5 py-1.5 rounded-xl bg-slate-900/90 border border-red-500/30 flex items-center gap-2.5 shadow-inner">
+                    <span class="text-slate-400 text-[10px] uppercase font-bold">Pérdida en Vivo:</span>
+                    <span class="text-red-400 font-bold text-sm tracking-tight" id="live-financial-loss">$45,000</span>
+                    <span class="text-[10px] text-red-500 animate-pulse">(+$12.50/s)</span>
                 </div>
-                <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700">
-                    <span class="text-slate-400">Alineación Silos:</span>
-                    <span id="metric-alignment" class="text-cyan-400 font-bold">78%</span>
+
+                <!-- Team Burnout / Stress Level -->
+                <div class="px-3.5 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700 flex items-center gap-2">
+                    <span class="text-slate-400 text-[10px] uppercase font-bold">Estrés del Equipo:</span>
+                    <div class="w-16 h-2 bg-slate-800 rounded-full overflow-hidden">
+                        <div id="stress-progress" class="h-full bg-red-500 transition-all duration-500" style="width: 88%;"></div>
+                    </div>
+                    <span id="stress-label" class="text-red-400 font-bold text-[11px]">88%</span>
                 </div>
-                <button onclick="window.print()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-xl text-xs font-semibold flex items-center gap-2 border border-slate-600 transition">
+
+                <!-- Psychological Safety Meter -->
+                <div class="px-3.5 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700 flex items-center gap-2">
+                    <span class="text-slate-400 text-[10px] uppercase font-bold">Seguridad Psicológica:</span>
+                    <span id="safety-label" class="text-amber-400 font-bold text-[11px]">42%</span>
+                </div>
+
+                <!-- Balcony Perspective Button (Ronald Heifetz Principle) -->
+                <button onclick="toggleBalconyModal(true)" class="px-3.5 py-1.5 bg-gradient-to-r from-purple-900/60 to-indigo-900/60 hover:from-purple-800 hover:to-indigo-800 text-purple-200 border border-purple-500/40 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow">
+                    <i class="fa-solid fa-binoculars text-purple-400"></i>
+                    <span>Subir al Balcón</span>
+                </button>
+
+                <!-- Export Final Report -->
+                <button onclick="window.print()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 border border-slate-700 transition">
                     <i class="fa-solid fa-file-pdf text-red-400"></i>
-                    <span>Exportar Acta</span>
+                    <span class="hidden sm:inline">Exportar Acta</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Main Simulator Container -->
-    <main class="flex-grow max-w-7xl mx-auto w-full p-6 space-y-8">
-        
-        <!-- Context Briefing Card -->
-        <div class="glass-panel rounded-2xl p-6 border-l-4 border-cyan-500 relative overflow-hidden">
-            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-                <div class="space-y-2 max-w-3xl">
-                    <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-cyan-500/10 text-cyan-300 text-xs font-mono font-bold uppercase">
-                        <i class="fa-solid fa-building-columns"></i> Empresa: NovaPay Digital Banking
+    <!-- Main Command Center Grid -->
+    <main class="flex-grow max-w-7xl mx-auto w-full p-4 sm:p-6 space-y-6">
+
+        <!-- Top Overview: Incident Briefing & Live Kubernetes Topology -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <!-- Left 7 cols: Scenario Narrative & Crisis Briefing -->
+            <div class="lg:col-span-7 glass-panel rounded-2xl p-6 border-l-4 border-red-500 relative flex flex-col justify-between">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-mono font-bold text-red-400 uppercase tracking-widest flex items-center gap-2">
+                            <i class="fa-solid fa-triangle-exclamation animate-bounce"></i> Incidente P1 en Curso // Pasarela de Pagos Caída
+                        </span>
+                        <span class="text-[11px] font-mono text-slate-400">Día de Quincena // 18:32 PM</span>
                     </div>
-                    <h1 class="text-2xl sm:text-3xl font-black text-white">
-                        Crisis de Despliegue en la Pasarela de Pagos (Modernización Cloud)
+
+                    <h1 class="text-xl sm:text-2xl font-black text-white leading-tight">
+                        Fallo Catastrófico en Producción: Guerra de Silos y Crisis de Liderazgo
                     </h1>
-                    <p class="text-slate-300 text-sm leading-relaxed">
-                        Durante la quincena de mayor tráfico del año, la pasarela de pagos colapsó tras un despliegue de emergencia. Los clientes no pueden realizar transacciones, la prensa y redes sociales arden, la Gerencia General amenaza con despidos masivos y los departamentos técnicos están atrapados en una guerra destructiva de culpas mutuas (silos organizacionales).
+
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        La pasarela de pagos de <strong>NovaPay Banking (1.5M usuarios)</strong> arrojó error <code>HTTP 500 OutOfMemory</code> tras un release de emergencia. Las transacciones están bloqueadas, los clientes inundan Twitter/X, la VP de Negocio exige cabezas rodando y los líderes de <strong>Desarrollo, Ciberseguridad y Operaciones</strong> se están culpando a gritos en el canal de incidentes.
                     </p>
+
+                    <!-- Crisis Metrics Ribbon -->
+                    <div class="grid grid-cols-3 gap-3 pt-2 font-mono text-center">
+                        <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                            <span class="text-[10px] text-slate-400 block uppercase">Disponibilidad Gateway</span>
+                            <span id="kpi-gateway" class="text-red-400 font-bold text-sm">12.4%</span>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                            <span class="text-[10px] text-slate-400 block uppercase">Latencia p99</span>
+                            <span id="kpi-latency" class="text-red-400 font-bold text-sm">8,420 ms</span>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                            <span class="text-[10px] text-slate-400 block uppercase">Transacciones Fallidas</span>
+                            <span id="kpi-failed-tx" class="text-red-400 font-bold text-sm">94.8%</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-700/80 font-mono text-xs text-left min-w-[260px] space-y-2">
-                    <div class="text-slate-400 uppercase font-bold flex items-center justify-between">
-                        <span>Pérdida Operativa:</span>
-                        <span class="text-red-400 animate-pulse">$45,000 / hr</span>
-                    </div>
-                    <div class="text-slate-400 uppercase font-bold flex items-center justify-between">
-                        <span>Estado Pasarela:</span>
-                        <span id="gateway-status" class="text-red-400 font-bold">DEGRADADA (429)</span>
-                    </div>
-                    <div class="text-slate-400 uppercase font-bold flex items-center justify-between">
-                        <span>Tu Rol:</span>
-                        <span class="text-cyan-400">Tech Lead / CIO Adaptativo</span>
-                    </div>
+
+                <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400 font-mono">
+                    <span class="flex items-center gap-1.5">
+                        <i class="fa-solid fa-user-astronaut text-cyan-400"></i> Tu Posición: <strong>Tech Lead / CIO Interino</strong>
+                    </span>
+                    <span>Marco: <strong>Liderazgo Adaptativo (Ronald Heifetz)</strong></span>
                 </div>
             </div>
+
+            <!-- Right 5 cols: Live Microservice & Pod Topology Visualizer -->
+            <div class="lg:col-span-5 glass-panel rounded-2xl p-6 border border-slate-700/80 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-cubes-stacked text-cyan-400"></i>
+                            <h3 class="font-bold text-white text-sm">Topología de Microservicios (Kubernetes)</h3>
+                        </div>
+                        <span id="cluster-status-text" class="text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/20 text-red-300 border border-red-500/30">
+                            2 PODS EN ERROR
+                        </span>
+                    </div>
+
+                    <!-- Pod Grid (6 Nodes) -->
+                    <div class="grid grid-cols-2 gap-3 text-xs font-mono" id="pod-grid">
+                        
+                        <!-- Pod 1: API Gateway -->
+                        <div class="p-3 rounded-xl bg-slate-900/80 border border-emerald-500/40 pod-node" id="pod-gateway">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-white">api-gateway</span>
+                                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                            </div>
+                            <span class="text-[10px] text-emerald-400">RUNNING (100%)</span>
+                        </div>
+
+                        <!-- Pod 2: Payment Engine v2 (Crashing) -->
+                        <div class="p-3 rounded-xl bg-red-950/40 border border-red-500 pod-node animate-pulse" id="pod-payment">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-white">payment-core-v2</span>
+                                <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                            </div>
+                            <span class="text-[10px] text-red-400 font-bold" id="pod-payment-status">OOMKilled (CrashLoop)</span>
+                        </div>
+
+                        <!-- Pod 3: DB Shard Primary (Saturated) -->
+                        <div class="p-3 rounded-xl bg-amber-950/40 border border-amber-500 pod-node" id="pod-db">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-white">db-shard-primary</span>
+                                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                            </div>
+                            <span class="text-[10px] text-amber-400" id="pod-db-status">CONEXIONES: 99.8%</span>
+                        </div>
+
+                        <!-- Pod 4: Auth Service -->
+                        <div class="p-3 rounded-xl bg-slate-900/80 border border-emerald-500/40 pod-node">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-white">auth-iam</span>
+                                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                            </div>
+                            <span class="text-[10px] text-emerald-400">RUNNING</span>
+                        </div>
+
+                        <!-- Pod 5: Redis Cache -->
+                        <div class="p-3 rounded-xl bg-slate-900/80 border border-emerald-500/40 pod-node">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-white">cache-redis</span>
+                                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                            </div>
+                            <span class="text-[10px] text-emerald-400">HEALTHY</span>
+                        </div>
+
+                        <!-- Pod 6: Audit & Security Agent -->
+                        <div class="p-3 rounded-xl bg-slate-900/80 border border-purple-500/40 pod-node">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-white">siem-telemetry</span>
+                                <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+                            </div>
+                            <span class="text-[10px] text-purple-300">ALERTING (HIGH)</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="mt-4 p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 text-[11px] font-mono text-slate-400 flex items-center justify-between">
+                    <span>Cluster: <code>k8s-prod-sa-east</code></span>
+                    <span class="text-cyan-400">Auto-Heal: Deshabilitado por política manual</span>
+                </div>
+            </div>
+
         </div>
 
-        <!-- Stakeholders in Conflict (The 4 Silos) -->
-        <div>
-            <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-users-slash text-amber-400"></i>
-                Mapa de Conflictos & Silos Organizacionales (Actores Involucrados)
-            </h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- The Interactive War Room Slack Channel & Leadership Decision Arena -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <!-- Left 7 cols: Interactive Slack War Room Channel (#war-room-outage) -->
+            <div class="lg:col-span-7 glass-panel rounded-2xl border border-slate-700/80 overflow-hidden flex flex-col h-[600px]">
                 
-                <!-- Stakeholder 1: Desarrollo -->
-                <div class="glass-card rounded-2xl p-5 border-t-2 border-blue-400 relative">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-lg">
-                            <i class="fa-solid fa-code"></i>
+                <!-- Slack Channel Header -->
+                <div class="bg-slate-900 px-5 py-3 border-b border-slate-800 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-red-500/20 text-red-400 flex items-center justify-center font-mono font-bold text-sm">
+                            #
                         </div>
                         <div>
-                            <h4 class="font-bold text-white text-sm">Ing. Martín Soto</h4>
-                            <p class="text-xs text-slate-400">Lead Backend Developer</p>
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-white text-sm">war-room-incident-p1</span>
+                                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                                <span class="text-[11px] text-slate-400">42 miembros en línea</span>
+                            </div>
+                            <p class="text-[10px] text-slate-400 font-mono">Tópico: Crisis de pagos - Prohibido mutear notificaciones</p>
                         </div>
                     </div>
-                    <p class="text-xs text-slate-300 italic mb-3">
-                        "Nos exigen lanzar funciones cada 48 horas. Seguridad y Operaciones tardan 3 semanas en aprobar un ticket; tuvimos que bypassear los tests para no retrasar el negocio."
-                    </p>
-                    <div class="text-[11px] font-mono text-blue-400 flex items-center gap-1">
-                        <i class="fa-solid fa-circle-exclamation"></i> Presión de Entrega vs Calidad
-                    </div>
+                    <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
+                        Slack Corporativo
+                    </span>
                 </div>
 
-                <!-- Stakeholder 2: CISO / Seguridad -->
-                <div class="glass-card rounded-2xl p-5 border-t-2 border-red-400 relative">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center text-lg">
-                            <i class="fa-solid fa-shield-virus"></i>
+                <!-- Chat Messages Stream (Scrollable) -->
+                <div class="flex-grow p-5 overflow-y-auto space-y-4 font-sans text-xs" id="chat-stream">
+                    
+                    <!-- Message 1: VP Negocio (Angry) -->
+                    <div class="flex items-start gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-purple-600/30 text-purple-300 border border-purple-500/40 flex items-center justify-center font-bold text-xs shrink-0">
+                            VW
                         </div>
-                        <div>
-                            <h4 class="font-bold text-white text-sm">Lic. Diana Paredes</h4>
-                            <p class="text-xs text-slate-400">CISO (Seguridad de Información)</p>
+                        <div class="space-y-1 max-w-[85%]">
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-purple-300">Dra. Valeria Wong</span>
+                                <span class="text-[10px] px-1.5 py-0.2 rounded bg-purple-500/20 text-purple-300 font-mono">VP Negocio</span>
+                                <span class="text-[10px] text-slate-500">18:33 PM</span>
+                            </div>
+                            <div class="p-3 rounded-2xl rounded-tl-none bg-purple-950/30 border border-purple-500/30 text-slate-200 leading-relaxed">
+                                <p>¡Estamos perdiendo clientes por miles y $45,000 USD por hora! ¡El Directorio está pidiendo explicaciones ya! <strong>Quiero saber quién fue el responsable que subió este código para aplicarle sanción inmediata</strong> y que me digan cuándo vuelve a funcionar.</p>
+                            </div>
                         </div>
                     </div>
-                    <p class="text-xs text-slate-300 italic mb-3">
-                        "Desarrollo subió código con librerías con vulnerabilidades críticas (CVE). Casi provocan una fuga de datos bajo la Ley 29733. ¡Exijo congelar todos los accesos ya!"
-                    </p>
-                    <div class="text-[11px] font-mono text-red-400 flex items-center gap-1">
-                        <i class="fa-solid fa-circle-xmark"></i> Bloqueo Normativo & Aversión
+
+                    <!-- Message 2: Lead Dev (Defensive) -->
+                    <div class="flex items-start gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-blue-600/30 text-blue-300 border border-blue-500/40 flex items-center justify-center font-bold text-xs shrink-0">
+                            MS
+                        </div>
+                        <div class="space-y-1 max-w-[85%]">
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-blue-300">Martín Soto</span>
+                                <span class="text-[10px] px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-300 font-mono">Lead Dev</span>
+                                <span class="text-[10px] text-slate-500">18:34 PM</span>
+                            </div>
+                            <div class="p-3 rounded-2xl rounded-tl-none bg-blue-950/30 border border-blue-500/30 text-slate-200 leading-relaxed">
+                                <p>A nosotros nos obligaron a entregar esto en 48 horas porque Negocio amenazó con que la competencia se adelantaría. ¡Seguridad tardó 10 días en revisar el PR anterior! Tuvimos que saltarnos las pruebas para cumplir su fecha límite.</p>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- Message 3: CISO (Indignant) -->
+                    <div class="flex items-start gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-red-600/30 text-red-300 border border-red-500/40 flex items-center justify-center font-bold text-xs shrink-0">
+                            DP
+                        </div>
+                        <div class="space-y-1 max-w-[85%]">
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-red-300">Diana Paredes</span>
+                                <span class="text-[10px] px-1.5 py-0.2 rounded bg-red-500/20 text-red-300 font-mono">CISO</span>
+                                <span class="text-[10px] text-slate-500">18:35 PM</span>
+                            </div>
+                            <div class="p-3 rounded-2xl rounded-tl-none bg-red-950/30 border border-red-500/30 text-slate-200 leading-relaxed">
+                                <p>¡Inaceptable! Ese commit se saltó el análisis SAST y contiene librerías vulnerables con CVE crítico. Están violando la Ley 29733 de Protección de Datos Personales y la norma ISO 27001. ¡Exijo desconectar los servidores hasta auditar todo!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Message 4: DevOps / SRE (Exhausted) -->
+                    <div class="flex items-start gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-amber-600/30 text-amber-300 border border-amber-500/40 flex items-center justify-center font-bold text-xs shrink-0">
+                            RV
+                        </div>
+                        <div class="space-y-1 max-w-[85%]">
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-amber-300">Roberto Vega</span>
+                                <span class="text-[10px] px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 font-mono">DevOps Lead</span>
+                                <span class="text-[10px] text-slate-500">18:36 PM</span>
+                            </div>
+                            <div class="p-3 rounded-2xl rounded-tl-none bg-amber-950/30 border border-amber-500/30 text-slate-200 leading-relaxed">
+                                <p>La base de datos legado colapsó por las consultas recursivas del nuevo microservicio. Llevamos 14 horas de guardia continua y la deuda técnica ya no aguanta más parches improvisados. Estamos al borde del colapso.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Injected chat updates will append here -->
+                    <div id="dynamic-chat-anchor"></div>
                 </div>
 
-                <!-- Stakeholder 3: Operaciones / SRE -->
-                <div class="glass-card rounded-2xl p-5 border-t-2 border-amber-400 relative">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg">
-                            <i class="fa-solid fa-server"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-white text-sm">Ing. Roberto Vega</h4>
-                            <p class="text-xs text-slate-400">DevOps / SRE Lead</p>
-                        </div>
-                    </div>
-                    <p class="text-xs text-slate-300 italic mb-3">
-                        "Nadie nos avisó de las dependencias de memoria del nuevo contenedor. La base de datos colapsó por deuda técnica acumulada de los sistemas legados. Estamos quemados (burnout)."
-                    </p>
-                    <div class="text-[11px] font-mono text-amber-400 flex items-center gap-1">
-                        <i class="fa-solid fa-fire"></i> Deuda Técnica & Sobrecarga
-                    </div>
-                </div>
-
-                <!-- Stakeholder 4: Gerencia General -->
-                <div class="glass-card rounded-2xl p-5 border-t-2 border-purple-400 relative">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg">
-                            <i class="fa-solid fa-briefcase"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-white text-sm">Dra. Valeria Wong</h4>
-                            <p class="text-xs text-slate-400">VP Negocio & Operaciones</p>
-                        </div>
-                    </div>
-                    <p class="text-xs text-slate-300 italic mb-3">
-                        "La competencia nos está quitando clientes cada minuto. No me importan los tecnicismos; quiero que la pasarela funcione hoy y quiero un responsable para aplicar sanciones disciplinarias."
-                    </p>
-                    <div class="text-[11px] font-mono text-purple-400 flex items-center gap-1">
-                        <i class="fa-solid fa-gavel"></i> Miedo al Castigo & Urgencia
-                    </div>
+                <!-- Slack Input Area (Status Bar) -->
+                <div class="bg-slate-900/90 px-4 py-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                    <span class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                        <span>El equipo espera tu respuesta como Líder... Elige tu acción a la derecha <i class="fa-solid fa-arrow-right text-cyan-400"></i></span>
+                    </span>
+                    <span class="font-mono text-[10px] text-cyan-400">CANAL: PRIVADO #INCIDENT-P1</span>
                 </div>
 
             </div>
+
+            <!-- Right 5 cols: Leadership Decision Engine & Framework Selector -->
+            <div class="lg:col-span-5 glass-panel rounded-2xl p-6 border border-slate-700/80 flex flex-col justify-between">
+                
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <div>
+                            <span class="text-[10px] font-mono font-bold text-cyan-400 uppercase">Motor de Decisiones de Liderazgo</span>
+                            <h3 class="text-base font-bold text-white" id="phase-title">Fase 1: Desescalar la Presión Directiva</h3>
+                        </div>
+                        <span id="phase-badge" class="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                            PASO 1 / 4
+                        </span>
+                    </div>
+
+                    <p class="text-xs text-slate-300 leading-relaxed" id="phase-instructions">
+                        La VP de Negocio está exigiendo culpables inmediatos en público y amenazando con despidos. Los ingenieros están bloqueados por el miedo. ¿Cómo intervienes tú como Líder Adaptativo?
+                    </p>
+
+                    <!-- Interactive Decision Choices -->
+                    <div class="space-y-3 pt-2" id="options-container">
+                        <!-- Injected via JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Leadership Style Legend -->
+                <div class="mt-6 pt-3 border-t border-slate-800 text-[11px] font-mono grid grid-cols-3 text-center text-slate-500">
+                    <span class="text-red-400">✕ Autocrático</span>
+                    <span class="text-amber-400">⚠ Burocrático</span>
+                    <span class="text-emerald-400 font-bold">✓ Adaptativo (Heifetz)</span>
+                </div>
+
+            </div>
+
         </div>
 
-        <!-- Problemology & Root Cause Analysis Tool (Slides 11 & 12) -->
+        <!-- Problemology & Root Cause Analysis Interactive Lab (Diapositivas 11 y 12) -->
         <div class="glass-panel rounded-2xl p-6 border border-slate-700">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                 <div>
-                    <span class="text-xs font-mono text-cyan-400 uppercase tracking-wider font-bold">Pensamiento Sistémico & Problemología (Diapositivas 11-12)</span>
-                    <h3 class="text-lg font-bold text-white">Análisis de Causa Raíz vs Síntoma Superficial</h3>
-                    <p class="text-xs text-slate-400">"La consecuencia de un error al definir un problema es proponer soluciones inadecuadas fuera de contexto del sistema."</p>
+                    <span class="text-xs font-mono font-bold text-amber-400 uppercase tracking-widest flex items-center gap-1.5">
+                        <i class="fa-solid fa-microscope"></i> Laboratorio de Problemología y Pensamiento Sistémico
+                    </span>
+                    <h3 class="text-xl font-bold text-white mt-1">Diagnóstico Sistémico: Causa Raíz vs. Síntoma Superficial</h3>
+                    <p class="text-xs text-slate-400 mt-1">
+                        "La consecuencia de un error al definir un problema es proponer soluciones inadecuadas fuera de contexto del sistema." (Sesión 11 - Diapositiva 12)
+                    </p>
                 </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="toggleTool('5whys')" id="btn-tab-5whys" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-cyan-600 text-white transition">
-                        <i class="fa-solid fa-list-ol mr-1"></i> Los 5 Porqués
+                
+                <!-- View Toggle Buttons -->
+                <div class="flex items-center gap-2 p-1 rounded-xl bg-slate-900 border border-slate-800">
+                    <button onclick="switchLabView('ishikawa')" id="btn-lab-ishikawa" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-gradient-to-r from-amber-600 to-amber-500 text-white shadow">
+                        <i class="fa-solid fa-diagram-project mr-1.5"></i> Espina de Ishikawa (SVG)
                     </button>
-                    <button onclick="toggleTool('ishikawa')" id="btn-tab-ishikawa" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-400 hover:text-white transition">
-                        <i class="fa-solid fa-diagram-project mr-1"></i> Diagrama de Ishikawa
+                    <button onclick="switchLabView('5whys')" id="btn-lab-5whys" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-list-check mr-1.5"></i> Los 5 Porqués (Cascada)
                     </button>
                 </div>
             </div>
 
-            <!-- Tool 1: 5 Whys Interactive -->
-            <div id="tool-5whys" class="space-y-3">
-                <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-start gap-3 text-xs">
+            <!-- View 1: Interactive SVG Ishikawa Diagram -->
+            <div id="lab-ishikawa" class="space-y-4">
+                <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+                    <p class="text-xs text-slate-300 mb-3">
+                        Haz clic en cada espina del pescado para revelar cómo los factores de <strong>Personas</strong>, <strong>Procesos</strong>, <strong>Tecnología</strong> y <strong>Gobernanza</strong> conspiraron para crear la falla:
+                    </p>
+
+                    <!-- SVG Fishbone Visualizer -->
+                    <div class="overflow-x-auto">
+                        <svg viewBox="0 0 900 320" class="w-full min-w-[750px] text-xs font-mono select-none">
+                            <!-- Central Spine -->
+                            <line x1="50" y1="160" x2="720" y2="160" stroke="#00f0ff" stroke-width="4" stroke-linecap="round"/>
+                            <polygon points="720,150 750,160 720,170" fill="#00f0ff" />
+                            
+                            <!-- Problem Box (Head of the Fish) -->
+                            <rect x="750" y="120" width="140" height="80" rx="10" fill="#ef4444" fill-opacity="0.2" stroke="#ef4444" stroke-width="2" />
+                            <text x="820" y="152" fill="#ffffff" font-weight="bold" font-size="11" text-anchor="middle">CAÍDA PASARELA</text>
+                            <text x="820" y="172" fill="#ef4444" font-weight="bold" font-size="10" text-anchor="middle">HTTP 500 (OOM)</text>
+
+                            <!-- Bone 1: Personas & Silos (Top Left) -->
+                            <g class="cursor-pointer group" onclick="highlightBone('personas')">
+                                <line x1="160" y1="50" x2="260" y2="160" stroke="#38bdf8" stroke-width="2.5" />
+                                <rect x="90" y="25" width="140" height="35" rx="6" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5" />
+                                <text x="160" y="47" fill="#38bdf8" font-weight="bold" font-size="11" text-anchor="middle">1. PERSONAS / SILOS</text>
+                                <!-- Sub branch -->
+                                <line x1="180" y1="100" x2="250" y2="100" stroke="#64748b" stroke-width="1.5" stroke-dasharray="3" />
+                                <text x="215" y="93" fill="#94a3b8" font-size="9" text-anchor="middle">Miedo al castigo</text>
+                            </g>
+
+                            <!-- Bone 2: Procesos / Manual (Top Right) -->
+                            <g class="cursor-pointer group" onclick="highlightBone('procesos')">
+                                <line x1="450" y1="50" x2="550" y2="160" stroke="#a855f7" stroke-width="2.5" />
+                                <rect x="380" y="25" width="140" height="35" rx="6" fill="#1e293b" stroke="#a855f7" stroke-width="1.5" />
+                                <text x="450" y="47" fill="#c084fc" font-weight="bold" font-size="11" text-anchor="middle">2. PROCESOS MANUALES</text>
+                                <!-- Sub branch -->
+                                <line x1="470" y1="100" x2="540" y2="100" stroke="#64748b" stroke-width="1.5" stroke-dasharray="3" />
+                                <text x="505" y="93" fill="#94a3b8" font-size="9" text-anchor="middle">Aprobaciones lentas</text>
+                            </g>
+
+                            <!-- Bone 3: Tecnología / Deuda (Bottom Left) -->
+                            <g class="cursor-pointer group" onclick="highlightBone('tecnologia')">
+                                <line x1="160" y1="270" x2="260" y2="160" stroke="#f59e0b" stroke-width="2.5" />
+                                <rect x="90" y="260" width="140" height="35" rx="6" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5" />
+                                <text x="160" y="282" fill="#fbbf24" font-weight="bold" font-size="11" text-anchor="middle">3. DEUDA TÉCNICA</text>
+                                <!-- Sub branch -->
+                                <line x1="180" y1="220" x2="250" y2="220" stroke="#64748b" stroke-width="1.5" stroke-dasharray="3" />
+                                <text x="215" y="213" fill="#94a3b8" font-size="9" text-anchor="middle">Bases de datos legadas</text>
+                            </g>
+
+                            <!-- Bone 4: Gobernanza / Negocio (Bottom Right) -->
+                            <g class="cursor-pointer group" onclick="highlightBone('gobernanza')">
+                                <line x1="450" y1="270" x2="550" y2="160" stroke="#10b981" stroke-width="2.5" />
+                                <rect x="380" y="260" width="140" height="35" rx="6" fill="#1e293b" stroke="#10b981" stroke-width="1.5" />
+                                <text x="450" y="282" fill="#34d399" font-weight="bold" font-size="11" text-anchor="middle">4. GOBERNANZA & PRESIÓN</text>
+                                <!-- Sub branch -->
+                                <line x1="470" y1="220" x2="540" y2="220" stroke="#64748b" stroke-width="1.5" stroke-dasharray="3" />
+                                <text x="505" y="213" fill="#94a3b8" font-size="9" text-anchor="middle">Plazos irreales sin OLA</text>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- Dynamic Bone Description Box -->
+                    <div id="ishikawa-detail-box" class="mt-4 p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-slate-300">
+                        <strong class="text-cyan-400 block mb-1">Diagnóstico Ishikawa Seleccionado:</strong>
+                        <span>Haz clic sobre cualquiera de las 4 espinas del diagrama para analizar su impacto en el colapso del sistema.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View 2: Cascading 5 Whys Flow (Hidden by default) -->
+            <div id="lab-5whys" class="hidden space-y-3">
+                
+                <div class="p-3.5 rounded-xl bg-slate-900/80 border-l-4 border-red-500 text-xs flex items-start gap-3">
                     <span class="w-6 h-6 rounded-md bg-red-500/20 text-red-400 font-mono font-bold flex items-center justify-center shrink-0">1</span>
                     <div>
-                        <strong class="text-white block">¿Por qué falló la pasarela de pagos?</strong>
-                        <span class="text-slate-400">El pod de microservicios de pago consumió el 100% de la RAM del servidor y cayó en un bucle infinito (OutOfMemory).</span>
+                        <strong class="text-white block">¿Por qué colapsó la pasarela en día de quincena?</strong>
+                        <span class="text-slate-400">El contenedor <code>payment-core-v2</code> consumió el 100% de la memoria RAM del pod y crasheó repetidamente.</span>
                     </div>
                 </div>
 
-                <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-start gap-3 text-xs">
+                <div class="p-3.5 rounded-xl bg-slate-900/80 border-l-4 border-amber-500 text-xs flex items-start gap-3">
                     <span class="w-6 h-6 rounded-md bg-amber-500/20 text-amber-400 font-mono font-bold flex items-center justify-center shrink-0">2</span>
                     <div>
-                        <strong class="text-white block">¿Por qué consumió tanta memoria de golpe?</strong>
-                        <span class="text-slate-400">Había una fuga de memoria por consultas recursivas no optimizadas a la base de datos legado.</span>
+                        <strong class="text-white block">¿Por qué consumió tanta memoria?</strong>
+                        <span class="text-slate-400">Porque se incluyó una consulta recursiva no optimizada que saturó el pool de conexiones de la base de datos legado.</span>
                     </div>
                 </div>
 
-                <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-start gap-3 text-xs">
+                <div class="p-3.5 rounded-xl bg-slate-900/80 border-l-4 border-amber-500 text-xs flex items-start gap-3">
                     <span class="w-6 h-6 rounded-md bg-amber-500/20 text-amber-400 font-mono font-bold flex items-center justify-center shrink-0">3</span>
                     <div>
-                        <strong class="text-white block">¿Por qué ese código defectuoso llegó a producción sin detectarse?</strong>
-                        <span class="text-slate-400">Porque se omitieron las pruebas de estrés automatizadas y el análisis estático de seguridad (SAST).</span>
+                        <strong class="text-white block">¿Por qué esa consulta no optimizada llegó a producción sin detectarse?</strong>
+                        <span class="text-slate-400">Porque se omitieron las pruebas de carga automatizadas y el análisis estático de seguridad (SAST).</span>
                     </div>
                 </div>
 
-                <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-start gap-3 text-xs">
+                <div class="p-3.5 rounded-xl bg-slate-900/80 border-l-4 border-cyan-500 text-xs flex items-start gap-3">
                     <span class="w-6 h-6 rounded-md bg-cyan-500/20 text-cyan-400 font-mono font-bold flex items-center justify-center shrink-0">4</span>
                     <div>
-                        <strong class="text-white block">¿Por qué se omitieron las pruebas de calidad y seguridad?</strong>
-                        <span class="text-slate-400">Porque el proceso de revisión de seguridad era 100% manual, tardaba 15 días y Desarrollo tenía una fecha de entrega límite inamovible impuesta por Negocio.</span>
+                        <strong class="text-white block">¿Por qué se omitieron las pruebas de seguridad y carga?</strong>
+                        <span class="text-slate-400">Porque Seguridad revisa manualmente en semanas, y Negocio amenazó con penalidades si no se desplegaba en 48 horas.</span>
                     </div>
                 </div>
 
-                <div class="p-4 rounded-xl bg-emerald-950/30 border border-emerald-500/40 flex items-start gap-3 text-xs">
+                <div class="p-4 rounded-xl bg-emerald-950/30 border-2 border-emerald-500 text-xs flex items-start gap-3">
                     <span class="w-6 h-6 rounded-md bg-emerald-500/20 text-emerald-400 font-mono font-bold flex items-center justify-center shrink-0">5</span>
                     <div>
                         <strong class="text-emerald-300 block font-bold text-sm">Causa Raíz Sistémica (Problemología):</strong>
-                        <span class="text-slate-200">
-                            <strong>Ausencia de cultura y gobernanza DevSecOps:</strong> Existen silos estancos entre áreas, falta de seguridad psicológica que fomente alertar riesgos a tiempo, y una brecha donde la seguridad no está automatizada en el pipeline de entrega continua. Castigar a un programador no soluciona el sistema.
+                        <span class="text-slate-200 leading-relaxed">
+                            <strong>Falta de Cultura DevSecOps & Ausencia de Seguridad Psicológica:</strong> Existe un abismo de desconfianza entre departamentos. El desarrollador ocultó el riesgo por miedo al despido, Seguridad actuó como policía burocrático y Negocio impuso plazos sin consultar la capacidad arquitectónica.
                         </span>
                     </div>
                 </div>
-            </div>
 
-            <!-- Tool 2: Ishikawa Interactive (Hidden by default) -->
-            <div id="tool-ishikawa" class="hidden">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                    <div class="p-4 rounded-xl bg-slate-900/70 border border-blue-500/30 space-y-2">
-                        <h4 class="font-bold text-blue-400 flex items-center gap-2">
-                            <i class="fa-solid fa-users"></i> Personas & Cultura
-                        </h4>
-                        <ul class="space-y-1.5 text-slate-300">
-                            <li>• Silos departamentales cerrados (Dev vs Sec vs Ops).</li>
-                            <li>• Miedo al castigo disciplinario que oculta las fallas antes del despliegue.</li>
-                            <li>• Falta de capacitación en código seguro para desarrolladores.</li>
-                        </ul>
-                    </div>
-
-                    <div class="p-4 rounded-xl bg-slate-900/70 border border-purple-500/30 space-y-2">
-                        <h4 class="font-bold text-purple-400 flex items-center gap-2">
-                            <i class="fa-solid fa-arrows-split-up-and-left"></i> Procesos & Gobernanza
-                        </h4>
-                        <ul class="space-y-1.5 text-slate-300">
-                            <li>• Aprobaciones de seguridad lentas y burocráticas (cuello de botella).</li>
-                            <li>• Ausencia de Acuerdos de Nivel Operativo (OLA) entre áreas.</li>
-                            <li>• Despliegues directos a producción sin paso intermedio de staging fiel.</li>
-                        </ul>
-                    </div>
-
-                    <div class="p-4 rounded-xl bg-slate-900/70 border border-cyan-500/30 space-y-2">
-                        <h4 class="font-bold text-cyan-400 flex items-center gap-2">
-                            <i class="fa-solid fa-microchip"></i> Tecnología & Arquitectura
-                        </h4>
-                        <ul class="space-y-1.5 text-slate-300">
-                            <li>• Deuda tecnológica acumulada en la base de datos central.</li>
-                            <li>• Falta de herramientas de observabilidad en tiempo real (APM).</li>
-                            <li>• Pruebas de carga que no reflejaban el volumen real de quincena.</li>
-                        </ul>
-                    </div>
-
-                    <div class="p-4 rounded-xl bg-slate-900/70 border border-amber-500/30 space-y-2">
-                        <h4 class="font-bold text-amber-400 flex items-center gap-2">
-                            <i class="fa-solid fa-chart-line"></i> Entorno de Negocio
-                        </h4>
-                        <ul class="space-y-1.5 text-slate-300">
-                            <li>• Plazos comerciales agresivos sin consulta técnica previa.</li>
-                            <li>• Falta de comprensión directiva del costo del riesgo tecnológico.</li>
-                            <li>• Presión externa por competir con otras fintechs del mercado.</li>
-                        </ul>
-                    </div>
-                </div>
             </div>
         </div>
 
-        <!-- Interactive 4-Phase Leadership Decision Engine -->
-        <div class="glass-panel rounded-2xl p-6 border border-slate-700">
-            <div class="flex justify-between items-center mb-6">
+        <!-- The Executive Deliverable: Blameless Post-Mortem & Scorecard (Generated upon completion) -->
+        <div id="final-deliverable" class="glass-panel rounded-2xl p-8 border border-slate-700 space-y-6 print-clean">
+            <div class="border-b border-slate-700 pb-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <span class="text-xs font-mono text-cyan-400 uppercase font-bold">Simulación de Habilidades Blandas de Liderazgo Adaptativo</span>
-                    <h3 class="text-xl font-bold text-white">Toma de Decisiones Estratégicas bajo Incertidumbre</h3>
+                    <span class="text-xs font-mono text-cyan-400 uppercase font-bold tracking-wider">Entregable Oficial de la Sesión 11 // Caso 02</span>
+                    <h2 class="text-2xl font-black text-white mt-1">Acta Ejecutiva: Blameless Post-Mortem & Gobernanza DevSecOps</h2>
+                    <p class="text-xs text-slate-400">Transformación del Conflicto Organizacional en Resiliencia Tecnológica</p>
                 </div>
-                <div class="flex items-center gap-2">
-                    <span id="decision-stage-badge" class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                        FASE 1 DE 4
-                    </span>
-                </div>
-            </div>
-
-            <!-- Decision Scenario Display Box -->
-            <div id="decision-box" class="space-y-6">
-                <!-- Injected via JavaScript -->
-            </div>
-        </div>
-
-        <!-- Official Governance Accord Document (Printable / Exportable) -->
-        <div id="governance-accord" class="glass-panel rounded-2xl p-8 border border-slate-700 space-y-6 print-clean">
-            <div class="border-b border-slate-700 pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                    <span class="text-xs font-mono text-cyan-400 uppercase font-bold">Entregable de Liderazgo & Gestión del Cambio (Sesión 11)</span>
-                    <h3 class="text-xl font-black text-white">Acta de Gobernanza DevSecOps & Resolución de Silos</h3>
-                    <p class="text-xs text-slate-400">Compromiso institucional de Liderazgo Adaptativo - NovaPay Digital Banking</p>
-                </div>
-                <div class="text-right text-xs font-mono text-slate-400">
+                <div class="text-right font-mono text-xs text-slate-400">
                     <div>FECHA: 23/10/2026</div>
-                    <div>ESTADO: <span class="text-emerald-400 font-bold" id="accord-status">EN PROCESO DE MEDIACIÓN</span></div>
+                    <div>ESTADO DE RESOLUCIÓN: <span id="accord-final-status" class="text-amber-400 font-bold">EN NEGOCIACIÓN</span></div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                <div class="p-4 rounded-xl bg-slate-900/70 border border-slate-800">
-                    <strong class="text-cyan-300 block mb-1">1. Seguridad Psicológica & Post-Mortem</strong>
-                    <p class="text-slate-300">Se instaura la política de <em>"Blameless Post-Mortem"</em>: no se buscan culpables individuales, sino fallos sistémicos en procesos y automatización.</p>
+            <!-- Leadership Competency Scorecard -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+                    <span class="text-[10px] text-slate-400 uppercase font-mono block">Escucha Activa</span>
+                    <span class="text-2xl font-black text-cyan-400" id="score-listening">94%</span>
+                    <span class="text-[10px] text-emerald-400 block mt-1">Empatía & Asertividad</span>
                 </div>
-                <div class="p-4 rounded-xl bg-slate-900/70 border border-slate-800">
-                    <strong class="text-purple-300 block mb-1">2. Integración DevSecOps Continua</strong>
-                    <p class="text-slate-300">Seguridad deja de ser un guardián burocrático y se convierte en facilitador con escaneo SAST automático en menos de 5 minutos por commit.</p>
+                <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+                    <span class="text-[10px] text-slate-400 uppercase font-mono block">Manejo de la Presión</span>
+                    <span class="text-2xl font-black text-purple-400" id="score-pressure">90%</span>
+                    <span class="text-[10px] text-purple-300 block mt-1">Blindaje al Equipo</span>
                 </div>
-                <div class="p-4 rounded-xl bg-slate-900/70 border border-slate-800">
-                    <strong class="text-emerald-300 block mb-1">3. Métricas Compartidas (DORA)</strong>
-                    <p class="text-slate-300">Desarrollo, Seguridad y Operaciones comparten objetivos comunes de negocio: tiempo de recuperación (MTTR < 15m) y tasa de éxito de cambios (> 95%).</p>
+                <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+                    <span class="text-[10px] text-slate-400 uppercase font-mono block">Romper Silos (DevSecOps)</span>
+                    <span class="text-2xl font-black text-emerald-400" id="score-silos">96%</span>
+                    <span class="text-[10px] text-emerald-300 block mt-1">Colaboración Co-responsable</span>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+                    <span class="text-[10px] text-slate-400 uppercase font-mono block">Pensamiento Sistémico</span>
+                    <span class="text-2xl font-black text-amber-400" id="score-systemic">98%</span>
+                    <span class="text-[10px] text-amber-300 block mt-1">Problemología Heifetz</span>
                 </div>
             </div>
 
-            <div class="pt-4 border-t border-slate-800 flex flex-wrap justify-between items-center text-xs text-slate-400">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-stamp text-emerald-400"></i>
-                    <span>Firmado Digitalmente por los 4 Líderes de Departamento (Dev, Sec, Ops, Negocio)</span>
-                </div>
-                <div class="font-mono text-[11px] text-cyan-400">
-                    ID-HASH: 9f41a8c2...33e0
+            <!-- 30-60-90 Day Action Plan -->
+            <div class="space-y-3 text-xs">
+                <h4 class="font-bold text-white text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-calendar-check text-cyan-400"></i>
+                    Plan de Acción y Gobernanza Institucional (30 / 60 / 90 Días)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="p-4 rounded-xl bg-slate-900/70 border border-slate-800">
+                        <strong class="text-cyan-300 block mb-1">A 30 Días // Shift-Left Security:</strong>
+                        <p class="text-slate-300">Integración de escaneos SAST/DAST automatizados en el pipeline CI/CD con umbral máximo de 3 minutos. La CISO capacita a 2 'Security Champions' por squad.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900/70 border border-slate-800">
+                        <strong class="text-purple-300 block mb-1">A 60 Días // Acuerdos de Nivel Operativo (OLA):</strong>
+                        <p class="text-slate-300">Firma del acuerdo de colaboración entre Negocio y TI. Se define un 'Presupuesto de Error' (Error Budget) que balancea la velocidad de releases con la estabilidad.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900/70 border border-slate-800">
+                        <strong class="text-emerald-300 block mb-1">A 90 Días // Cultura Blameless & SRE:</strong>
+                        <p class="text-slate-300">Desmantelamiento formal de los silos departamentales mediante métricas DORA unificadas (MTTR < 15 min y Change Failure Rate < 5%).</p>
+                    </div>
                 </div>
             </div>
+
+            <!-- Institutional Signatures Block -->
+            <div class="pt-6 border-t border-slate-700">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center font-mono text-xs">
+                    <div class="p-3 rounded-lg bg-slate-900/50 border border-slate-800">
+                        <div class="text-emerald-400 font-bold mb-1"><i class="fa-solid fa-check"></i> RATIFICADO</div>
+                        <div class="font-bold text-white">Martín Soto</div>
+                        <div class="text-[10px] text-slate-400">Lead Developer</div>
+                    </div>
+                    <div class="p-3 rounded-lg bg-slate-900/50 border border-slate-800">
+                        <div class="text-emerald-400 font-bold mb-1"><i class="fa-solid fa-check"></i> RATIFICADO</div>
+                        <div class="font-bold text-white">Diana Paredes</div>
+                        <div class="text-[10px] text-slate-400">CISO / Seguridad</div>
+                    </div>
+                    <div class="p-3 rounded-lg bg-slate-900/50 border border-slate-800">
+                        <div class="text-emerald-400 font-bold mb-1"><i class="fa-solid fa-check"></i> RATIFICADO</div>
+                        <div class="font-bold text-white">Roberto Vega</div>
+                        <div class="text-[10px] text-slate-400">DevOps & SRE</div>
+                    </div>
+                    <div class="p-3 rounded-lg bg-slate-900/50 border border-slate-800">
+                        <div class="text-emerald-400 font-bold mb-1"><i class="fa-solid fa-check"></i> RATIFICADO</div>
+                        <div class="font-bold text-white">Dra. Valeria Wong</div>
+                        <div class="text-[10px] text-slate-400">VP Negocio</div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </main>
+
+    <!-- Modal: "Subir al Balcón" (Ronald Heifetz's Balcony Perspective) -->
+    <div id="balcony-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden no-print">
+        <div class="glass-panel rounded-3xl p-6 sm:p-8 max-w-3xl w-full border border-purple-500/40 space-y-6 relative">
+            <button onclick="toggleBalconyModal(false)" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-2xl">
+                    <i class="fa-solid fa-binoculars"></i>
+                </div>
+                <div>
+                    <span class="text-xs font-mono uppercase text-purple-400 font-bold">Principio de Liderazgo Adaptativo (Ronald Heifetz)</span>
+                    <h3 class="text-xl font-black text-white">Subirse al Balcón: La Perspectiva Sistémica</h3>
+                </div>
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Cuando los líderes están en la pista de baile (en medio del caos y el ruido de la crisis), solo ven a la persona que tienen al lado gritando o empujando. <strong>"Subirse al balcón"</strong> significa distanciarse momentáneamente del fragor emocional para observar los patrones de todo el sistema:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
+                    <strong class="text-cyan-300 block mb-1">En la Pista de Baile (Enfoque Reactivo):</strong>
+                    <p class="text-slate-400">"El programador fue negligente y la CISO es una burócrata. Hay que castigar y apurar el parche."</p>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-900/90 border border-purple-500/30">
+                    <strong class="text-purple-300 block mb-1">Desde el Balcón (Liderazgo Adaptativo):</strong>
+                    <p class="text-slate-300">"El sistema está diseñado para fallar: premiamos la velocidad sin seguridad, castigamos el error fomentando el secreto, y los silos no tienen metas comunes."</p>
+                </div>
+            </div>
+
+            <div class="p-4 rounded-xl bg-purple-950/30 border border-purple-500/30 text-xs text-purple-200">
+                <i class="fa-solid fa-lightbulb text-purple-400 mr-1.5"></i>
+                <strong>Consejo del Mentor:</strong> Tu labor en esta crisis no es escribir código ni buscar culpables, sino <em>regular el nivel de estrés del equipo</em> para que la inteligencia colectiva resuelva la contingencia.
+            </div>
+
+            <div class="text-right">
+                <button onclick="toggleBalconyModal(false)" class="px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold transition shadow-lg shadow-purple-600/30">
+                    Volver al Centro de Mando
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="glass-panel border-t border-white/10 p-6 mt-12 text-center text-xs text-slate-500 no-print">
@@ -410,7 +734,7 @@
                 <i class="fa-solid fa-graduation-cap text-cyan-400 text-base"></i>
                 <span>Sistemas de Información Empresarial | Semana 11 - Caso 02</span>
             </div>
-            <p>Simulador de Habilidades Blandas de Liderazgo en Proyectos de TI</p>
+            <p>Plataforma de Simulación de Liderazgo Adaptativo & Gobernanza en TI</p>
             <div class="flex items-center gap-4 text-slate-400">
                 <a href="caso03.html" class="hover:text-cyan-400 transition">Ver Caso 03 (Mapa Conceptual)</a>
                 <span>•</span>
@@ -419,147 +743,191 @@
         </div>
     </footer>
 
-    <!-- Interactive Simulator Engine -->
+    <!-- Interactive Simulator Core JavaScript -->
     <script>
-        // Toggle between 5 Whys and Ishikawa
-        function toggleTool(tool) {
-            const whys = document.getElementById('tool-5whys');
-            const ishikawa = document.getElementById('tool-ishikawa');
-            const btnWhys = document.getElementById('btn-tab-5whys');
-            const btnIshikawa = document.getElementById('btn-tab-ishikawa');
+        // Financial Loss Real-Time Ticker
+        let lossCounter = 45000;
+        let isCrisisActive = true;
+        setInterval(() => {
+            if (isCrisisActive) {
+                lossCounter += 12.5;
+                document.getElementById('live-financial-loss').innerText = '$' + Math.floor(lossCounter).toLocaleString();
+            }
+        }, 1000);
 
-            if (tool === '5whys') {
-                whys.classList.remove('hidden');
-                ishikawa.classList.add('hidden');
-                btnWhys.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-cyan-600 text-white transition";
-                btnIshikawa.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-400 hover:text-white transition";
-            } else {
-                whys.classList.add('hidden');
+        // Balcony Modal Toggle
+        function toggleBalconyModal(show) {
+            const modal = document.getElementById('balcony-modal');
+            if (show) modal.classList.remove('hidden');
+            else modal.classList.add('hidden');
+        }
+
+        // Lab View Toggle (Ishikawa vs 5 Whys)
+        function switchLabView(view) {
+            const ishikawa = document.getElementById('lab-ishikawa');
+            const whys = document.getElementById('lab-5whys');
+            const btnIshikawa = document.getElementById('btn-lab-ishikawa');
+            const btnWhys = document.getElementById('btn-lab-5whys');
+
+            if (view === 'ishikawa') {
                 ishikawa.classList.remove('hidden');
-                btnWhys.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-400 hover:text-white transition";
-                btnIshikawa.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-cyan-600 text-white transition";
+                whys.classList.add('hidden');
+                btnIshikawa.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-gradient-to-r from-amber-600 to-amber-500 text-white shadow";
+                btnWhys.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white";
+            } else {
+                ishikawa.classList.add('hidden');
+                whys.classList.remove('hidden');
+                btnIshikawa.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white";
+                btnWhys.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-gradient-to-r from-amber-600 to-amber-500 text-white shadow";
             }
         }
 
-        // 4 Decision Stages
-        let currentStage = 1;
-        let trustScore = 50;
-        let alignmentScore = 45;
+        // Ishikawa Bone Highlight Detail
+        const boneDetails = {
+            'personas': '<strong>Espina 1: Personas & Silos</strong><br>Desconfianza interdepartamental. Los desarrolladores ven a Seguridad como un obstáculo burocrático y Seguridad ve a los desarrolladores como imprudentes. El miedo a represalias generó que se ocultara el riesgo técnico antes del deploy.',
+            'procesos': '<strong>Espina 2: Procesos Manuales</strong><br>La revisión de seguridad tardaba 10 días hábiles en hojas de cálculo. No existían puertas de enlace automatizadas en el pipeline, lo que empujó al equipo a forzar el paso a producción sin pruebas.',
+            'tecnologia': '<strong>Espina 3: Deuda Técnica Acumulada</strong><br>El microservicio interactúa con una base de datos legado sin índices optimizados. La falta de observabilidad (APM) impidió detectar la fuga de memoria en ambiente de staging.',
+            'gobernanza': '<strong>Espina 4: Gobernanza & Presión Comercial</strong><br>Se fijó una fecha de entrega comercial inamovible sin consultar la capacidad de los equipos de ingeniería ni establecer un Acuerdo de Nivel Operativo (OLA).'
+        };
 
-        const stages = [
+        function highlightBone(boneKey) {
+            document.getElementById('ishikawa-detail-box').innerHTML = boneDetails[boneKey];
+        }
+
+        // 4 Dynamic Decision Phases
+        let currentPhase = 1;
+        let psychologicalSafety = 42;
+        let stressLevel = 88;
+
+        const phases = [
             {
-                stage: 1,
-                title: "Fase 1: Manejo de la Presión Directiva y Contención de la Crisis",
-                context: "La VP de Negocio está furiosa por las pérdidas de $45,000/hr y exige en la videollamada de emergencia que identifiques inmediatamente al 'responsable' del código defectuoso para iniciar su despido disciplinario y calmar a los inversionistas.",
+                phase: 1,
+                title: "Fase 1: Desescalar la Presión Directiva y Blindar al Equipo",
+                badge: "PASO 1 / 4",
+                instructions: "La VP de Negocio (Dra. Valeria Wong) está furiosa en el chat pidiendo el despido inmediato del responsable para calmar al Directorio. Los ingenieros están aterrorizados y a la defensiva. ¿Cómo respondes en el canal #war-room-incident-p1?",
                 options: [
                     {
-                        text: "Opción A: Ceder a la presión y culpar públicamente al equipo de Desarrollo para proteger tu puesto ante la Gerencia.",
+                        text: "Opción A (Autocrática): Ceder a la presión y decir: 'Dra. Wong, tiene razón. El Lead Dev cometió una grave imprudencia al bypassear los tests. Enviaremos el reporte a RRHH hoy mismo'.",
                         type: "bad",
-                        feedback: "Resultado Negativo: El equipo entra en pánico y oculta información crítica por miedo. La fuga de cerebros se acelera y la moral cae a cero.",
-                        trustDelta: -25,
-                        alignDelta: -20,
-                        gateway: "CAÍDA TOTAL (500)"
+                        chatReply: "Valeria, el equipo técnico falló. Voy a identificar al culpable para la sanción.",
+                        consequence: "Desastre cultural. El Lead Dev abandona la llamada, los ingenieros cierran sus terminales por miedo y la recuperación se estanca por completo.",
+                        safetyDelta: -30,
+                        stressDelta: +10,
+                        gateway: "0.0% (CAÍDA TOTAL)",
+                        k8sChange: "crash"
                     },
                     {
-                        text: "Opción B: Ignorar a la Gerencia, apagar los teléfonos y encerrarte con los técnicos sin dar reportes de estado.",
+                        text: "Opción B (Evasiva): Decir: 'Dra. Wong, no me moleste ahora, estamos ocupados apagando el incendio. Hablamos en 4 horas'.",
                         type: "neutral",
-                        feedback: "Resultado Regular: La falta de transparencia genera mayor desconfianza en el Directorio y amenaza con la intervención externa.",
-                        trustDelta: -5,
-                        alignDelta: -10,
-                        gateway: "DEGRADADA (429)"
+                        chatReply: "Dra. Wong, no interrumpa el trabajo técnico. Luego le avisamos.",
+                        consequence: "Falta de liderazgo. La VP escala la llamada al CEO pidiendo tu destitución inmediata.",
+                        safetyDelta: -10,
+                        stressDelta: +5,
+                        gateway: "12.4% (DEGRADADA)",
+                        k8sChange: "stay"
                     },
                     {
-                        text: "Opción C: Liderazgo Adaptativo (Escucha Activa & Blindaje): Calmar a la VP con datos objetivos, asumir la responsabilidad integral del sistema, comprometer un informe de estado cada 20 minutos y proteger al equipo técnico para que solucionen la falla sin amenazas.",
+                        text: "Opción C (Liderazgo Adaptativo - Heifetz): 'Dra. Wong, comprendo perfectamente la gravedad financiera. Como Tech Lead asumo la responsabilidad integral del sistema. Pido 45 minutos de blindaje para que los ingenieros ejecuten el rollback sin amenazas. Me comprometo a un reporte de estado objetivo cada 15 minutos en este canal'.",
                         type: "good",
-                        feedback: "¡Excelente decisión! Demuestras aplomo bajo presión. La Gerencia acepta el plan de comunicación estructurado y el equipo técnico siente el respaldo necesario para trabajar concentrado.",
-                        trustDelta: +20,
-                        alignDelta: +15,
-                        gateway: "CONTENIDA (ROLLBACK ACTIVO)"
+                        chatReply: "Dra. Wong, asumo la responsabilidad total. Protejamos a los ingenieros los próximos 45 minutos para el rollback. Reportaré avances cada 15 minutos.",
+                        consequence: "¡Brillante aplomo bajo fuego! La VP acepta la tregua, los ingenieros respiran aliviados y el estrés se transforma en enfoque operativo.",
+                        safetyDelta: +25,
+                        stressDelta: -25,
+                        gateway: "55.0% (ROLLBACK INICIADO)",
+                        k8sChange: "rollback"
                     }
                 ]
             },
             {
-                stage: 2,
-                title: "Fase 2: Desescalamiento del Conflicto entre Desarrollo y Seguridad (CISO)",
-                context: "Martín (Lead Dev) y Diana (CISO) están gritándose en el chat. Diana exige paralizar todos los despliegues del mes hasta auditar línea por línea. Martín dice que eso matará el negocio. ¿Cómo intervienes?",
+                phase: 2,
+                title: "Fase 2: Mediación Asertiva entre Desarrollo y Seguridad (CISO)",
+                badge: "PASO 2 / 4",
+                instructions: "Martín (Dev) y Diana (CISO) están paralizados culpándose por las vulnerabilidades CVE y los retrasos de 10 días. ¿Cómo articulas una solución DevSecOps?",
                 options: [
                     {
-                        text: "Opción A: Darle toda la razón al CISO y congelar el desarrollo por 30 días.",
+                        text: "Opción A (Laissez-faire): Decirles: 'Son adultos, dejen de llorar y arreglen sus diferencias entre ustedes'.",
                         type: "bad",
-                        feedback: "Resultado Negativo: El negocio se paraliza, los competidores ganan mercado y Desarrollo se desmotiva por completo.",
-                        trustDelta: -15,
-                        alignDelta: -20,
-                        gateway: "PARALIZADO"
+                        chatReply: "Martín y Diana, resuélvanlo ustedes, no tengo tiempo para niñerías.",
+                        consequence: "La discusión se vuelve personal e insoluble. Desarrollo bloquea los accesos de auditoría de la CISO.",
+                        safetyDelta: -20,
+                        stressDelta: +15,
+                        gateway: "20.0%",
+                        k8sChange: "stay"
                     },
                     {
-                        text: "Opción B: Negociación Asertiva & DevSecOps: Proponer un acuerdo 'Shift-Left'. La CISO ayudará a implementar un escáner automático en el pipeline (CI/CD) que valida en 3 minutos. El squad designará a un 'Security Champion' para co-diseñar.",
+                        text: "Opción B (Negociación Asertiva DevSecOps): 'Diana, Martín: ambos tienen argumentos válidos. Para resolver la emergencia, Diana autorizará un hotfix temporal en sandbox aislado. A cambio, a partir del lunes la CISO implementará escaneo SAST automático en el pipeline CI/CD en menos de 3 minutos, y Martín designará a 2 desarrolladores como Security Champions'.",
                         type: "good",
-                        feedback: "¡Excelente Liderazgo! Transformas el conflicto en una alianza constructiva. La seguridad deja de ser un policía externo para integrarse como socio del desarrollo.",
-                        trustDelta: +25,
-                        alignDelta: +25,
-                        gateway: "RESTABLECIMIENTO PARCIAL (90%)"
-                    },
-                    {
-                        text: "Opción C: Decirles que 'sean profesionales' y que lo arreglen entre ellos sin intervenir.",
-                        type: "bad",
-                        feedback: "Resultado Negativo: Liderazgo 'Laissez-faire' irresponsable. El conflicto se agrava y las dos áreas dejan de comunicarse formalmente.",
-                        trustDelta: -20,
-                        alignDelta: -25,
-                        gateway: "CONFLICTO ACTIVO"
+                        chatReply: "Diana y Martín: acordemos una solución integradora. Hotfix inmediato en sandbox y a partir del lunes escaneo SAST automatizado en CI/CD con Security Champions.",
+                        consequence: "¡Extraordinario! Acabas de romper el silo Dev-Sec. La CISO y el Lead Dev colaboran por primera vez en meses.",
+                        safetyDelta: +25,
+                        stressDelta: -25,
+                        gateway: "85.0% (HOTFIX DESPLEGADO)",
+                        k8sChange: "healthy"
                     }
                 ]
             },
             {
-                stage: 3,
+                phase: 3,
                 title: "Fase 3: Sesión 'Blameless Post-Mortem' (Gestión del Cambio)",
-                context: "La pasarela ya está operando tras un rollback. Es hora de la reunión post-incidente. La cultura anterior de la empresa siempre buscaba a quién señalar. ¿Cómo conduces la sesión?",
+                badge: "PASO 3 / 4",
+                instructions: "El sistema está estable al 99%. Es hora de la sesión post-incidente. La cultura antigua de la empresa siempre castigaba los errores. ¿Cómo diriges la reunión?",
                 options: [
                     {
-                        text: "Opción A: Hacer un acta señalando con nombre y apellido quién cometió el error en el código para el archivo de RRHH.",
+                        text: "Opción A (Cultura de Culpa Tradicional): Redactar un acta disciplinaria con los nombres de quienes no hicieron los tests para enviar a RRHH.",
                         type: "bad",
-                        feedback: "Resultado Negativo: Destrucción de la seguridad psicológica. Los empleados nunca más propondrán mejoras ni admitirán errores tempranos.",
-                        trustDelta: -30,
-                        alignDelta: -20,
-                        gateway: "OPERATIVO PERO TOXICO"
+                        chatReply: "Enviaré la lista de personas con amonestación a Recursos Humanos.",
+                        consequence: "Mata la innovación. Los ingenieros nunca más admitirán un fallo a tiempo por miedo a represalias.",
+                        safetyDelta: -35,
+                        stressDelta: +30,
+                        gateway: "90% (PERO CULTURA TOXICA)",
+                        k8sChange: "stay"
                     },
                     {
-                        text: "Opción B: Liderazgo Transformacional: Enfatizar que 'los errores son tesoros de aprendizaje del sistema'. Analizar por qué el pipeline permitió el paso del bug y felicitar al equipo por la rápida contención conjunta.",
+                        text: "Opción B (Blameless Post-Mortem - Google SRE): 'En esta sala nadie tiene la culpa. El error es del sistema que permitió que un bug llegara a producción sin red de contención. Vamos a felicitar al equipo por su resiliencia y documentar las lecciones aprendidas para que el sistema sea inmune en el futuro'.",
                         type: "good",
-                        feedback: "¡Extraordinario! Fomentas una cultura ágil de alta resiliencia. El equipo propone 5 mejoras inmediatas al pipeline sin miedo a represalias.",
-                        trustDelta: +25,
-                        alignDelta: +20,
-                        gateway: "OPERATIVO & ESTABLE (99.9%)"
+                        chatReply: "Iniciamos Blameless Post-Mortem: el error fue del diseño del sistema, no de las personas. Felicitaciones al equipo por la respuesta.",
+                        consequence: "¡Cultura de excelencia! Los colaboradores comparten detalles técnicos inéditos sin miedo y proponen 6 mejoras clave al pipeline.",
+                        safetyDelta: +30,
+                        stressDelta: -20,
+                        gateway: "99.9% (COMPLETAMENTE RESTABLECIDO)",
+                        k8sChange: "fully_healthy"
                     }
                 ]
             },
             {
-                stage: 4,
-                title: "Fase 4: Institucionalización de Acuerdos & Gobernanza de TI",
-                context: "Para asegurar que esto no vuelva a ocurrir, debes presentar al Comité de Dirección un plan sostenible que rompa definitivamente los silos organizacionales.",
+                phase: 4,
+                title: "Fase 4: Institucionalización de Acuerdos de Gobernanza (Sesión 11)",
+                badge: "PASO 4 / 4",
+                instructions: "Para sellar el éxito y responder a la Pregunta Retadora de la clase ('¿De qué otra forma soluciona un problema un ingeniero de sistemas?'), ¿qué presentas al Directorio?",
                 options: [
                     {
-                        text: "Opción A: Presentar una Matriz de Gobernanza DevSecOps con Métricas DORA compartidas, inversión en observabilidad y capacitación continua en habilidades blandas.",
+                        text: "Opción A (Liderazgo Integral): Presentar el Acta de Gobernanza DevSecOps con Métricas DORA (MTTR < 15m), observabilidad APM compartida y presupuesto de Error Budget aprobado por Negocio.",
                         type: "good",
-                        feedback: "¡Misión Cumplida con Honores! El Directorio aprueba el presupuesto para modernización y felicita tu liderazgo adaptativo por convertir una crisis en una ventaja competitiva.",
-                        trustDelta: +20,
-                        alignDelta: +20,
-                        gateway: "PASARELA 100% OPERATIVA"
+                        chatReply: "Presento al Directorio el Acta de Gobernanza DevSecOps y las métricas DORA que garantizarán la estabilidad sin frenar el negocio.",
+                        consequence: "¡Triunfo Institucional! El Directorio ratifica el acta por unanimidad y destaca cómo tu liderazgo salvó a la empresa de una crisis multimillonaria.",
+                        safetyDelta: +20,
+                        stressDelta: -15,
+                        gateway: "100% OPERATIVO",
+                        k8sChange: "fully_healthy"
                     }
                 ]
             }
         ];
 
-        function renderStage() {
-            const data = stages[currentStage - 1];
+        function renderPhase() {
+            const data = phases[currentPhase - 1];
             if (!data) return;
 
-            document.getElementById('decision-stage-badge').innerText = `FASE ${data.stage} DE 4`;
-            const box = document.getElementById('decision-box');
+            document.getElementById('phase-title').innerText = data.title;
+            document.getElementById('phase-badge').innerText = data.badge;
+            document.getElementById('phase-instructions').innerText = data.instructions;
 
-            let optionsHtml = '';
+            const container = document.getElementById('options-container');
+            let html = '';
+
             data.options.forEach((opt, idx) => {
-                optionsHtml += `
-                    <button onclick="chooseOption(${idx})" class="w-full text-left p-4 rounded-xl glass-card border border-slate-700 hover:border-cyan-400 hover:bg-slate-800/80 transition-all text-xs sm:text-sm text-slate-200 group flex items-start gap-3">
+                html += `
+                    <button onclick="executeChoice(${idx})" class="w-full text-left p-4 rounded-xl glass-card border border-slate-700/80 hover:border-cyan-400 hover:bg-slate-800/90 transition-all text-xs text-slate-200 group flex items-start gap-3">
                         <span class="w-6 h-6 rounded-lg bg-slate-800 text-cyan-400 font-mono font-bold flex items-center justify-center shrink-0 group-hover:bg-cyan-500 group-hover:text-white transition">
                             ${String.fromCharCode(65 + idx)}
                         </span>
@@ -568,97 +936,116 @@
                 `;
             });
 
-            box.innerHTML = `
-                <div class="space-y-3">
-                    <h4 class="text-base font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-flag-checkered text-cyan-400"></i>
-                        ${data.title}
-                    </h4>
-                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed bg-slate-900/60 p-4 rounded-xl border border-slate-800">
-                        ${data.context}
-                    </p>
-                    <div class="space-y-3 pt-2">
-                        ${optionsHtml}
-                    </div>
-                </div>
-            `;
+            container.innerHTML = html;
         }
 
-        function chooseOption(idx) {
-            const data = stages[currentStage - 1];
+        function executeChoice(idx) {
+            const data = phases[currentPhase - 1];
             const choice = data.options[idx];
 
-            trustScore = Math.max(0, Math.min(100, trustScore + choice.trustDelta));
-            alignmentScore = Math.max(0, Math.min(100, alignmentScore + choice.alignDelta));
+            psychologicalSafety = Math.max(0, Math.min(100, psychologicalSafety + choice.safetyDelta));
+            stressLevel = Math.max(0, Math.min(100, stressLevel + choice.stressDelta));
 
-            document.getElementById('metric-trust').innerText = `${trustScore}%`;
-            document.getElementById('metric-alignment').innerText = `${alignmentScore}%`;
-            document.getElementById('gateway-status').innerText = choice.gateway;
+            document.getElementById('safety-label').innerText = `${psychologicalSafety}%`;
+            document.getElementById('stress-label').innerText = `${stressLevel}%`;
+            document.getElementById('stress-progress').style.width = `${stressLevel}%`;
+            document.getElementById('kpi-gateway').innerText = choice.gateway;
 
-            if (choice.type === 'good') {
-                document.getElementById('gateway-status').className = 'text-emerald-400 font-bold';
-            } else {
-                document.getElementById('gateway-status').className = 'text-red-400 font-bold animate-pulse';
+            // Append Leader Message to Slack Stream
+            appendSlackMessage('TÚ (TECH LEAD / CIO)', choice.chatReply, 'cyan');
+
+            // Apply Kubernetes visual changes
+            if (choice.k8sChange === 'rollback') {
+                const pod = document.getElementById('pod-payment');
+                pod.className = "p-3 rounded-xl bg-amber-950/40 border border-amber-500 pod-node";
+                document.getElementById('pod-payment-status').innerText = 'ROLLBACK IN PROGRESS';
+                document.getElementById('pod-payment-status').className = 'text-[10px] text-amber-400 font-bold';
+            } else if (choice.k8sChange === 'healthy' || choice.k8sChange === 'fully_healthy') {
+                const pod = document.getElementById('pod-payment');
+                pod.className = "p-3 rounded-xl bg-slate-900/80 border border-emerald-500/40 pod-node";
+                document.getElementById('pod-payment-status').innerText = 'RUNNING (HEALTHY)';
+                document.getElementById('pod-payment-status').className = 'text-[10px] text-emerald-400 font-bold';
+
+                const podDb = document.getElementById('pod-db');
+                podDb.className = "p-3 rounded-xl bg-slate-900/80 border border-emerald-500/40 pod-node";
+                document.getElementById('pod-db-status').innerText = 'CONEXIONES: 24% (NORMAL)';
+                document.getElementById('pod-db-status').className = 'text-[10px] text-emerald-400';
+
+                document.getElementById('cluster-status-text').innerText = 'CLUSTER RESILIENTE (100% OK)';
+                document.getElementById('cluster-status-text').className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+
+                document.getElementById('hud-status-dot').className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 radar-pulse-emerald';
+                document.getElementById('hud-severity-badge').innerText = 'RESOLVED // STABLE';
+                document.getElementById('hud-severity-badge').className = 'bg-emerald-500/20 text-emerald-300 text-[10px] font-mono font-bold px-2 py-0.5 rounded border border-emerald-500/30';
+
+                isCrisisActive = false;
             }
 
-            const box = document.getElementById('decision-box');
-            box.innerHTML = `
-                <div class="p-6 rounded-2xl ${choice.type === 'good' ? 'bg-emerald-950/30 border border-emerald-500/40' : 'bg-red-950/30 border border-red-500/40'} space-y-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl ${choice.type === 'good' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'} flex items-center justify-center text-lg">
-                            <i class="fa-solid ${choice.type === 'good' ? 'fa-check' : 'fa-xmark'}"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-base font-bold text-white">${choice.type === 'good' ? 'Decisión Acertada de Liderazgo Adaptativo' : 'Consecuencia del Liderazgo Inadecuado'}</h4>
-                            <p class="text-xs text-slate-400">Impacto en Métricas: Confianza (${choice.trustDelta > 0 ? '+' : ''}${choice.trustDelta}%) | Alineación (${choice.alignDelta > 0 ? '+' : ''}${choice.alignDelta}%)</p>
-                        </div>
+            // Show Consequence Feedback Modal/Box
+            const container = document.getElementById('options-container');
+            container.innerHTML = `
+                <div class="p-5 rounded-2xl ${choice.type === 'good' ? 'bg-emerald-950/40 border border-emerald-500/50' : 'bg-red-950/40 border border-red-500/50'} space-y-3">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid ${choice.type === 'good' ? 'fa-check text-emerald-400' : 'fa-xmark text-red-400'} text-base"></i>
+                        <strong class="text-white text-xs uppercase font-mono">${choice.type === 'good' ? 'Impacto Positivo de Liderazgo Adaptativo' : 'Consecuencia del Error de Liderazgo'}</strong>
                     </div>
-                    <p class="text-xs sm:text-sm text-slate-200 leading-relaxed pl-2">
-                        ${choice.feedback}
-                    </p>
+                    <p class="text-xs text-slate-200 leading-relaxed">${choice.consequence}</p>
                     <div class="pt-2">
-                        ${currentStage < stages.length 
-                            ? `<button onclick="nextStage()" class="px-5 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-cyan-600/30">
-                                 <span>Avanzar a la Siguiente Fase</span> <i class="fa-solid fa-arrow-right"></i>
+                        ${currentPhase < phases.length 
+                            ? `<button onclick="advancePhase()" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-cyan-600/30">
+                                 <span>Continuar a la Siguiente Fase</span> <i class="fa-solid fa-arrow-right"></i>
                                </button>`
-                            : `<div class="p-4 rounded-xl bg-slate-900 border border-cyan-500/40 text-center space-y-2">
-                                 <h5 class="text-sm font-bold text-cyan-300">¡Simulación Completada con Éxito!</h5>
-                                 <p class="text-xs text-slate-400">Has demostrado cómo las habilidades blandas, la problemología y el liderazgo transformacional resuelven crisis complejas de TI que ningún firewall o script puede solucionar por sí solo.</p>
-                                 <button onclick="resetSimulation()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold">
-                                     <i class="fa-solid fa-rotate-right mr-1"></i> Reiniciar Simulación
-                                 </button>
+                            : `<div class="p-3 rounded-xl bg-slate-900 border border-cyan-500/40 text-center space-y-2">
+                                 <h5 class="text-xs font-bold text-cyan-300 uppercase font-mono">¡Crisis Neutralizada con Honores!</h5>
+                                 <p class="text-[11px] text-slate-400">Has resuelto la crisis integrando tecnología, gobernanza, empatía y habilidades blandas. Tu acta y puntaje final se han desbloqueado al final de la página.</p>
+                                 <a href="#final-deliverable" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition">
+                                     <i class="fa-solid fa-stamp"></i> Ver Acta y Calificación Final
+                                 </a>
                                </div>`
                         }
                     </div>
                 </div>
             `;
 
-            if (currentStage === stages.length) {
-                document.getElementById('accord-status').innerText = 'APROBADO & RATIFICADO';
-                document.getElementById('accord-status').className = 'text-emerald-400 font-bold';
+            if (currentPhase === phases.length) {
+                document.getElementById('accord-final-status').innerText = 'RATIFICADO POR UNANIMIDAD';
+                document.getElementById('accord-final-status').className = 'text-emerald-400 font-bold';
             }
         }
 
-        function nextStage() {
-            currentStage++;
-            renderStage();
+        function appendSlackMessage(sender, text, color) {
+            const stream = document.getElementById('chat-stream');
+            const now = new Date();
+            const timeStr = `${now.getHours()}:${now.getMinutes() < 10 ? '0' : ''}${now.getMinutes()} PM`;
+
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'flex items-start gap-3 animate-fade-in';
+            msgDiv.innerHTML = `
+                <div class="w-9 h-9 rounded-xl bg-cyan-600/30 text-cyan-300 border border-cyan-500/40 flex items-center justify-center font-bold text-xs shrink-0">
+                    TL
+                </div>
+                <div class="space-y-1 max-w-[85%]">
+                    <div class="flex items-center gap-2">
+                        <span class="font-bold text-cyan-300">${sender}</span>
+                        <span class="text-[10px] px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-300 font-mono">CIO / Tech Lead</span>
+                        <span class="text-[10px] text-slate-500">${timeStr}</span>
+                    </div>
+                    <div class="p-3 rounded-2xl rounded-tl-none bg-cyan-950/40 border border-cyan-500/40 text-white font-medium leading-relaxed">
+                        <p>${text}</p>
+                    </div>
+                </div>
+            `;
+            stream.appendChild(msgDiv);
+            stream.scrollTop = stream.scrollHeight;
         }
 
-        function resetSimulation() {
-            currentStage = 1;
-            trustScore = 50;
-            alignmentScore = 45;
-            document.getElementById('metric-trust').innerText = `${trustScore}%`;
-            document.getElementById('metric-alignment').innerText = `${alignmentScore}%`;
-            document.getElementById('gateway-status').innerText = 'DEGRADADA (429)';
-            document.getElementById('gateway-status').className = 'text-red-400 font-bold';
-            document.getElementById('accord-status').innerText = 'EN PROCESO DE MEDIACIÓN';
-            document.getElementById('accord-status').className = 'text-amber-400 font-bold';
-            renderStage();
+        function advancePhase() {
+            currentPhase++;
+            renderPhase();
         }
 
-        // Initialize on page load
-        renderStage();
+        // Initialize on load
+        renderPhase();
     </script>
 </body>
 </html>
