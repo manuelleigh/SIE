@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semana 12 | Alineación Estratégica y Arquitectura Empresarial de TI</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome 6.4.0 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- AOS Animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        cyberDark: '#030712',
+                        cyberCard: '#0f172a',
+                        neonBlue: '#38bdf8',
+                        neonCyan: '#06b6d4',
+                        neonIndigo: '#6366f1',
+                        neonPurple: '#a855f7',
+                        neonEmerald: '#10b981',
+                        neonAmber: '#f59e0b'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #030712; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #38bdf8, #818cf8, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .animated-bg {
+            position: absolute; width: 450px; height: 450px;
+            background: #0ea5e9; border-radius: 50%; filter: blur(140px);
+            opacity: 0.16; animation: float 12s infinite alternate; z-index: -1;
+        }
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(120px, 60px); }
+        }
+    </style>
+</head>
+<body class="antialiased relative min-h-screen flex flex-col">
+    <!-- Ambient background glows -->
+    <div class="animated-bg top-10 left-10"></div>
+    <div class="animated-bg bottom-10 right-10" style="background: #6366f1; animation-delay: -6s;"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="glass-panel sticky top-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="../index.html" class="flex items-center gap-2 text-slate-300 hover:text-neonCyan transition font-semibold text-sm">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Volver al Portafolio</span>
+            </a>
+            <div class="flex items-center gap-3">
+                <span class="text-xs font-mono text-cyan-400 bg-cyan-950/40 px-3 py-1 rounded-full border border-cyan-500/30">
+                    Sesión 12 | UTP 2026
+                </span>
+                <div class="text-xl font-black text-gradient flex items-center gap-2">
+                    <i class="fa-solid fa-arrows-to-dot text-cyan-400"></i>
+                    <span>Semana 12</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col items-center p-6 mt-8">
+        <div class="text-center max-w-4xl" data-aos="fade-up">
+            <span class="px-4 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-xs font-bold tracking-widest uppercase mb-4 inline-flex items-center gap-2">
+                <i class="fa-solid fa-chart-line"></i> Sistemas de Información Empresarial
+            </span>
+            <h1 class="text-4xl sm:text-6xl font-black mb-6 tracking-tight">
+                Alineación Estratégica y <span class="text-gradient">Arquitectura de TI</span>
+            </h1>
+            <p class="text-base sm:text-lg text-slate-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+                Integración de los sistemas de información (ERP, CRM, BI, SCM, IA) con los objetivos empresariales para generar ventaja competitiva, optimizar procesos organizacionales y habilitar la toma de decisiones basada en datos.
+            </p>
+
+            <!-- Learning Objective Card -->
+            <div class="max-w-3xl mx-auto p-4 rounded-2xl glass-panel border border-cyan-500/20 text-xs sm:text-sm text-slate-300 text-left flex items-start gap-3 mb-10">
+                <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0 mt-0.5">
+                    <i class="fa-solid fa-bullseye text-base"></i>
+                </div>
+                <div>
+                    <strong class="text-cyan-300 block mb-1">Logro de la Sesión:</strong>
+                    Comprender la alineación estratégica entre los sistemas de información y los objetivos empresariales para la optimización en los procesos organizacionales y apoyo en la toma de decisiones corporativas.
+                </div>
+            </div>
+        </div>
+
+        <!-- Cases Cards Grid (Caso 01 & Caso 02) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl" data-aos="fade-up" data-aos-delay="200">
+            
+            <!-- Caso 01: Simulador de Alineación Estratégica -->
+            <a href="caso01.html" class="glass-panel rounded-3xl p-8 hover:-translate-y-2 hover:shadow-[0_0_35px_rgba(6,182,212,0.25)] transition-all duration-300 group border-t-4 border-t-neonCyan block relative overflow-hidden">
+                <div class="absolute top-4 right-4">
+                    <span class="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold uppercase bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                        Caso 01 // Práctico
+                    </span>
+                </div>
+                <div class="w-16 h-16 rounded-2xl bg-cyan-500/20 flex items-center justify-center mb-6 text-neonCyan group-hover:scale-110 transition-transform shadow-lg shadow-cyan-500/20">
+                    <i class="fa-solid fa-network-wired text-3xl"></i>
+                </div>
+                <h3 class="text-2xl sm:text-3xl font-black mb-2 text-white">Caso 01</h3>
+                <h4 class="text-lg font-bold mb-3 text-cyan-300">Simulador de Alineación Estratégica & TI</h4>
+                <p class="text-slate-300 text-sm mb-6 leading-relaxed">
+                    Plataforma ejecutiva interactiva que simula la articulación entre Estrategia Corporativa, Sistemas de Información (ERP, CRM, BI, SCM, IA) y Objetivos Financieros. Incluye comparador sistémico ITIL 4 vs PMBOK y matriz multicriterio de decisiones (AHP).
+                </p>
+                <div class="flex items-center justify-between pt-4 border-t border-slate-700/60">
+                    <span class="text-xs text-slate-400 font-mono">
+                        <i class="fa-solid fa-arrows-split-up-and-left text-cyan-400 mr-1.5"></i> Modelo Henderson & Venkatraman
+                    </span>
+                    <span class="inline-flex items-center text-neonCyan font-bold text-sm group-hover:translate-x-1 transition-transform">
+                        Abrir Simulador <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </span>
+                </div>
+            </a>
+            
+            <!-- Caso 02: Presentación de Capítulo II del Proyecto Final -->
+            <a href="caso02.html" class="glass-panel rounded-3xl p-8 hover:-translate-y-2 hover:shadow-[0_0_35px_rgba(99,102,241,0.25)] transition-all duration-300 group border-t-4 border-t-neonIndigo block relative overflow-hidden">
+                <div class="absolute top-4 right-4">
+                    <span class="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold uppercase bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                        Caso 02 // Proyecto Final
+                    </span>
+                </div>
+                <div class="w-16 h-16 rounded-2xl bg-indigo-500/20 flex items-center justify-center mb-6 text-neonIndigo group-hover:scale-110 transition-transform shadow-lg shadow-indigo-500/20">
+                    <i class="fa-solid fa-book-bookmark text-3xl"></i>
+                </div>
+                <h3 class="text-2xl sm:text-3xl font-black mb-2 text-white">Caso 02</h3>
+                <h4 class="text-lg font-bold mb-3 text-indigo-300">Capítulo II: Marco Teórico & Arquitectura</h4>
+                <p class="text-slate-300 text-sm mb-6 leading-relaxed">
+                    Dossier integral del Capítulo II del avance de proyecto final: diagnóstico sistémico mediante PESTEL, 5 Fuerzas de Porter, Matriz FODA-CAME, Modelo Canvas de 9 bloques, Cadena de Valor, Diagrama SIPOC y gobernanza ISO.
+                </p>
+                <div class="flex items-center justify-between pt-4 border-t border-slate-700/60">
+                    <span class="text-xs text-slate-400 font-mono">
+                        <i class="fa-solid fa-diagram-project text-indigo-400 mr-1.5"></i> Arquetipos Sistémicos de Sesión 12
+                    </span>
+                    <span class="inline-flex items-center text-neonIndigo font-bold text-sm group-hover:translate-x-1 transition-transform">
+                        Ver Capítulo II <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </span>
+                </div>
+            </a>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-panel border-t border-white/10 p-6 mt-16 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-graduation-cap text-cyan-400 text-base"></i>
+                <span>Sistemas de Información Empresarial | Sesión 12</span>
+            </div>
+            <p>Alineación Estratégica entre Sistemas de Información y Objetivos Empresariales</p>
+            <div class="flex items-center gap-4 text-slate-400">
+                <a href="../semana11/index.html" class="hover:text-cyan-400 transition">Ver Semana 11</a>
+                <span>•</span>
+                <a href="../index.html" class="hover:text-cyan-400 transition">Portafolio General</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ once: true });
+    </script>
+</body>
+</html>
