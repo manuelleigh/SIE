@@ -25,7 +25,7 @@
                         mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
-                        cyberDark: '#030712',
+                        cyberDark: '#020617',
                         cyberCard: '#0f172a',
                         neonBlue: '#38bdf8',
                         neonCyan: '#06b6d4',
@@ -39,7 +39,7 @@
         }
     </script>
     <style>
-        body { background-color: #030712; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+        body { background-color: #020617; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
         .glass-panel {
             background: rgba(15, 23, 42, 0.75);
             backdrop-filter: blur(14px);
@@ -112,59 +112,49 @@
             </div>
         </div>
 
-        <!-- Cases Cards Grid (Caso 01 & Caso 02) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl" data-aos="fade-up" data-aos-delay="200">
-            
-            <!-- Caso 01: Simulador de Alineación Estratégica -->
-            <a href="caso01.html" class="glass-panel rounded-3xl p-8 hover:-translate-y-2 hover:shadow-[0_0_35px_rgba(6,182,212,0.25)] transition-all duration-300 group border-t-4 border-t-neonCyan block relative overflow-hidden">
-                <div class="absolute top-4 right-4">
-                    <span class="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold uppercase bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                        Caso 01 // Práctico
+        <!-- Single Featured Activity Container: Caso 01 -->
+        <div class="w-full max-w-4xl" data-aos="fade-up" data-aos-delay="200">
+            <a href="caso01.html" class="glass-panel rounded-3xl p-8 sm:p-10 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(6,182,212,0.3)] transition-all duration-300 group border-t-4 border-t-neonCyan block relative overflow-hidden bg-gradient-to-b from-cyan-950/20 to-slate-900/80">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <div class="w-16 h-16 rounded-2xl bg-cyan-500/20 flex items-center justify-center text-neonCyan group-hover:scale-110 transition-transform shadow-lg shadow-cyan-500/20">
+                        <i class="fa-solid fa-network-wired text-3xl"></i>
+                    </div>
+                    <span class="px-3 py-1 rounded-full text-xs font-mono font-bold uppercase bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
+                        Caso Práctico Oficial // Sesión 12
                     </span>
                 </div>
-                <div class="w-16 h-16 rounded-2xl bg-cyan-500/20 flex items-center justify-center mb-6 text-neonCyan group-hover:scale-110 transition-transform shadow-lg shadow-cyan-500/20">
-                    <i class="fa-solid fa-network-wired text-3xl"></i>
-                </div>
-                <h3 class="text-2xl sm:text-3xl font-black mb-2 text-white">Caso 01</h3>
-                <h4 class="text-lg font-bold mb-3 text-cyan-300">Simulador de Alineación Estratégica & TI</h4>
-                <p class="text-slate-300 text-sm mb-6 leading-relaxed">
-                    Plataforma ejecutiva interactiva que simula la articulación entre Estrategia Corporativa, Sistemas de Información (ERP, CRM, BI, SCM, IA) y Objetivos Financieros. Incluye comparador sistémico ITIL 4 vs PMBOK y matriz multicriterio de decisiones (AHP).
-                </p>
-                <div class="flex items-center justify-between pt-4 border-t border-slate-700/60">
-                    <span class="text-xs text-slate-400 font-mono">
-                        <i class="fa-solid fa-arrows-split-up-and-left text-cyan-400 mr-1.5"></i> Modelo Henderson & Venkatraman
-                    </span>
-                    <span class="inline-flex items-center text-neonCyan font-bold text-sm group-hover:translate-x-1 transition-transform">
-                        Abrir Simulador <i class="fa-solid fa-arrow-right ml-2"></i>
-                    </span>
-                </div>
-            </a>
-            
-            <!-- Caso 02: Presentación de Capítulo II del Proyecto Final -->
-            <a href="caso02.html" class="glass-panel rounded-3xl p-8 hover:-translate-y-2 hover:shadow-[0_0_35px_rgba(99,102,241,0.25)] transition-all duration-300 group border-t-4 border-t-neonIndigo block relative overflow-hidden">
-                <div class="absolute top-4 right-4">
-                    <span class="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold uppercase bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                        Caso 02 // Proyecto Final
-                    </span>
-                </div>
-                <div class="w-16 h-16 rounded-2xl bg-indigo-500/20 flex items-center justify-center mb-6 text-neonIndigo group-hover:scale-110 transition-transform shadow-lg shadow-indigo-500/20">
-                    <i class="fa-solid fa-book-bookmark text-3xl"></i>
-                </div>
-                <h3 class="text-2xl sm:text-3xl font-black mb-2 text-white">Caso 02</h3>
-                <h4 class="text-lg font-bold mb-3 text-indigo-300">Capítulo II: Marco Teórico & Arquitectura</h4>
-                <p class="text-slate-300 text-sm mb-6 leading-relaxed">
-                    Dossier integral del Capítulo II del avance de proyecto final: diagnóstico sistémico mediante PESTEL, 5 Fuerzas de Porter, Matriz FODA-CAME, Modelo Canvas de 9 bloques, Cadena de Valor, Diagrama SIPOC y gobernanza ISO.
-                </p>
-                <div class="flex items-center justify-between pt-4 border-t border-slate-700/60">
-                    <span class="text-xs text-slate-400 font-mono">
-                        <i class="fa-solid fa-diagram-project text-indigo-400 mr-1.5"></i> Arquetipos Sistémicos de Sesión 12
-                    </span>
-                    <span class="inline-flex items-center text-neonIndigo font-bold text-sm group-hover:translate-x-1 transition-transform">
-                        Ver Capítulo II <i class="fa-solid fa-arrow-right ml-2"></i>
-                    </span>
-                </div>
-            </a>
 
+                <h3 class="text-2xl sm:text-3xl font-black mb-2 text-white">Caso 01: Simulador StratAlign 360</h3>
+                <h4 class="text-lg font-bold mb-4 text-cyan-300">Alineación Estratégica entre Sistemas de Información y Objetivos de Negocio</h4>
+                
+                <p class="text-slate-300 text-sm sm:text-base mb-6 leading-relaxed">
+                    Plataforma ejecutiva interactiva basada en el <strong>Modelo de Henderson & Venkatraman (SAM)</strong>. Simula cómo la estrategia corporativa reconfigura automáticamente la cartera de TI (ERP SAP S/4HANA, Salesforce CRM, Snowflake BI, BlueYonder SCM e IA Generativa con RAG). Incluye comparador sistémico ITIL 4 vs PMBOK y Matriz Multicriterio AHP para la toma de decisiones.
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8 text-xs font-mono text-slate-400">
+                    <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800">
+                        <span class="text-cyan-400 block font-bold mb-1"><i class="fa-solid fa-layer-group mr-1"></i> Triada Sistémica</span>
+                        Estrategia $\leftrightarrow$ SI $\leftrightarrow$ Objetivos
+                    </div>
+                    <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800">
+                        <span class="text-purple-400 block font-bold mb-1"><i class="fa-solid fa-arrows-split-up-and-left mr-1"></i> Gobernanza Dual</span>
+                        ITIL 4 Operación vs PMBOK Proyectos
+                    </div>
+                    <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800">
+                        <span class="text-emerald-400 block font-bold mb-1"><i class="fa-solid fa-award mr-1"></i> Normativa & Calidad</span>
+                        ISO 9001, 20000, 27001, 25000 & Kaizen
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-6 border-t border-slate-700/60">
+                    <span class="text-xs text-slate-400 font-mono">
+                        <i class="fa-solid fa-microchip text-cyan-400 mr-1.5"></i> Arquitectura Empresarial RAG & Cloud
+                    </span>
+                    <span class="inline-flex items-center text-neonCyan font-bold text-sm group-hover:translate-x-2 transition-transform">
+                        Ingresar al Simulador <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </span>
+                </div>
+            </a>
         </div>
     </main>
 
