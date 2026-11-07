@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroValue OS | Innovación y Valor Empresarial de los Sistemas de Información</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome 6.4.0 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js for Live Financial Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        obsidian: '#090d16',
+                        slateCard: '#0f172a',
+                        cardSurface: '#131e36',
+                        accentCyan: '#06b6d4',
+                        accentSky: '#38bdf8',
+                        accentIndigo: '#6366f1',
+                        accentPurple: '#a855f7',
+                        accentEmerald: '#10b981',
+                        accentAmber: '#f59e0b',
+                        accentRose: '#f43f5e'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #090d16;
+            color: #f1f5f9;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .surface-panel {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1rem;
+        }
+
+        .surface-card {
+            background: #131e36;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 0.875rem;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .surface-card:hover {
+            border-color: rgba(6, 182, 212, 0.4);
+        }
+
+        /* Custom Range Slider */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: #1e293b;
+            height: 6px;
+            border-radius: 4px;
+            outline: none;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #06b6d4;
+            cursor: pointer;
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+            transition: all 0.15s ease;
+        }
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            background: #38bdf8;
+        }
+
+        /* Neural Network SVG Animations */
+        .neuron-node {
+            transition: all 0.3s ease;
+        }
+        .synapse-line {
+            transition: stroke 0.3s ease, stroke-width 0.3s ease, opacity 0.3s ease;
+        }
+
+        /* Print styles for executive report */
+        @media print {
+            .no-print { display: none !important; }
+            body { background: #ffffff !important; color: #0f172a !important; font-size: 11pt; }
+            .print-block { break-inside: avoid; border: 1px solid #cbd5e1 !important; background: #ffffff !important; color: #0f172a !important; box-shadow: none !important; }
+            .print-text-dark { color: #0f172a !important; }
+            .print-text-muted { color: #64748b !important; }
+            .tab-pane { display: block !important; margin-bottom: 2rem; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased">
+
+    <!-- Top Navigation Bar -->
+    <header class="border-b border-white/10 bg-[#090d16]/95 backdrop-blur sticky top-0 z-40 px-6 py-3.5 no-print">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+            <!-- Left Branding & Breadcrumb -->
+            <div class="flex items-center gap-3">
+                <a href="index.html" class="w-9 h-9 rounded-lg bg-slate-800/80 border border-slate-700/80 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-700 transition" title="Regresar al Hub">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-extrabold text-white text-base tracking-tight">NovaTech <span class="text-cyan-400 font-mono text-sm">NeuroValue OS</span></span>
+                        <span class="text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
+                            Caso Práctico 01
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-400">Innovación y Generación de Valor: Servicios TI (ISO 20000) & Machine Learning</p>
+                </div>
+            </div>
+
+            <!-- Right Executive Actions -->
+            <div class="flex items-center gap-3">
+                <button onclick="toggleModal('modal-case-info')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 transition flex items-center gap-2">
+                    <i class="fa-solid fa-circle-info text-cyan-400"></i>
+                    <span>Ficha del Caso</span>
+                </button>
+                <button onclick="window.print()" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 transition flex items-center gap-2">
+                    <i class="fa-solid fa-print"></i>
+                    <span>Exportar Reporte Ejecutivo</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full">
+
+        <!-- Executive Hero Banner -->
+        <section class="surface-panel p-6 sm:p-8 mb-8 relative overflow-hidden">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                <div class="max-w-3xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-semibold mb-3">
+                        <i class="fa-solid fa-microchip"></i>
+                        <span>Generación de Valor Empresarial con Sistemas de Información</span>
+                    </div>
+                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight mb-3">
+                        Innovación Tecnológica: Gestión de Servicios TI y Machine Learning Predictivo
+                    </h1>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        La creación de valor sostenible en <strong>NovaTech Omnichannel Platform</strong> articula dos vectores estratégicos: la excelencia operativa en servicios de TI basada en el <strong>Modelo ISO 20000 de cuatro capas</strong> para maximizar el tiempo de disponibilidad (Uptime), y la inteligencia analítica mediante <strong>Machine Learning y Redes Neuronales Artificiales (ANN)</strong> para la anticipación del comportamiento del cliente y optimización del negocio.
+                    </p>
+                </div>
+
+                <!-- Strategic Summary Badges -->
+                <div class="grid grid-cols-2 gap-3 min-w-[280px]">
+                    <div class="p-3.5 rounded-xl bg-[#090d16] border border-white/5">
+                        <span class="text-[11px] uppercase font-mono text-slate-400 block mb-1">Disponibilidad SLA</span>
+                        <div class="text-xl font-bold text-cyan-400 flex items-center gap-1.5">
+                            <span id="hero-kpi-uptime">99.98%</span>
+                            <span class="text-xs text-emerald-400 font-mono"><i class="fa-solid fa-check"></i> Óptimo</span>
+                        </div>
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-[#090d16] border border-white/5">
+                        <span class="text-[11px] uppercase font-mono text-slate-400 block mb-1">Precisión ANN</span>
+                        <div class="text-base font-bold text-purple-400 flex items-center gap-1.5">
+                            <span id="hero-kpi-accuracy">94.2% F1-Score</span>
+                        </div>
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-[#090d16] border border-white/5">
+                        <span class="text-[11px] uppercase font-mono text-slate-400 block mb-1">Reducción Churn</span>
+                        <div class="text-xl font-bold text-emerald-400">-34.5%</div>
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-[#090d16] border border-white/5">
+                        <span class="text-[11px] uppercase font-mono text-slate-400 block mb-1">Ahorro Downtime</span>
+                        <div class="text-base font-bold text-sky-400">$184k / año</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Segmented Navigation Tabs -->
+        <nav class="flex border-b border-white/10 mb-8 space-x-2 overflow-x-auto no-print pb-2" aria-label="Tabs">
+            <button onclick="switchTab('tab-services')" id="tab-btn-services" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 whitespace-nowrap">
+                <i class="fa-solid fa-layer-group text-sm"></i>
+                <span>1. Servicios TI ISO 20000 & Uptime</span>
+            </button>
+            <button onclick="switchTab('tab-ml-matrix')" id="tab-btn-ml-matrix" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/60 border border-transparent whitespace-nowrap">
+                <i class="fa-solid fa-project-diagram text-sm"></i>
+                <span>2. Matriz Estratégica de Machine Learning</span>
+            </button>
+            <button onclick="switchTab('tab-neural-net')" id="tab-btn-neural-net" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/60 border border-transparent whitespace-nowrap">
+                <i class="fa-solid fa-brain text-sm"></i>
+                <span>3. Red Neuronal ANN en Vivo</span>
+            </button>
+            <button onclick="switchTab('tab-roi-value')" id="tab-btn-roi-value" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/60 border border-transparent whitespace-nowrap">
+                <i class="fa-solid fa-chart-line text-sm"></i>
+                <span>4. Generación de Valor & ROI</span>
+            </button>
+        </nav>
+
+        <!-- ============================================================== -->
+        <!-- TAB 1: GESTIÓN DE SERVICIOS TI (ISO 20000 & UPTIME)            -->
+        <!-- ============================================================== -->
+        <div id="tab-services" class="tab-pane space-y-8">
+            <!-- 4-Layer Service Management Model -->
+            <div class="surface-panel p-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <span class="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider block mb-1">Gobernanza de Calidad TI</span>
+                        <h2 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-cubes-stacked text-cyan-400"></i>
+                            <span>Modelo de Gestión de Servicios TI en 4 Capas (ISO 20000)</span>
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-1">Estructura jerárquica para garantizar la entrega de valor, la satisfacción del usuario y el cumplimiento contractual de SLAs.</p>
+                    </div>
+                    <span class="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 self-start sm:self-auto">
+                        <i class="fa-solid fa-shield-check mr-1.5"></i> Certificación ISO/IEC 20000-1 Activa
+                    </span>
+                </div>
+
+                <!-- 4 Layer Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                    <!-- Layer 1 -->
+                    <div class="surface-card p-5 border-t-4 border-t-cyan-500 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-[10px] font-mono font-bold uppercase text-cyan-400">Capa 1</span>
+                                <div class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-sm">
+                                    <i class="fa-solid fa-headset"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-base font-bold text-white mb-2">Canales & Contact Center</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                                Puntos de contacto omnicanal para usuarios y clientes: portal de autoservicio B2B, app móvil, chatbots inteligentes y mesa de ayuda Nivel 1.
+                            </p>
+                        </div>
+                        <div class="p-3 rounded-lg bg-[#090d16] border border-white/5 space-y-1.5 text-[11px]">
+                            <div class="flex justify-between text-slate-400"><span>Resolución Primer Contacto:</span> <strong class="text-cyan-400 font-mono">84.2%</strong></div>
+                            <div class="flex justify-between text-slate-400"><span>Satisfacción CSAT:</span> <strong class="text-emerald-400 font-mono">4.8 / 5.0</strong></div>
+                        </div>
+                    </div>
+
+                    <!-- Layer 2 -->
+                    <div class="surface-card p-5 border-t-4 border-t-purple-500 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-[10px] font-mono font-bold uppercase text-purple-400">Capa 2</span>
+                                <div class="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center text-sm">
+                                    <i class="fa-solid fa-gears"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-base font-bold text-white mb-2">Gestión de Procesos TI</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                                Procesos estandarizados bajo ITIL 4: Gestión de Incidentes, Análisis de Causa Raíz (Problemas), Comité de Cambios (CAB) y Catálogo de Servicios.
+                            </p>
+                        </div>
+                        <div class="p-3 rounded-lg bg-[#090d16] border border-white/5 space-y-1.5 text-[11px]">
+                            <div class="flex justify-between text-slate-400"><span>Cumplimiento SLA:</span> <strong class="text-purple-400 font-mono">99.4%</strong></div>
+                            <div class="flex justify-between text-slate-400"><span>Cambios Exitosos (CAB):</span> <strong class="text-emerald-400 font-mono">98.9%</strong></div>
+                        </div>
+                    </div>
+
+                    <!-- Layer 3 -->
+                    <div class="surface-card p-5 border-t-4 border-t-sky-500 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-[10px] font-mono font-bold uppercase text-sky-400">Capa 3</span>
+                                <div class="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-400 flex items-center justify-center text-sm">
+                                    <i class="fa-solid fa-chart-line"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-base font-bold text-white mb-2">Centro de Monitoreo (NOC / SOC)</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                                Telemetría en tiempo real 24/7, dashboards de latencia, correlación de logs con SIEM y orquestación automática de alertas preventivas.
+                            </p>
+                        </div>
+                        <div class="p-3 rounded-lg bg-[#090d16] border border-white/5 space-y-1.5 text-[11px]">
+                            <div class="flex justify-between text-slate-400"><span>Detección Proactiva:</span> <strong class="text-sky-400 font-mono">91.5%</strong></div>
+                            <div class="flex justify-between text-slate-400"><span>Tiempo Detección (MTTD):</span> <strong class="text-emerald-400 font-mono">2.1 min</strong></div>
+                        </div>
+                    </div>
+
+                    <!-- Layer 4 -->
+                    <div class="surface-card p-5 border-t-4 border-t-emerald-500 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-[10px] font-mono font-bold uppercase text-emerald-400">Capa 4</span>
+                                <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-sm">
+                                    <i class="fa-solid fa-server"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-base font-bold text-white mb-2">Plataforma & Nube</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                                Arquitectura de microservicios en Kubernetes multi-zona, bases de datos PostgreSQL distribuidas, balanceadores elásticos y seguridad Zero-Trust.
+                            </p>
+                        </div>
+                        <div class="p-3 rounded-lg bg-[#090d16] border border-white/5 space-y-1.5 text-[11px]">
+                            <div class="flex justify-between text-slate-400"><span>Redundancia Activa:</span> <strong class="text-emerald-400 font-mono">3 Zonas</strong></div>
+                            <div class="flex justify-between text-slate-400"><span>Failover Automático:</span> <strong class="text-cyan-400 font-mono">&lt; 15 seg</strong></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section: Availability Lifecycle Simulator (Uptime vs Downtime) -->
+                <div class="p-6 rounded-xl bg-[#090d16] border border-white/10">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                        <div>
+                            <span class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider block mb-0.5">Control de Confiabilidad del Servicio</span>
+                            <h3 class="text-base font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-stopwatch text-amber-400"></i>
+                                <span>Simulador del Ciclo de Disponibilidad (MTTR & MTBF)</span>
+                            </h3>
+                        </div>
+                        <span class="text-xs font-mono text-slate-400">
+                            Fórmula Estándar: <span class="text-cyan-400 font-bold">Disponibilidad = MTBF / (MTBF + MTTR)</span>
+                        </span>
+                    </div>
+
+                    <!-- Flow Diagram of the 4 Stages of Service Interruption -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+                        <div class="p-3 rounded-lg bg-[#0f172a] border border-rose-500/30 flex items-start gap-3">
+                            <div class="w-8 h-8 rounded bg-rose-500/10 text-rose-400 flex items-center justify-center text-sm shrink-0 mt-0.5">
+                                <i class="fa-solid fa-bolt"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-mono text-rose-400 uppercase font-bold block">Fase 1</span>
+                                <div class="text-xs font-bold text-white">Interrupción del Servicio</div>
+                                <p class="text-[11px] text-slate-400 leading-snug mt-0.5">Falla en nodo o corte de conexión que afecta la operatividad.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-lg bg-[#0f172a] border border-amber-500/30 flex items-start gap-3">
+                            <div class="w-8 h-8 rounded bg-amber-500/10 text-amber-400 flex items-center justify-center text-sm shrink-0 mt-0.5">
+                                <i class="fa-solid fa-bell"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-mono text-amber-400 uppercase font-bold block">Fase 2</span>
+                                <div class="text-xs font-bold text-white">Detección y Respuesta</div>
+                                <p class="text-[11px] text-slate-400 leading-snug mt-0.5">Alerta inmediata en NOC y activación de ingenieros de guardia.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-lg bg-[#0f172a] border border-purple-500/30 flex items-start gap-3">
+                            <div class="w-8 h-8 rounded bg-purple-500/10 text-purple-400 flex items-center justify-center text-sm shrink-0 mt-0.5">
+                                <i class="fa-solid fa-wrench"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-mono text-purple-400 uppercase font-bold block">Fase 3</span>
+                                <div class="text-xs font-bold text-white">Reparación y Recuperación</div>
+                                <p class="text-[11px] text-slate-400 leading-snug mt-0.5">Ejecución de failover, reinicio o parche correctivo de emergencia.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-lg bg-[#0f172a] border border-emerald-500/30 flex items-start gap-3">
+                            <div class="w-8 h-8 rounded bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-sm shrink-0 mt-0.5">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-mono text-emerald-400 uppercase font-bold block">Fase 4</span>
+                                <div class="text-xs font-bold text-white">Servicio Disponible (Uptime)</div>
+                                <p class="text-[11px] text-slate-400 leading-snug mt-0.5">Restablecimiento total y registro para el ciclo de mejora Kaizen.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Controls & Calculated Results -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-4 border-t border-white/5">
+                        <div class="lg:col-span-6 space-y-4">
+                            <!-- Slider MTTR -->
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between items-center text-xs">
+                                    <label for="slider-mttr" class="text-slate-300 font-bold">Tiempo Medio de Reparación (MTTR):</label>
+                                    <span id="val-mttr" class="font-mono font-bold text-cyan-400">18 minutos</span>
+                                </div>
+                                <input type="range" id="slider-mttr" min="5" max="90" step="1" value="18" oninput="updateAvailabilitySim()">
+                                <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                                    <span>5 min (Altamente automatizado)</span>
+                                    <span>90 min (Manual)</span>
+                                </div>
+                            </div>
+
+                            <!-- Slider MTBF -->
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between items-center text-xs">
+                                    <label for="slider-mtbf" class="text-slate-300 font-bold">Tiempo Medio Entre Fallas (MTBF):</label>
+                                    <span id="val-mtbf" class="font-mono font-bold text-purple-400">720 horas</span>
+                                </div>
+                                <input type="range" id="slider-mtbf" min="100" max="1500" step="20" value="720" oninput="updateAvailabilitySim()">
+                                <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                                    <span>100 horas</span>
+                                    <span>1500 horas</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Real-time Computed Values -->
+                        <div class="lg:col-span-6 grid grid-cols-2 sm:grid-cols-3 gap-3">
+                            <div class="p-3 rounded-lg bg-[#0f172a] border border-white/5">
+                                <span class="text-[10px] font-mono text-slate-400 uppercase block mb-1">Uptime Calculado</span>
+                                <div id="calc-avail-pct" class="text-lg font-bold text-emerald-400 font-mono">99.958%</div>
+                                <span id="calc-avail-sla" class="text-[10px] text-emerald-500 font-mono">Tier 3 (Cumple SLA)</span>
+                            </div>
+                            <div class="p-3 rounded-lg bg-[#0f172a] border border-white/5">
+                                <span class="text-[10px] font-mono text-slate-400 uppercase block mb-1">Downtime Anual</span>
+                                <div id="calc-downtime-hours" class="text-lg font-bold text-cyan-400 font-mono">3.65 hrs</div>
+                                <span class="text-[10px] text-slate-500">al año acumulado</span>
+                            </div>
+                            <div class="p-3 rounded-lg bg-[#0f172a] border border-white/5 col-span-2 sm:col-span-1">
+                                <span class="text-[10px] font-mono text-slate-400 uppercase block mb-1">Ahorro Estimado</span>
+                                <div id="calc-downtime-savings" class="text-lg font-bold text-amber-400 font-mono">$184,200</div>
+                                <span class="text-[10px] text-amber-500 font-mono">Pérdidas evitadas</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- TAB 2: MATRIZ ESTRATÉGICA DE MACHINE LEARNING                  -->
+        <!-- ============================================================== -->
+        <div id="tab-ml-matrix" class="tab-pane hidden space-y-8">
+            <div class="surface-panel p-6">
+                <div class="mb-6">
+                    <span class="text-xs font-mono font-bold text-purple-400 uppercase tracking-wider block mb-1">Catálogo de Inteligencia de Datos</span>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-project-diagram text-purple-400"></i>
+                        <span>Matriz Estratégica de Algoritmos de Machine Learning</span>
+                    </h2>
+                    <p class="text-xs text-slate-300 mt-1 max-w-3xl leading-relaxed">
+                        Evaluación y selección de técnicas predictivas y no supervisadas para resolver desafíos de negocio clave en la plataforma de servicios digitales.
+                    </p>
+                </div>
+
+                <!-- Sub-tabs for Learning Paradigms -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Left Column: Algorithm List / Selector -->
+                    <div class="lg:col-span-5 space-y-3">
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono mb-2">1. Aprendizaje Supervisado</div>
+                        
+                        <button onclick="selectAlgorithm('random-forest')" id="algo-btn-random-forest" class="algo-selector-btn w-full text-left p-3.5 rounded-xl border transition-all bg-cyan-500/10 border-cyan-400 text-white">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-xs font-bold flex items-center gap-2">
+                                    <i class="fa-solid fa-tree text-cyan-400"></i>
+                                    <span>Random Forest (Bosque Aleatorio)</span>
+                                </span>
+                                <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300">Clasificación</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400">Predicción preventiva de deserción de clientes (Churn Rate).</p>
+                        </button>
+
+                        <button onclick="selectAlgorithm('svm')" id="algo-btn-svm" class="algo-selector-btn w-full text-left p-3.5 rounded-xl border border-white/5 hover:border-cyan-500/30 transition-all bg-[#090d16] text-slate-300">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-xs font-bold flex items-center gap-2">
+                                    <i class="fa-solid fa-vector-square text-purple-400"></i>
+                                    <span>Máquinas de Soporte Vectorial (SVM)</span>
+                                </span>
+                                <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-purple-500/20 text-purple-300">Clasificación</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400">Enrutamiento automático y priorización de incidentes de soporte.</p>
+                        </button>
+
+                        <button onclick="selectAlgorithm('logistic')" id="algo-btn-logistic" class="algo-selector-btn w-full text-left p-3.5 rounded-xl border border-white/5 hover:border-cyan-500/30 transition-all bg-[#090d16] text-slate-300">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-xs font-bold flex items-center gap-2">
+                                    <i class="fa-solid fa-chart-line text-sky-400"></i>
+                                    <span>Regresión Logística</span>
+                                </span>
+                                <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-sky-500/20 text-sky-300">Binaria</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400">Scoring de propensión de compra para campañas de fidelización.</p>
+                        </button>
+
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono pt-4 mb-2">2. Aprendizaje No Supervisado</div>
+
+                        <button onclick="selectAlgorithm('kmeans')" id="algo-btn-kmeans" class="algo-selector-btn w-full text-left p-3.5 rounded-xl border border-white/5 hover:border-cyan-500/30 transition-all bg-[#090d16] text-slate-300">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-xs font-bold flex items-center gap-2">
+                                    <i class="fa-solid fa-circle-nodes text-emerald-400"></i>
+                                    <span>Clustering K-Means</span>
+                                </span>
+                                <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">Agrupamiento</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400">Segmentación de usuarios según hábitos de streaming y uso.</p>
+                        </button>
+
+                        <button onclick="selectAlgorithm('anomaly')" id="algo-btn-anomaly" class="algo-selector-btn w-full text-left p-3.5 rounded-xl border border-white/5 hover:border-cyan-500/30 transition-all bg-[#090d16] text-slate-300">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-xs font-bold flex items-center gap-2">
+                                    <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
+                                    <span>Detección de Anomalías</span>
+                                </span>
+                                <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300">Antifraude</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400">Identificación en tiempo real de transacciones sospechosas y bots.</p>
+                        </button>
+                    </div>
+
+                    <!-- Right Column: Algorithm Detailed Dossier -->
+                    <div class="lg:col-span-7 surface-card p-6 border border-white/10 flex flex-col justify-between">
+                        <div id="algo-detail-container" class="space-y-4">
+                            <!-- Dynamically populated by JS -->
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-slate-400">
+                            <span class="flex items-center gap-1.5">
+                                <i class="fa-solid fa-shield-halved text-cyan-400"></i>
+                                <span>Entorno de Ejecución: MLOps Pipeline en Producción</span>
+                            </span>
+                            <span class="font-mono text-cyan-300 font-bold" id="algo-status-badge">Modelo Desplegado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- TAB 3: RED NEURONAL ARTIFICIAL EN VIVO (ANN DEEP LEARNING)     -->
+        <!-- ============================================================== -->
+        <div id="tab-neural-net" class="tab-pane hidden space-y-8">
+            <div class="surface-panel p-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <span class="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider block mb-1">Inferencia en Tiempo Real</span>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-brain text-cyan-400"></i>
+                            <span>Simulador de Red Neuronal Artificial (Deep Learning Feedforward)</span>
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-1">Modelo de tres capas para la predicción de engagement y visualización de contenido en NovaTech Streaming.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="setExtremeProfile('weekend')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 transition">
+                            <i class="fa-solid fa-couch mr-1"></i> Perfil Fin de Semana
+                        </button>
+                        <button onclick="setExtremeProfile('workday')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+                            <i class="fa-solid fa-briefcase mr-1"></i> Perfil Día Laboral
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    <!-- Left Column: 5 Feature Input Sliders -->
+                    <div class="lg:col-span-4 surface-card p-5 space-y-4">
+                        <div class="border-b border-white/10 pb-3 flex items-center justify-between">
+                            <h3 class="text-xs font-mono font-bold text-slate-200 uppercase tracking-wider">Variables de Entrada (Features)</h3>
+                            <i class="fa-solid fa-sliders text-cyan-400 text-xs"></i>
+                        </div>
+
+                        <!-- Feature 1: Genre Affinity -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <label for="slider-genre" class="text-slate-300 font-semibold">1. Afinidad con el Género:</label>
+                                <span id="val-genre" class="font-mono text-cyan-400 font-bold">0.85</span>
+                            </div>
+                            <input type="range" id="slider-genre" min="0" max="100" value="85" oninput="updateNeuralNetwork()">
+                            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                                <span>0.0 (Sin afinidad)</span>
+                                <span>1.0 (Género favorito)</span>
+                            </div>
+                        </div>
+
+                        <!-- Feature 2: Content Rating -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <label for="slider-rating" class="text-slate-300 font-semibold">2. Calificación / Rating:</label>
+                                <span id="val-rating" class="font-mono text-purple-400 font-bold">4.6 estrellas</span>
+                            </div>
+                            <input type="range" id="slider-rating" min="10" max="50" value="46" oninput="updateNeuralNetwork()">
+                            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                                <span>1.0 (Mala)</span>
+                                <span>5.0 (Excelente)</span>
+                            </div>
+                        </div>
+
+                        <!-- Feature 3: Duration -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <label for="slider-duration" class="text-slate-300 font-semibold">3. Duración del Contenido:</label>
+                                <span id="val-duration" class="font-mono text-sky-400 font-bold">110 min</span>
+                            </div>
+                            <input type="range" id="slider-duration" min="15" max="180" step="5" value="110" oninput="updateNeuralNetwork()">
+                            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                                <span>15 min (Corto)</span>
+                                <span>180 min (Largo)</span>
+                            </div>
+                        </div>
+
+                        <!-- Feature 4: Time of Day -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <label for="slider-hour" class="text-slate-300 font-semibold">4. Hora del Día:</label>
+                                <span id="val-hour" class="font-mono text-amber-400 font-bold">21:00 hrs</span>
+                            </div>
+                            <input type="range" id="slider-hour" min="0" max="23" value="21" oninput="updateNeuralNetwork()">
+                            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                                <span>00:00 (Madrugada)</span>
+                                <span>23:00 (Noche)</span>
+                            </div>
+                        </div>
+
+                        <!-- Feature 5: Day of Week -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <label for="slider-day" class="text-slate-300 font-semibold">5. Día de la Semana:</label>
+                                <span id="val-day" class="font-mono text-emerald-400 font-bold">Sábado (Fin de semana)</span>
+                            </div>
+                            <input type="range" id="slider-day" min="0" max="1" step="1" value="1" oninput="updateNeuralNetwork()">
+                            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                                <span>0 (Día Laboral)</span>
+                                <span>1 (Fin de Semana)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Interactive Neural Canvas & Output Diagnosis -->
+                    <div class="lg:col-span-8 space-y-4">
+                        <!-- SVG Neural Network Diagram -->
+                        <div class="p-4 rounded-xl bg-[#090d16] border border-white/10 relative overflow-hidden">
+                            <div class="flex justify-between items-center mb-2 text-xs">
+                                <span class="font-mono text-slate-400 flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                                    <span>Topología Feedforward: 5 Entradas &bull; 4 Capa Oculta 1 &bull; 3 Capa Oculta 2 &bull; 1 Salida</span>
+                                </span>
+                                <span class="text-[11px] font-mono text-emerald-400">Activación: Sigmoide</span>
+                            </div>
+
+                            <!-- SVG Canvas -->
+                            <div class="w-full flex justify-center py-2">
+                                <svg id="neural-svg" viewBox="0 0 740 320" class="w-full max-w-[740px] h-auto select-none">
+                                    <!-- Definitions for Gradients and Glows -->
+                                    <defs>
+                                        <filter id="glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
+                                            <feGaussianBlur stdDeviation="3" result="blur" />
+                                            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                        </filter>
+                                        <filter id="glow-emerald" x="-20%" y="-20%" width="140%" height="140%">
+                                            <feGaussianBlur stdDeviation="4" result="blur" />
+                                            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                        </filter>
+                                    </defs>
+
+                                    <!-- Synaptic Lines Container -->
+                                    <g id="synapses-group"></g>
+
+                                    <!-- Neurons Nodes Container -->
+                                    <g id="neurons-group"></g>
+                                </svg>
+                            </div>
+
+                            <!-- Layer Labels -->
+                            <div class="grid grid-cols-4 text-center text-[10px] font-mono uppercase text-slate-400 pt-2 border-t border-white/5">
+                                <div>Entradas (5 Features)</div>
+                                <div>Capa Oculta 1 (Contexto)</div>
+                                <div>Capa Oculta 2 (Patrones)</div>
+                                <div>Salida (Inferencia)</div>
+                            </div>
+                        </div>
+
+                        <!-- Inferred Result & Actionable Decision -->
+                        <div class="p-4 rounded-xl bg-[#090d16] border border-cyan-500/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-14 h-14 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex flex-col items-center justify-center">
+                                    <span class="text-[10px] font-mono text-slate-400">Score</span>
+                                    <span id="output-prob-text" class="text-base font-bold font-mono text-cyan-400">89.2%</span>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h4 class="text-sm font-bold text-white">Probabilidad de Ver Contenido Completo</h4>
+                                        <span id="output-diagnosis-badge" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300">Alta Retención</span>
+                                    </div>
+                                    <p id="output-diagnosis-desc" class="text-xs text-slate-300 mt-1 leading-snug">
+                                        El usuario presenta alta propensión de consumo. Se activa sugerencia de contenidos premium y fidelización cruzada.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="text-right shrink-0">
+                                <span class="text-[10px] font-mono text-slate-500 block">Latencia de Inferencia</span>
+                                <span class="text-xs font-mono font-bold text-slate-300">14.2 ms en Edge Cloud</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- TAB 4: GENERACIÓN DE VALOR EMPRESARIAL & ROI                   -->
+        <!-- ============================================================== -->
+        <div id="tab-roi-value" class="tab-pane hidden space-y-8">
+            <div class="surface-panel p-6">
+                <div class="mb-6">
+                    <span class="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider block mb-1">Impacto Financiero & Eficiencia Operativa</span>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-chart-line text-emerald-400"></i>
+                        <span>Generación de Valor Empresarial y Retorno de Inversión (ROI)</span>
+                    </h2>
+                    <p class="text-xs text-slate-300 mt-1 max-w-3xl leading-relaxed">
+                        Cuantificación del impacto económico generado por la combinación de la alta disponibilidad en servicios TI (ISO 20000) y los algoritmos predictivos de Machine Learning en NovaTech.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Left: Budget Inputs -->
+                    <div class="lg:col-span-5 space-y-5">
+                        <div class="p-4 rounded-xl bg-[#090d16] border border-white/5 space-y-2">
+                            <div class="flex justify-between items-center text-xs">
+                                <label for="slider-inv-iso" class="font-bold text-slate-200 flex items-center gap-2">
+                                    <i class="fa-solid fa-shield-halved text-cyan-400"></i>
+                                    <span>Inversión Gestión ISO 20000 & NOC/SOC:</span>
+                                </label>
+                                <span id="val-inv-iso" class="font-mono font-bold text-cyan-400">$120,000 USD</span>
+                            </div>
+                            <input type="range" id="slider-inv-iso" min="40000" max="300000" step="10000" value="120000" oninput="updateRoiCalculation()">
+                            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                                <span>$40k</span>
+                                <span>$300k</span>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-[#090d16] border border-white/5 space-y-2">
+                            <div class="flex justify-between items-center text-xs">
+                                <label for="slider-inv-ml" class="font-bold text-slate-200 flex items-center gap-2">
+                                    <i class="fa-solid fa-brain text-purple-400"></i>
+                                    <span>Inversión Modelos ML & MLOps Pipeline:</span>
+                                </label>
+                                <span id="val-inv-ml" class="font-mono font-bold text-purple-400">$90,000 USD</span>
+                            </div>
+                            <input type="range" id="slider-inv-ml" min="30000" max="250000" step="10000" value="90000" oninput="updateRoiCalculation()">
+                            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                                <span>$30k</span>
+                                <span>$250k</span>
+                            </div>
+                        </div>
+
+                        <!-- Strategic Summary Card -->
+                        <div class="p-4 rounded-xl bg-[#090d16] border border-emerald-500/20 text-xs space-y-2">
+                            <strong class="text-white block font-bold flex items-center gap-2">
+                                <i class="fa-solid fa-check text-emerald-400"></i>
+                                <span>Drivers de Creación de Valor Cuantificados:</span>
+                            </strong>
+                            <ul class="space-y-1 text-slate-300 text-[11px]">
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-arrow-right text-emerald-400 text-[9px]"></i> Reducción de Pérdidas por Caídas de Servicio: <strong>-$184,000 / año</strong></li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-arrow-right text-emerald-400 text-[9px]"></i> Aumento de Retención de Suscripciones (Churn -34%): <strong>+$235,000 / año</strong></li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-arrow-right text-emerald-400 text-[9px]"></i> Venta Cruzada por Motor de Recomendación: <strong>+$112,000 / año</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Right: Results & Chart -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <div class="p-3.5 rounded-xl bg-[#090d16] border border-white/5">
+                                <span class="text-[10px] uppercase font-mono text-slate-400 block mb-0.5">Inversión Total</span>
+                                <div id="calc-roi-capex" class="text-base sm:text-lg font-bold text-white font-mono">$210,000</div>
+                                <span class="text-[10px] text-slate-500">CAPEX + OPEX Inicial</span>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-[#090d16] border border-white/5">
+                                <span class="text-[10px] uppercase font-mono text-slate-400 block mb-0.5">Beneficio Anual</span>
+                                <div id="calc-roi-benefit" class="text-base sm:text-lg font-bold text-emerald-400 font-mono">$531,000</div>
+                                <span class="text-[10px] text-emerald-500 font-mono">Valor Total Generado</span>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-[#090d16] border border-white/5">
+                                <span class="text-[10px] uppercase font-mono text-slate-400 block mb-0.5">ROI a 3 Años</span>
+                                <div id="calc-roi-percent" class="text-base sm:text-lg font-bold text-cyan-400 font-mono">252.8%</div>
+                                <span class="text-[10px] text-cyan-500 font-mono">Retorno Neto</span>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-[#090d16] border border-white/5">
+                                <span class="text-[10px] uppercase font-mono text-slate-400 block mb-0.5">Payback</span>
+                                <div id="calc-roi-payback" class="text-base sm:text-lg font-bold text-amber-400 font-mono">4.7 meses</div>
+                                <span class="text-[10px] text-amber-500">Recuperación Capital</span>
+                            </div>
+                        </div>
+
+                        <!-- Chart Container -->
+                        <div class="p-4 rounded-xl bg-[#090d16] border border-white/5">
+                            <div class="flex items-center justify-between mb-3 text-xs">
+                                <span class="font-bold text-slate-300">Crecimiento de Ingresos Recurrentes (MRR) con IA vs Operación Tradicional</span>
+                                <span class="text-slate-500 font-mono text-[11px]">En Miles de USD</span>
+                            </div>
+                            <div class="h-64 w-full">
+                                <canvas id="valueChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formal Approvals & Sign-off Block (Visible in Print & Executive View) -->
+        <section class="mt-12 surface-panel p-6 print-block">
+            <h3 class="text-xs font-mono uppercase tracking-wider text-slate-400 mb-4 font-bold">
+                Validación y Aprobación del Caso de Negocio Tecnológico
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-white/10 text-xs">
+                <div class="space-y-1">
+                    <div class="text-slate-400 text-[11px]">Elaborado por:</div>
+                    <div class="font-bold text-white">Líder de Ciencia de Datos & Arquitectura TI</div>
+                    <div class="text-slate-500 text-[10px] font-mono">Validación de Modelos ANN & ML</div>
+                </div>
+                <div class="space-y-1">
+                    <div class="text-slate-400 text-[11px]">Validado por:</div>
+                    <div class="font-bold text-white">Jefatura de Operaciones y Calidad ISO 20000</div>
+                    <div class="text-slate-500 text-[10px] font-mono">Auditoría de Uptime & SLAs</div>
+                </div>
+                <div class="space-y-1">
+                    <div class="text-slate-400 text-[11px]">Aprobado por:</div>
+                    <div class="font-bold text-white">Dirección General de Tecnología & Negocio</div>
+                    <div class="text-slate-500 text-[10px] font-mono">Alineación Estratégica NovaTech 2026</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal: Case Study Profile -->
+    <div id="modal-case-info" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="surface-panel max-w-2xl w-full p-6 sm:p-8 border border-white/15 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-building"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-white">Ficha Técnica del Caso de Estudio Empresarial</h3>
+                        <p class="text-xs text-slate-400">NovaTech Omnichannel Platform & Digital Services</p>
+                    </div>
+                </div>
+                <button onclick="toggleModal('modal-case-info')" class="w-8 h-8 rounded-lg bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4 text-xs text-slate-300 leading-relaxed">
+                <div class="p-3.5 rounded-lg bg-[#090d16] border border-white/5 space-y-1">
+                    <strong class="text-white block font-bold">1. Diagnóstico Inicial y Desafíos:</strong>
+                    NovaTech opera una plataforma digital con más de 450,000 usuarios activos mensuales. Enfrentaba problemas de interrupciones no planificadas (MTTR superior a 75 minutos), falta de trazabilidad en los incidentes y una tasa de deserción (Churn) mensual del 6.2% debido a recomendaciones poco relevantes.
+                </div>
+                <div class="p-3.5 rounded-lg bg-[#090d16] border border-white/5 space-y-1">
+                    <strong class="text-white block font-bold">2. Enfoque de Solución de Sistemas de Información:</strong>
+                    Se implementó el marco de gestión de servicios <strong>ISO 20000</strong> en 4 capas (Canales, Procesos, Monitoreo NOC y Plataforma) para blindar el Uptime del servicio por encima del 99.95%, integrado con un motor de <strong>Machine Learning y Redes Neuronales Artificiales</strong> para predecir en tiempo real el comportamiento de visualización y retención de los usuarios.
+                </div>
+                <div class="p-3.5 rounded-lg bg-[#090d16] border border-white/5 space-y-1">
+                    <strong class="text-white block font-bold">3. Resultados y Creación de Valor Auditables:</strong>
+                    Reducción del MTTR de 75 a 18 minutos, disminución de la deserción en un 34.5% y un incremento en el valor de vida del cliente (LTV) del 28%, consolidando un retorno de inversión (ROI) superior al 250% en un horizonte de tres años.
+                </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-white/10 flex justify-end">
+                <button onclick="toggleModal('modal-case-info')" class="px-4 py-2 rounded-lg bg-cyan-500 text-slate-950 font-bold text-xs hover:bg-cyan-400 transition">
+                    Entendido y Continuar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-6 text-center text-xs text-slate-500 mt-12 no-print">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>Sistemas de Información Empresarial</div>
+            <div class="flex items-center gap-4 text-slate-400">
+                <a href="index.html" class="hover:text-white transition">Hub Semana 13</a>
+                <span>&bull;</span>
+                <a href="../index.html" class="hover:text-white transition">Portafolio General</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Logic Script -->
+    <script>
+        // Tab Navigation
+        function switchTab(targetId) {
+            document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/60 border border-transparent whitespace-nowrap";
+            });
+
+            document.getElementById(targetId).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-btn-${targetId.replace('tab-', '')}`);
+            activeBtn.className = "tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 whitespace-nowrap";
+
+            if (targetId === 'tab-roi-value') {
+                setTimeout(() => {
+                    if (window.myValueChart) window.myValueChart.resize();
+                }, 50);
+            }
+        }
+
+        // Modal Toggle
+        function toggleModal(id) {
+            const m = document.getElementById(id);
+            if (m.classList.contains('hidden')) {
+                m.classList.remove('hidden');
+            } else {
+                m.classList.add('hidden');
+            }
+        }
+
+        // ==============================================================
+        // 1. AVAILABILITY SIMULATOR (ISO 20000)
+        // ==============================================================
+        function updateAvailabilitySim() {
+            const mttrMin = parseInt(document.getElementById('slider-mttr').value);
+            const mtbfHours = parseInt(document.getElementById('slider-mtbf').value);
+
+            document.getElementById('val-mttr').textContent = `${mttrMin} minutos`;
+            document.getElementById('val-mtbf').textContent = `${mtbfHours} horas`;
+
+            const mttrHours = mttrMin / 60;
+            const availRatio = mtbfHours / (mtbfHours + mttrHours);
+            const availPct = (availRatio * 100).toFixed(3);
+
+            const hoursPerYear = 8760;
+            const failuresPerYear = hoursPerYear / (mtbfHours + mttrHours);
+            const downtimeHoursPerYear = (failuresPerYear * mttrHours).toFixed(2);
+
+            // Baseline downtime without ISO 20000 was 48 hrs / year; downtime cost is $4,200/hr
+            const baselineHours = 48.0;
+            const hoursSaved = Math.max(0, baselineHours - parseFloat(downtimeHoursPerYear));
+            const annualSavings = Math.round(hoursSaved * 4200);
+
+            document.getElementById('calc-avail-pct').textContent = `${availPct}%`;
+            document.getElementById('calc-downtime-hours').textContent = `${downtimeHoursPerYear} hrs`;
+            document.getElementById('calc-downtime-savings').textContent = `$${annualSavings.toLocaleString()} USD`;
+
+            // SLA compliance indicator
+            const slaEl = document.getElementById('calc-avail-sla');
+            if (availRatio >= 0.9995) {
+                slaEl.className = "text-[10px] text-emerald-400 font-mono";
+                slaEl.innerHTML = '<i class="fa-solid fa-circle-check mr-1"></i> SLA Tier 3 (&gt;99.95%)';
+            } else if (availRatio >= 0.9990) {
+                slaEl.className = "text-[10px] text-amber-400 font-mono";
+                slaEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> SLA Tier 2 (Aceptable)';
+            } else {
+                slaEl.className = "text-[10px] text-rose-400 font-mono";
+                slaEl.innerHTML = '<i class="fa-solid fa-circle-xmark mr-1"></i> Fuera de SLA (Riesgo Penalidad)';
+            }
+        }
+
+        // ==============================================================
+        // 2. MACHINE LEARNING ALGORITHM DOSSIER
+        // ==============================================================
+        const algorithmsData = {
+            'random-forest': {
+                name: 'Random Forest (Bosque de Árboles Aleatorios)',
+                category: 'Supervisado &bull; Clasificación Multivariada',
+                badge: 'F1-Score: 94.8%',
+                desc: 'Combina múltiples árboles de decisión independientes entrenados con subconjuntos aleatorios de variables para predecir con alta precisión si un usuario tiene riesgo inminente de cancelar su suscripción (Churn).',
+                features: ['Horas de streaming por semana', 'Frecuencia de inicios de sesión', 'Antigüedad de la suscripción', 'Tickets de soporte abiertos', 'Método de pago registrado'],
+                metrics: 'AUC-ROC: 0.96 &bull; Precisión: 95.2% &bull; Recall: 94.4%',
+                impact: 'Permite intervenir al 88% de los usuarios insatisfechos antes de su fecha de corte mediante incentivos personalizados, reduciendo el Churn en un 34.5%.'
+            },
+            'svm': {
+                name: 'Support Vector Machines (SVM)',
+                category: 'Supervisado &bull; Hiperplano N-Dimensional',
+                badge: 'Accuracy: 93.4%',
+                desc: 'Encuentra el hiperplano óptimo de máxima separación en un espacio multidimensional para clasificar textos y reportes técnicos de usuarios en categorías de criticidad (P1 Crítico, P2 Alto, P3 Medio, P4 Informativo).',
+                features: ['Embeddings de texto del reclamo', 'Módulo afectado (API, Pagos, Video)', 'Tipo de cliente (B2B vs B2C)', 'Hora de incidencia'],
+                metrics: 'F1-Score: 93.4% &bull; Tiempo de inferencia: 8 ms',
+                impact: 'Elimina el triaje manual de incidentes, reduciendo el tiempo de enrutamiento al equipo de soporte especializado de 25 minutos a 4 segundos.'
+            },
+            'logistic': {
+                name: 'Regresión Logística',
+                category: 'Supervisado &bull; Probabilidad Binaria',
+                badge: 'AUC: 0.91',
+                desc: 'Modela la probabilidad condicional de ocurrencia de un evento binario (conversión a plan anual o adopción de paquete familiar) a través de una función sigmoidea logística acotada entre 0 y 1.',
+                features: ['Sensibilidad al precio', 'Historial de visualizaciones', 'Respuesta a campañas de correo previas', 'Dispositivo principal'],
+                metrics: 'Precisión de Conversión: 88.6% &bull; Log-Loss: 0.22',
+                impact: 'Incremento del 22.8% en la tasa de conversión en campañas dirigidas, evitando cansar con publicidad a usuarios no receptivos.'
+            },
+            'kmeans': {
+                name: 'Clustering K-Means',
+                category: 'No Supervisado &bull; Agrupamiento por Cercanía',
+                badge: 'Silhouette: 0.74',
+                desc: 'Algoritmo no supervisado que particiona la masa de usuarios en K grupos homogéneos (clusters) basados en la distancia euclidiana entre sus vectores de hábitos, descubriendo arquetipos de consumo sin requerir etiquetas previas.',
+                features: ['Horarios pico de conexión', 'Preferencias de duración de sesión', 'Afinidad por géneros (Drama, Acción, Documental)', 'Dispositivo móvil vs Smart TV'],
+                metrics: 'K Óptimo: 5 Clusters &bull; Inertia Estabilizada',
+                impact: 'Diseño de parrillas de contenidos hiperpersonalizadas por clúster, incrementando el tiempo de reproducción total en plataforma en un 31.2%.'
+            },
+            'anomaly': {
+                name: 'Detección de Anomalías (Isolation Forest / Autoencoders)',
+                category: 'No Supervisado &bull; Detección de Valores Atípicos',
+                badge: 'Tasa Falsos Positivos: 0.12%',
+                desc: 'Aísla observaciones atípicas que se desvían drásticamente de los patrones habituales de tráfico de datos, detectando intentos de fraude con tarjetas de crédito clonadas o ataques de denegación de servicio a nivel de API.',
+                features: ['Geolocalización IP inusual', 'Velocidad de peticiones por segundo', 'Monto de transacción respecto a media', 'Huella de dispositivo desconocida'],
+                metrics: 'Recall de Fraude: 98.7% &bull; Latencia: 12 ms',
+                impact: 'Mitigación de fraudes y chargebacks por más de $95,000 USD anuales y protección continua de la reputación de la pasarela de pagos.'
+            }
+        };
+
+        function selectAlgorithm(key) {
+            document.querySelectorAll('.algo-selector-btn').forEach(btn => {
+                btn.className = "algo-selector-btn w-full text-left p-3.5 rounded-xl border border-white/5 hover:border-cyan-500/30 transition-all bg-[#090d16] text-slate-300";
+            });
+
+            const activeBtn = document.getElementById(`algo-btn-${key}`);
+            if (activeBtn) {
+                activeBtn.className = "algo-selector-btn w-full text-left p-3.5 rounded-xl border transition-all bg-cyan-500/10 border-cyan-400 text-white";
+            }
+
+            const data = algorithmsData[key];
+            const container = document.getElementById('algo-detail-container');
+            container.innerHTML = `
+                <div class="flex items-center justify-between pb-3 border-b border-white/10">
+                    <div>
+                        <span class="text-[10px] font-mono text-cyan-400 uppercase font-bold tracking-wider">${data.category}</span>
+                        <h3 class="text-lg font-bold text-white">${data.name}</h3>
+                    </div>
+                    <span class="px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                        ${data.badge}
+                    </span>
+                </div>
+
+                <p class="text-xs text-slate-300 leading-relaxed">${data.desc}</p>
+
+                <div class="p-3.5 rounded-lg bg-[#090d16] border border-white/5 space-y-2">
+                    <strong class="text-xs font-bold text-slate-200 block">Variables de Entrada (Feature Vectors):</strong>
+                    <div class="flex flex-wrap gap-1.5">
+                        ${data.features.map(f => `<span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px] font-mono border border-slate-700">${f}</span>`).join('')}
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div class="p-3 rounded-lg bg-[#090d16] border border-white/5">
+                        <span class="text-[10px] font-mono text-purple-400 uppercase font-bold block mb-0.5">Métrica Técnica:</span>
+                        <div class="text-slate-200 font-mono font-semibold">${data.metrics}</div>
+                    </div>
+                    <div class="p-3 rounded-lg bg-[#090d16] border border-white/5">
+                        <span class="text-[10px] font-mono text-emerald-400 uppercase font-bold block mb-0.5">Impacto en el Negocio:</span>
+                        <div class="text-slate-200">${data.impact}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ==============================================================
+        // 3. ARTIFICIAL NEURAL NETWORK (ANN) LIVE FEEDFORWARD ENGINE
+        // ==============================================================
+        // Fixed weights calibrated for realistic streaming engagement prediction
+        const W1 = [
+            // N1,   N2,   N3,   N4
+            [ 2.2,  1.4, -0.8,  1.9], // Input 1: Genre
+            [ 1.8,  2.1,  0.5,  1.2], // Input 2: Rating
+            [-1.1, -0.4,  1.8, -0.6], // Input 3: Duration
+            [ 0.9,  1.7,  0.2,  2.1], // Input 4: Hour
+            [ 1.4,  1.2,  0.7,  1.5]  // Input 5: Day
+        ];
+        const B1 = [0.2, -0.5, -0.3, 0.4];
+
+        const W2 = [
+            // Out1, Out2, Out3
+            [ 1.9,  0.8,  1.4], // H1-N1
+            [ 1.5,  2.1,  0.7], // H1-N2
+            [-0.9, -1.2,  1.6], // H1-N3
+            [ 2.2,  1.1,  1.8]  // H1-N4
+        ];
+        const B2 = [0.1, -0.2, 0.3];
+
+        const W3 = [2.4, 2.1, 1.6]; // From H2 (3 nodes) to Output
+        const B3 = -1.2;
+
+        function sigmoid(x) {
+            return 1 / (1 + Math.exp(-Math.max(-10, Math.min(10, x))));
+        }
+
+        // Layout node positions in SVG (viewBox 0 0 740 320)
+        const nodePositions = {
+            inputs: [
+                { id: 'I1', x: 70, y: 40, label: 'Género' },
+                { id: 'I2', x: 70, y: 100, label: 'Rating' },
+                { id: 'I3', x: 70, y: 160, label: 'Duración' },
+                { id: 'I4', x: 70, y: 220, label: 'Hora' },
+                { id: 'I5', x: 70, y: 280, label: 'Día' }
+            ],
+            h1: [
+                { id: 'H1_1', x: 260, y: 65, label: 'N1' },
+                { id: 'H1_2', x: 260, y: 130, label: 'N2' },
+                { id: 'H1_3', x: 260, y: 195, label: 'N3' },
+                { id: 'H1_4', x: 260, y: 260, label: 'N4' }
+            ],
+            h2: [
+                { id: 'H2_1', x: 470, y: 90, label: 'N1' },
+                { id: 'H2_2', x: 470, y: 160, label: 'N2' },
+                { id: 'H2_3', x: 470, y: 230, label: 'N3' }
+            ],
+            output: [
+                { id: 'OUT', x: 670, y: 160, label: 'Salida' }
+            ]
+        };
+
+        function initNeuralSvg() {
+            const synapsesGroup = document.getElementById('synapses-group');
+            const neuronsGroup = document.getElementById('neurons-group');
+            synapsesGroup.innerHTML = '';
+            neuronsGroup.innerHTML = '';
+
+            // 1. Draw Synapses: Inputs to H1
+            nodePositions.inputs.forEach((inp, iIdx) => {
+                nodePositions.h1.forEach((h1Node, h1Idx) => {
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('id', `syn-i${iIdx}-h1_${h1Idx}`);
+                    line.setAttribute('x1', inp.x);
+                    line.setAttribute('y1', inp.y);
+                    line.setAttribute('x2', h1Node.x);
+                    line.setAttribute('y2', h1Node.y);
+                    line.setAttribute('stroke', '#38bdf8');
+                    line.setAttribute('stroke-width', '1');
+                    line.setAttribute('opacity', '0.2');
+                    line.setAttribute('class', 'synapse-line');
+                    synapsesGroup.appendChild(line);
+                });
+            });
+
+            // 2. Draw Synapses: H1 to H2
+            nodePositions.h1.forEach((h1Node, h1Idx) => {
+                nodePositions.h2.forEach((h2Node, h2Idx) => {
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('id', `syn-h1_${h1Idx}-h2_${h2Idx}`);
+                    line.setAttribute('x1', h1Node.x);
+                    line.setAttribute('y1', h1Node.y);
+                    line.setAttribute('x2', h2Node.x);
+                    line.setAttribute('y2', h2Node.y);
+                    line.setAttribute('stroke', '#a855f7');
+                    line.setAttribute('stroke-width', '1');
+                    line.setAttribute('opacity', '0.2');
+                    line.setAttribute('class', 'synapse-line');
+                    synapsesGroup.appendChild(line);
+                });
+            });
+
+            // 3. Draw Synapses: H2 to Output
+            nodePositions.h2.forEach((h2Node, h2Idx) => {
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('id', `syn-h2_${h2Idx}-out`);
+                line.setAttribute('x1', h2Node.x);
+                line.setAttribute('y1', h2Node.y);
+                line.setAttribute('x2', nodePositions.output[0].x);
+                line.setAttribute('y2', nodePositions.output[0].y);
+                line.setAttribute('stroke', '#10b981');
+                line.setAttribute('stroke-width', '1.5');
+                line.setAttribute('opacity', '0.25');
+                line.setAttribute('class', 'synapse-line');
+                synapsesGroup.appendChild(line);
+            });
+
+            // Helper to draw neuron circle + text
+            function renderNeuron(node, colorFill, colorStroke) {
+                const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                g.setAttribute('class', 'neuron-node');
+
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('id', `node-circle-${node.id}`);
+                circle.setAttribute('cx', node.x);
+                circle.setAttribute('cy', node.y);
+                circle.setAttribute('r', '16');
+                circle.setAttribute('fill', colorFill);
+                circle.setAttribute('stroke', colorStroke);
+                circle.setAttribute('stroke-width', '2');
+                g.appendChild(circle);
+
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('id', `node-text-${node.id}`);
+                text.setAttribute('x', node.x);
+                text.setAttribute('y', node.y + 4);
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('font-size', '9');
+                text.setAttribute('font-family', 'JetBrains Mono');
+                text.setAttribute('fill', '#ffffff');
+                text.setAttribute('font-weight', 'bold');
+                text.textContent = node.label;
+                g.appendChild(text);
+
+                neuronsGroup.appendChild(g);
+            }
+
+            nodePositions.inputs.forEach(n => renderNeuron(n, '#0b1329', '#06b6d4'));
+            nodePositions.h1.forEach(n => renderNeuron(n, '#0b1329', '#38bdf8'));
+            nodePositions.h2.forEach(n => renderNeuron(n, '#0b1329', '#a855f7'));
+            renderNeuron(nodePositions.output[0], '#0b1329', '#10b981');
+        }
+
+        function updateNeuralNetwork() {
+            // Read slider values
+            const genreRaw = parseInt(document.getElementById('slider-genre').value) / 100; // 0 to 1
+            const ratingRaw = parseInt(document.getElementById('slider-rating').value) / 10; // 1.0 to 5.0
+            const durationRaw = parseInt(document.getElementById('slider-duration').value); // 15 to 180 min
+            const hourRaw = parseInt(document.getElementById('slider-hour').value); // 0 to 23
+            const dayRaw = parseInt(document.getElementById('slider-day').value); // 0 or 1
+
+            // Display text in UI
+            document.getElementById('val-genre').textContent = genreRaw.toFixed(2);
+            document.getElementById('val-rating').textContent = `${ratingRaw.toFixed(1)} estrellas`;
+            document.getElementById('val-duration').textContent = `${durationRaw} min`;
+            document.getElementById('val-hour').textContent = `${hourRaw.toString().padStart(2, '0')}:00 hrs`;
+            document.getElementById('val-day').textContent = dayRaw === 1 ? 'Sábado / Domingo (Fin de semana)' : 'Lunes - Viernes (Día Laboral)';
+
+            // Normalize inputs to [0, 1] for the ANN
+            const i1 = genreRaw;
+            const i2 = (ratingRaw - 1.0) / 4.0;
+            const i3 = 1.0 - (durationRaw - 15) / 165; // shorter duration is slightly easier to complete
+            const i4 = hourRaw >= 18 && hourRaw <= 23 ? 1.0 : (hourRaw >= 12 ? 0.6 : 0.2); // prime time bonus
+            const i5 = dayRaw; // 1 for weekend
+
+            const inputs = [i1, i2, i3, i4, i5];
+
+            // Feedforward: Layer 1 (4 neurons)
+            const a1 = [];
+            for (let j = 0; j < 4; j++) {
+                let z = B1[j];
+                for (let i = 0; i < 5; i++) {
+                    z += inputs[i] * W1[i][j];
+                }
+                a1.push(sigmoid(z));
+            }
+
+            // Feedforward: Layer 2 (3 neurons)
+            const a2 = [];
+            for (let k = 0; k < 3; k++) {
+                let z = B2[k];
+                for (let j = 0; j < 4; j++) {
+                    z += a1[j] * W2[j][k];
+                }
+                a2.push(sigmoid(z));
+            }
+
+            // Feedforward: Output (1 neuron)
+            let zOut = B3;
+            for (let k = 0; k < 3; k++) {
+                zOut += a2[k] * W3[k];
+            }
+            const outProb = sigmoid(zOut);
+            const probPct = (outProb * 100).toFixed(1);
+
+            // Update Output UI
+            document.getElementById('output-prob-text').textContent = `${probPct}%`;
+            document.getElementById('hero-kpi-accuracy').textContent = `${probPct}% Prob. Retención`;
+
+            const badgeEl = document.getElementById('output-diagnosis-badge');
+            const descEl = document.getElementById('output-diagnosis-desc');
+
+            if (outProb >= 0.75) {
+                badgeEl.className = "px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+                badgeEl.textContent = "Alta Retención & Fidelización";
+                descEl.textContent = "El usuario presenta máxima propensión de visualización completa. Se activa catálogo premium y propuesta de pase a suscripción anual.";
+            } else if (outProb >= 0.45) {
+                badgeEl.className = "px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30";
+                badgeEl.textContent = "Retención Moderada";
+                descEl.textContent = "Usuario en zona de indecisión. Se despliega recomendación contextual y opción 'Continuar viendo' en carrusel principal.";
+            } else {
+                badgeEl.className = "px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30";
+                badgeEl.textContent = "Riesgo Alto de Abandono";
+                descEl.textContent = "Riesgo inminente de abandono de sesión. El motor MLOps activa notificación push con incentivo y ajuste de formato de video.";
+            }
+
+            // Update SVG Visuals (colors and synapse line opacities)
+            inputs.forEach((val, iIdx) => {
+                const circle = document.getElementById(`node-circle-I${iIdx + 1}`);
+                if (circle) {
+                    circle.setAttribute('fill', `rgba(6, 182, 212, ${0.15 + val * 0.7})`);
+                }
+                // Synapse opacities
+                nodePositions.h1.forEach((_, h1Idx) => {
+                    const line = document.getElementById(`syn-i${iIdx}-h1_${h1Idx}`);
+                    if (line) {
+                        const weightSign = W1[iIdx][h1Idx] >= 0;
+                        line.setAttribute('stroke', weightSign ? '#06b6d4' : '#f43f5e');
+                        line.setAttribute('opacity', (0.1 + val * 0.7).toFixed(2));
+                        line.setAttribute('stroke-width', (0.8 + Math.abs(W1[iIdx][h1Idx]) * val * 0.8).toFixed(1));
+                    }
+                });
+            });
+
+            a1.forEach((val, h1Idx) => {
+                const circle = document.getElementById(`node-circle-H1_${h1Idx + 1}`);
+                if (circle) {
+                    circle.setAttribute('fill', `rgba(56, 189, 248, ${0.2 + val * 0.7})`);
+                }
+                nodePositions.h2.forEach((_, h2Idx) => {
+                    const line = document.getElementById(`syn-h1_${h1Idx}-h2_${h2Idx}`);
+                    if (line) {
+                        line.setAttribute('opacity', (0.15 + val * 0.75).toFixed(2));
+                        line.setAttribute('stroke-width', (1 + val * 1.2).toFixed(1));
+                    }
+                });
+            });
+
+            a2.forEach((val, h2Idx) => {
+                const circle = document.getElementById(`node-circle-H2_${h2Idx + 1}`);
+                if (circle) {
+                    circle.setAttribute('fill', `rgba(168, 85, 247, ${0.2 + val * 0.7})`);
+                }
+                const line = document.getElementById(`syn-h2_${h2Idx}-out`);
+                if (line) {
+                    line.setAttribute('opacity', (0.2 + val * 0.8).toFixed(2));
+                    line.setAttribute('stroke-width', (1.2 + val * 1.8).toFixed(1));
+                }
+            });
+
+            const outCircle = document.getElementById('node-circle-OUT');
+            if (outCircle) {
+                outCircle.setAttribute('fill', outProb >= 0.75 ? `rgba(16, 185, 129, ${outProb})` : (outProb >= 0.45 ? `rgba(245, 158, 11, ${outProb})` : `rgba(244, 63, 94, 0.8)`));
+                outCircle.setAttribute('stroke', outProb >= 0.75 ? '#10b981' : (outProb >= 0.45 ? '#f59e0b' : '#f43f5e'));
+            }
+        }
+
+        function setExtremeProfile(type) {
+            if (type === 'weekend') {
+                document.getElementById('slider-genre').value = 95;
+                document.getElementById('slider-rating').value = 48;
+                document.getElementById('slider-duration').value = 120;
+                document.getElementById('slider-hour').value = 21;
+                document.getElementById('slider-day').value = 1;
+            } else {
+                document.getElementById('slider-genre').value = 20;
+                document.getElementById('slider-rating').value = 25;
+                document.getElementById('slider-duration').value = 160;
+                document.getElementById('slider-hour').value = 3;
+                document.getElementById('slider-day').value = 0;
+            }
+            updateNeuralNetwork();
+        }
+
+        // ==============================================================
+        // 4. FINANCIAL VALUE & ROI CALCULATOR
+        // ==============================================================
+        let valueChart = null;
+
+        function updateRoiCalculation() {
+            const invIso = parseInt(document.getElementById('slider-inv-iso').value);
+            const invMl = parseInt(document.getElementById('slider-inv-ml').value);
+
+            document.getElementById('val-inv-iso').textContent = `$${invIso.toLocaleString()} USD`;
+            document.getElementById('val-inv-ml').textContent = `$${invMl.toLocaleString()} USD`;
+
+            const totalCapex = invIso + invMl;
+            // Annual benefit = Downtime savings ($184k) + Churn reduction benefit + Cross-selling boost
+            const annualBenefit = Math.round(184000 + (invMl * 1.85) + (invIso * 0.75));
+            const threeYearNet = (annualBenefit * 3) - totalCapex;
+            const roiPct = ((threeYearNet / totalCapex) * 100).toFixed(1);
+            const paybackMonths = ((totalCapex / annualBenefit) * 12).toFixed(1);
+
+            document.getElementById('calc-roi-capex').textContent = `$${totalCapex.toLocaleString()}`;
+            document.getElementById('calc-roi-benefit').textContent = `$${annualBenefit.toLocaleString()}`;
+            document.getElementById('calc-roi-percent').textContent = `${roiPct}%`;
+            document.getElementById('calc-roi-payback').textContent = `${paybackMonths} meses`;
+
+            updateValueChart(annualBenefit);
+        }
+
+        function initValueChart() {
+            const ctx = document.getElementById('valueChart').getContext('2d');
+            valueChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Trimestre 1', 'Trimestre 2', 'Trimestre 3', 'Trimestre 4', 'Trimestre 5', 'Trimestre 6', 'Trimestre 7', 'Trimestre 8'],
+                    datasets: [
+                        {
+                            label: 'Ingresos MRR con NeuroValue OS ($k)',
+                            data: [120, 155, 195, 240, 290, 345, 410, 480],
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.12)',
+                            fill: true,
+                            tension: 0.35,
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Línea Base Tradicional Sin IA ($k)',
+                            data: [115, 120, 125, 130, 132, 135, 138, 140],
+                            borderColor: '#64748b',
+                            borderDash: [5, 5],
+                            fill: false,
+                            tension: 0.2,
+                            borderWidth: 1.5
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#94a3b8',
+                                font: { family: 'Plus Jakarta Sans', size: 11 }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#0f172a',
+                            borderColor: 'rgba(255,255,255,0.1)',
+                            borderWidth: 1,
+                            titleColor: '#ffffff',
+                            bodyColor: '#cbd5e1'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#64748b', font: { family: 'Plus Jakarta Sans', size: 10 } }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: {
+                                color: '#64748b',
+                                font: { family: 'JetBrains Mono', size: 10 },
+                                callback: function(value) { return '$' + value + 'k'; }
+                            }
+                        }
+                    }
+                }
+            });
+            window.myValueChart = valueChart;
+        }
+
+        function updateValueChart(annualBenefit) {
+            if (!valueChart) return;
+            const factor = annualBenefit / 530000;
+            const baseCurve = [120, 155, 195, 240, 290, 345, 410, 480];
+            const updatedCurve = baseCurve.map(v => Math.round(v * factor));
+            valueChart.data.datasets[0].data = updatedCurve;
+            valueChart.update();
+        }
+
+        // Initialize Everything on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            updateAvailabilitySim();
+            selectAlgorithm('random-forest');
+            initNeuralSvg();
+            updateNeuralNetwork();
+            initValueChart();
+            updateRoiCalculation();
+        });
+    </script>
+</body>
+</html>
