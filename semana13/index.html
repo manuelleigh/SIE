@@ -9,12 +9,12 @@
     <!-- Font Awesome 6.4.0 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -22,13 +22,9 @@
                         mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
-                        darkBase: '#090d16',
-                        darkCard: '#0f172a',
-                        darkBorder: 'rgba(255, 255, 255, 0.08)',
-                        brandCyan: '#06b6d4',
-                        brandBlue: '#38bdf8',
-                        brandIndigo: '#6366f1',
-                        brandEmerald: '#10b981'
+                        brandBlue: '#2563eb',
+                        brandIndigo: '#4f46e5',
+                        brandEmerald: '#059669',
                     }
                 }
             }
@@ -36,36 +32,38 @@
     </script>
     <style>
         body {
-            background-color: #090d16;
-            color: #f1f5f9;
+            background-color: #f8fafc;
+            color: #0f172a;
             font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
         .surface-card {
-            background: #0f172a;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.25s ease;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease-in-out;
         }
         .surface-card:hover {
-            border-color: rgba(6, 182, 212, 0.35);
+            border-color: #93c5fd;
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.1);
             transform: translateY(-2px);
-            box-shadow: 0 16px 32px -10px rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased">
+<body class="min-h-screen flex flex-col antialiased bg-slate-50 text-slate-900">
     <!-- Navbar -->
-    <header class="border-b border-white/10 bg-[#090d16]/90 backdrop-blur sticky top-0 z-50 px-6 py-4">
+    <header class="border-b border-slate-200 bg-white sticky top-0 z-50 px-6 py-4 shadow-sm">
         <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <a href="../index.html" class="flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-sm font-medium">
-                <i class="fa-solid fa-arrow-left"></i>
+            <a href="../index.html" class="flex items-center gap-2 text-slate-600 hover:text-slate-900 transition-colors text-sm font-medium">
+                <i class="fa-solid fa-arrow-left text-xs"></i>
                 <span>Portafolio General</span>
             </a>
             <div class="flex items-center gap-3">
-                <span class="text-xs font-mono text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-3 py-1 rounded-full">
+                <span class="text-xs font-mono text-blue-700 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full font-semibold">
                     Sistemas de Información Empresarial
                 </span>
-                <span class="text-sm font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-brain text-cyan-400"></i>
+                <span class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-brain text-blue-600"></i>
                     <span>Semana 13</span>
                 </span>
             </div>
@@ -75,81 +73,81 @@
     <!-- Hero Content -->
     <main class="flex-grow max-w-5xl mx-auto px-6 py-12 w-full">
         <div class="text-center mb-12">
-            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-semibold mb-4">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold mb-4">
                 <i class="fa-solid fa-microchip"></i>
                 <span>Innovación Tecnológica & Valor de Negocio</span>
             </div>
-            <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-4">
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
                 Sistemas Inteligentes & Gestión de Servicios TI
             </h1>
-            <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-                Articulación de la calidad en servicios de TI (Norma ISO 20000) con algoritmos avanzados de Machine Learning y Deep Learning para maximizar el valor empresarial y la disponibilidad operativa.
+            <p class="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+                Articulación de la calidad en servicios de TI (Norma ISO/IEC 20000) con modelos predictivos de Machine Learning y Deep Learning para maximizar la continuidad operativa y la fidelización del cliente.
             </p>
         </div>
 
-        <!-- Featured Case Card -->
+        <!-- Featured Case Card (White Theme) -->
         <div class="mb-12">
-            <a href="caso01.html" class="surface-card rounded-2xl p-8 sm:p-10 block group relative overflow-hidden">
+            <a href="caso01.html" class="surface-card rounded-2xl p-8 sm:p-10 block group relative overflow-hidden border-t-4 border-t-blue-600">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                     <div class="flex items-center gap-4">
-                        <div class="w-14 h-14 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 text-2xl group-hover:scale-105 transition-transform">
+                        <div class="w-14 h-14 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 text-2xl group-hover:scale-105 transition-transform shadow-sm">
                             <i class="fa-solid fa-network-wired"></i>
                         </div>
                         <div>
-                            <span class="text-xs font-mono font-semibold text-cyan-400 tracking-wider uppercase">Caso Práctico 01</span>
-                            <h2 class="text-2xl font-bold text-white group-hover:text-cyan-300 transition-colors">
-                                NeuroValue OS: Plataforma de Machine Learning & Gestión de Servicios
+                            <span class="text-xs font-mono font-bold text-blue-600 tracking-wider uppercase">Caso Práctico 01</span>
+                            <h2 class="text-2xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+                                NovaTech Operations: Gestión de Servicios & Machine Learning
                             </h2>
                         </div>
                     </div>
-                    <span class="inline-flex items-center text-xs font-mono font-semibold px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 w-fit">
+                    <span class="inline-flex items-center text-xs font-mono font-semibold px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 w-fit">
                         <i class="fa-solid fa-circle-check mr-1.5"></i> Caso Práctico Oficial
                     </span>
                 </div>
 
-                <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-8">
-                    Aplicación corporativa integral aplicada a la plataforma omnicanal <strong>NovaTech Services</strong>. Modela el <strong>Marco de Gestión de Servicios TI en 4 Capas (ISO 20000)</strong>, el ciclo de disponibilidad y fallas (Uptime / Downtime), un catálogo interactivo de algoritmos de <strong>Machine Learning supervisado y no supervisado</strong>, y un <strong>Simulador en Vivo de Redes Neuronales Artificiales (Deep Learning ANN)</strong> para la predicción de retención de usuarios con cuantificación de impacto financiero.
+                <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-8">
+                    Aplicación corporativa interactiva implementada en <strong>NovaTech Services</strong>. Modela el <strong>Marco de Gestión de Servicios TI en 4 Capas (ISO 20000)</strong>, el ciclo de disponibilidad y fallas (Uptime / Downtime), un catálogo de algoritmos de <strong>Machine Learning supervisado y no supervisado</strong>, y un <strong>Simulador en Vivo de Redes Neuronales Artificiales (Deep Learning ANN)</strong> para la estimación de retención de clientes con cuantificación de impacto financiero.
                 </p>
 
                 <!-- Value Pillars -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-xs">
-                    <div class="p-4 rounded-xl bg-[#090d16] border border-white/5">
-                        <div class="text-cyan-400 font-bold mb-1 flex items-center gap-1.5">
-                            <i class="fa-solid fa-shield-halved"></i>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <div class="text-blue-600 font-bold mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-cubes-stacked"></i>
                             <span>Gestión ISO 20000 (4 Capas)</span>
                         </div>
-                        <p class="text-slate-400 leading-relaxed">
-                            Modelo integral de canales, procesos, monitoreo NOC/SOC y simulación de ciclo de disponibilidad Uptime vs Downtime.
+                        <p class="text-slate-500 leading-relaxed">
+                            Organización en capas: canales, procesos, monitoreo NOC y simulación de disponibilidad Uptime vs Downtime.
                         </p>
                     </div>
-                    <div class="p-4 rounded-xl bg-[#090d16] border border-white/5">
-                        <div class="text-purple-400 font-bold mb-1 flex items-center gap-1.5">
-                            <i class="fa-solid fa-project-diagram"></i>
-                            <span>Matriz de Algoritmos ML</span>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <div class="text-indigo-600 font-bold mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-diagram-project"></i>
+                            <span>Modelos Machine Learning</span>
                         </div>
-                        <p class="text-slate-400 leading-relaxed">
-                            Comparativa técnica de modelos supervisados (Random Forest, SVM) y no supervisados (Clustering K-Means, Anomalías).
+                        <p class="text-slate-500 leading-relaxed">
+                            Catálogo técnico de algoritmos supervisados (Random Forest, SVM) y no supervisados (Clustering K-Means, Anomalías).
                         </p>
                     </div>
-                    <div class="p-4 rounded-xl bg-[#090d16] border border-white/5">
-                        <div class="text-emerald-400 font-bold mb-1 flex items-center gap-1.5">
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <div class="text-emerald-600 font-bold mb-1 flex items-center gap-1.5">
                             <i class="fa-solid fa-brain"></i>
                             <span>Red Neuronal ANN en Vivo</span>
                         </div>
-                        <p class="text-slate-400 leading-relaxed">
-                            Lienzo interactivo de Deep Learning con 5 variables de entrada, dos capas ocultas y cálculo instantáneo de inferencia.
+                        <p class="text-slate-500 leading-relaxed">
+                            Simulador interactivo de Deep Learning con 5 variables de entrada, dos capas ocultas y cálculo instantáneo de probabilidad.
                         </p>
                     </div>
                 </div>
 
                 <!-- Footer Action Bar -->
-                <div class="flex items-center justify-between pt-6 border-t border-white/10 text-xs sm:text-sm">
-                    <span class="text-slate-400 flex items-center gap-2">
-                        <i class="fa-solid fa-building text-slate-500"></i>
-                        <span>Empresa de Estudio: NovaTech Omnichannel Services</span>
+                <div class="flex items-center justify-between pt-6 border-t border-slate-200 text-xs sm:text-sm">
+                    <span class="text-slate-500 flex items-center gap-2">
+                        <i class="fa-solid fa-building text-slate-400"></i>
+                        <span>Empresa de Estudio: NovaTech Platform & Digital Services</span>
                     </span>
-                    <span class="text-cyan-400 font-bold flex items-center gap-2 group-hover:translate-x-1 transition-transform">
-                        <span>Acceder al Caso Práctico</span>
+                    <span class="text-blue-600 font-bold flex items-center gap-2 group-hover:translate-x-1 transition-transform">
+                        <span>Ingresar al Caso Práctico</span>
                         <i class="fa-solid fa-arrow-right"></i>
                     </span>
                 </div>
@@ -158,13 +156,13 @@
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-white/10 py-6 text-center text-xs text-slate-500">
+    <footer class="border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500">
         <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div>Sistemas de Información Empresarial</div>
-            <div class="flex items-center gap-4 text-slate-400">
-                <a href="../semana12/index.html" class="hover:text-white transition">Semana 12</a>
+            <div class="flex items-center gap-4 text-slate-600">
+                <a href="../semana12/index.html" class="hover:text-blue-600 transition">Semana 12</a>
                 <span>&bull;</span>
-                <a href="../index.html" class="hover:text-white transition">Portafolio General</a>
+                <a href="../index.html" class="hover:text-blue-600 transition">Portafolio General</a>
             </div>
         </div>
     </footer>
