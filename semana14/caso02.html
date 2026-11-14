@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GovMap 360 | Mapa Conceptual & Mental de Gobierno de TI y BPM</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome 6.4.0 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brandBlue: '#2563eb',
+                        brandIndigo: '#4f46e5',
+                        brandEmerald: '#059669',
+                        brandAmber: '#d97706',
+                        brandRose: '#e11d48',
+                        brandPurple: '#7c3aed',
+                        slateCanvas: '#f1f5f9',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f1f5f9;
+            color: #0f172a;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .map-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .map-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 4px 12px -2px rgba(37, 99, 235, 0.12), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+            transform: translateY(-2px);
+        }
+
+        .map-card.active-node {
+            border-color: #2563eb !important;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25), 0 8px 16px -4px rgba(37, 99, 235, 0.2) !important;
+            background: #ffffff !important;
+        }
+
+        .prop-badge {
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #475569;
+            padding: 4px 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin: 6px 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .connector-vertical {
+            width: 2px;
+            background: #cbd5e1;
+            margin: 0 auto;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Print styles */
+        @media print {
+            .no-print { display: none !important; }
+            body { background: #ffffff !important; color: #000000 !important; }
+            .sidebar { display: none !important; }
+            .inspector-panel { display: none !important; }
+            .main-content { overflow: visible !important; height: auto !important; padding: 0 !important; width: 100% !important; }
+            .map-card { break-inside: avoid; border: 1px solid #94a3b8 !important; box-shadow: none !important; margin-bottom: 1rem; }
+        }
+    </style>
+</head>
+<body class="h-full flex overflow-hidden text-slate-800">
+
+    <!-- ============================================================== -->
+    <!-- REAL ENTERPRISE SIDEBAR (Fixed Left Dock)                      -->
+    <!-- ============================================================== -->
+    <aside class="sidebar w-64 bg-white border-r border-slate-200 flex flex-col shrink-0 no-print select-none z-30">
+        <!-- Brand & Workspace Header -->
+        <div class="h-16 px-5 border-b border-slate-200 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-sm">
+                    <i class="fa-solid fa-sitemap"></i>
+                </div>
+                <div>
+                    <span class="font-extrabold text-sm text-slate-900 tracking-tight block leading-tight">GovMap 360</span>
+                    <span class="text-[11px] text-slate-500 font-mono font-medium">Arquitectura Sistémica</span>
+                </div>
+            </div>
+            <span class="text-[9px] font-mono font-bold bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded border border-indigo-200/60">
+                v2.4
+            </span>
+        </div>
+
+        <!-- Corporate Context -->
+        <div class="p-3.5 border-b border-slate-100 bg-slate-50/70">
+            <div class="flex items-center justify-between text-[11px] text-slate-500 mb-1">
+                <span>Marco Académico</span>
+                <span class="font-mono text-slate-700 font-semibold">Semana 14 &bull; Caso 02</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span class="text-xs font-bold text-slate-800">Gobierno de TI & Procesos BPM</span>
+            </div>
+        </div>
+
+        <!-- Navigation Menu Items (View Modes) -->
+        <nav class="flex-1 p-3 space-y-1 overflow-y-auto" aria-label="Sidebar Navigation">
+            <div class="px-2 pt-2 pb-1 text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">
+                Modos de Visualización
+            </div>
+
+            <button onclick="switchView('view-relational')" id="side-btn-relational" class="side-nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-semibold transition bg-blue-50 text-blue-700 border border-blue-200/80 shadow-sm">
+                <div class="flex items-center gap-2.5">
+                    <i class="fa-solid fa-network-wired text-sm w-4 text-center"></i>
+                    <span>1. Mapa Conceptual Relacional</span>
+                </div>
+                <span class="text-[10px] font-mono bg-blue-100/80 text-blue-800 px-1.5 py-0.5 rounded font-bold">Jerarquía</span>
+            </button>
+
+            <button onclick="switchView('view-mindmap')" id="side-btn-mindmap" class="side-nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition">
+                <div class="flex items-center gap-2.5">
+                    <i class="fa-solid fa-chart-pie text-sm w-4 text-center text-slate-400"></i>
+                    <span>2. Mapa Mental Radial</span>
+                </div>
+                <span class="text-[10px] font-mono bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">4 Ramas</span>
+            </button>
+
+            <button onclick="switchView('view-matrix')" id="side-btn-matrix" class="side-nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition">
+                <div class="flex items-center gap-2.5">
+                    <i class="fa-solid fa-table-cells text-sm w-4 text-center text-slate-400"></i>
+                    <span>3. Matriz de Integración</span>
+                </div>
+                <span class="text-[10px] font-mono bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded font-bold">Cross-Walk</span>
+            </button>
+
+            <button onclick="switchView('view-lifecycle')" id="side-btn-lifecycle" class="side-nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition">
+                <div class="flex items-center gap-2.5">
+                    <i class="fa-solid fa-rotate text-sm w-4 text-center text-slate-400"></i>
+                    <span>4. Ciclo de Vida BPM</span>
+                </div>
+                <span class="text-[10px] font-mono bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded font-bold">6 Fases</span>
+            </button>
+
+            <div class="px-2 pt-4 pb-1 text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">
+                Filtrar por Marco
+            </div>
+
+            <div class="grid grid-cols-2 gap-1.5 px-1">
+                <button onclick="filterByFramework('all')" class="filter-chip-btn text-[11px] font-medium py-1.5 px-2 rounded-md bg-slate-100 text-slate-800 border border-slate-200 text-center hover:bg-slate-200 transition">
+                    Todos (18)
+                </button>
+                <button onclick="filterByFramework('cobit')" class="filter-chip-btn text-[11px] font-medium py-1.5 px-2 rounded-md bg-white text-blue-700 border border-slate-200 text-center hover:bg-blue-50 transition">
+                    COBIT 2019
+                </button>
+                <button onclick="filterByFramework('pmbok')" class="filter-chip-btn text-[11px] font-medium py-1.5 px-2 rounded-md bg-white text-indigo-700 border border-slate-200 text-center hover:bg-indigo-50 transition">
+                    PMBOK 7
+                </button>
+                <button onclick="filterByFramework('itil')" class="filter-chip-btn text-[11px] font-medium py-1.5 px-2 rounded-md bg-white text-emerald-700 border border-slate-200 text-center hover:bg-emerald-50 transition">
+                    ITIL 4
+                </button>
+                <button onclick="filterByFramework('iso')" class="filter-chip-btn text-[11px] font-medium py-1.5 px-2 rounded-md bg-white text-amber-700 border border-slate-200 text-center hover:bg-amber-50 transition">
+                    ISO 27001
+                </button>
+                <button onclick="filterByFramework('bpm')" class="filter-chip-btn text-[11px] font-medium py-1.5 px-2 rounded-md bg-white text-purple-700 border border-slate-200 text-center hover:bg-purple-50 transition">
+                    BPM Bizagi
+                </button>
+            </div>
+
+            <div class="px-2 pt-4 pb-1 text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">
+                Acciones Rápidas
+            </div>
+
+            <button onclick="selectNode('root')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-50 transition">
+                <i class="fa-solid fa-bullseye text-blue-600 w-4 text-center"></i>
+                <span>Enfocar Nodo Raíz</span>
+            </button>
+
+            <button onclick="toggleModal('modal-case-info')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-50 transition">
+                <i class="fa-solid fa-circle-info text-slate-400 w-4 text-center"></i>
+                <span>Ficha Metodológica</span>
+            </button>
+
+            <button onclick="window.print()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-50 transition">
+                <i class="fa-solid fa-file-pdf text-slate-400 w-4 text-center"></i>
+                <span>Exportar Documento (PDF)</span>
+            </button>
+        </nav>
+
+        <!-- Sidebar Footer -->
+        <div class="p-3 border-t border-slate-200 bg-slate-50/50 space-y-2">
+            <a href="caso01.html" class="flex items-center justify-between w-full py-2 px-3 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-blue-700 hover:bg-blue-50/70 hover:border-blue-300 transition shadow-xs">
+                <span class="flex items-center gap-2">
+                    <i class="fa-solid fa-laptop-code text-blue-600"></i>
+                    <span>Ver Caso Práctico 01</span>
+                </span>
+                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </a>
+            <a href="index.html" class="flex items-center justify-center gap-2 w-full py-1.5 px-3 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-white transition border border-transparent hover:border-slate-200">
+                <i class="fa-solid fa-arrow-left text-[10px]"></i>
+                <span>Hub de Semana 14</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- ============================================================== -->
+    <!-- MAIN WORKSPACE CANVAS (Full-Bleed SaaS Layout)                  -->
+    <!-- ============================================================== -->
+    <div class="main-content flex-1 flex flex-col min-w-0 h-screen overflow-hidden bg-slate-100/70">
+
+        <!-- Topbar (Full-Bleed, Real SaaS Navigation) -->
+        <header class="h-14 bg-white border-b border-slate-200 px-6 flex items-center justify-between shrink-0 no-print z-20 shadow-xs">
+            <!-- Left: Breadcrumb & Context -->
+            <div class="flex items-center gap-3 text-xs">
+                <div class="flex items-center gap-1.5 text-slate-400 font-medium">
+                    <span>Sistemas de Información</span>
+                    <i class="fa-solid fa-chevron-right text-[9px] text-slate-300"></i>
+                    <span>Semana 14</span>
+                    <i class="fa-solid fa-chevron-right text-[9px] text-slate-300"></i>
+                    <span class="text-slate-900 font-bold">Caso 02: Mapa Conceptual & Mental</span>
+                </div>
+                <span class="h-4 w-px bg-slate-200"></span>
+                <span class="font-mono text-[11px] bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded font-semibold border border-indigo-200/60">
+                    GovMap 360 &bull; Relacional
+                </span>
+            </div>
+
+            <!-- Center: Search Input -->
+            <div class="hidden md:flex items-center relative w-72 lg:w-96">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 text-slate-400 text-xs pointer-events-none"></i>
+                <input type="text" id="node-search-input" onkeyup="searchNodes(this.value)" placeholder="Buscar conceptos, dominios, procesos..." class="w-full pl-9 pr-8 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 focus:bg-white transition text-slate-800 placeholder-slate-400">
+                <span id="search-count-badge" class="absolute right-2.5 text-[10px] font-mono text-slate-400">18 nodos</span>
+            </div>
+
+            <!-- Right: Actions -->
+            <div class="flex items-center gap-2">
+                <button onclick="toggleInspector()" class="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition text-xs flex items-center gap-1.5 border border-slate-200 font-medium lg:hidden">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Inspector</span>
+                </button>
+                <button onclick="window.print()" class="py-1.5 px-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs transition flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    <span>Exportar PDF</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Two-Panel Workspace (Graph Canvas + Live Inspector) -->
+        <div class="flex-1 flex min-h-0 overflow-hidden">
+
+            <!-- Center/Left: Interactive Map Area -->
+            <div class="flex-1 overflow-y-auto p-6 space-y-6">
+
+                <!-- View Mode Header Banner -->
+                <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span id="view-type-tag" class="text-[10px] font-mono font-bold bg-blue-100 text-blue-800 px-2 py-0.5 rounded uppercase">
+                                Vista 1: Relacional
+                            </span>
+                            <span class="text-xs text-slate-500">Haga clic en cualquier nodo para abrir su expediente técnico completo</span>
+                        </div>
+                        <h1 id="view-title" class="text-lg font-bold text-slate-900 tracking-tight">
+                            Mapa Conceptual: Jerarquía de Gobierno y Gestión de TI
+                        </h1>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="inline-flex rounded-lg border border-slate-200 p-0.5 bg-slate-50 text-xs">
+                            <button onclick="switchView('view-relational')" id="top-btn-relational" class="py-1 px-3 rounded-md font-semibold bg-white text-blue-700 shadow-xs">
+                                Conceptual
+                            </button>
+                            <button onclick="switchView('view-mindmap')" id="top-btn-mindmap" class="py-1 px-3 rounded-md font-medium text-slate-600 hover:text-slate-900">
+                                Mental
+                            </button>
+                            <button onclick="switchView('view-matrix')" id="top-btn-matrix" class="py-1 px-3 rounded-md font-medium text-slate-600 hover:text-slate-900">
+                                Matriz
+                            </button>
+                            <button onclick="switchView('view-lifecycle')" id="top-btn-lifecycle" class="py-1 px-3 rounded-md font-medium text-slate-600 hover:text-slate-900">
+                                Ciclo BPM
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================================== -->
+                <!-- VIEW 1: MAPA CONCEPTUAL RELACIONAL                            -->
+                <!-- ============================================================== -->
+                <div id="view-relational" class="view-panel space-y-6">
+
+                    <!-- LEVEL 0: ROOT NODE -->
+                    <div class="flex flex-col items-center">
+                        <div onclick="selectNode('root')" id="node-card-root" class="map-card active-node w-full max-w-3xl p-5 border-l-4 border-l-blue-600">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-lg font-bold">
+                                        <i class="fa-solid fa-cube"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-[10px] font-mono font-bold bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-200">Núcleo Sistémico</span>
+                                            <span class="text-xs text-slate-400">Arquitectura Global de TI</span>
+                                        </div>
+                                        <h2 class="text-base font-extrabold text-slate-900 mt-0.5">
+                                            Gobierno y Gestión de Tecnologías de la Información & Procesos
+                                        </h2>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-mono text-slate-400">Nivel Corporativo</span>
+                            </div>
+                            <p class="text-xs text-slate-600 mt-3 leading-relaxed">
+                                Marco integral que articula la dirección estratégica de los sistemas informáticos, garantizando la generación continua de valor, la mitigación de riesgos operativos y de ciberseguridad, y la excelencia en los flujos de procesos de negocio.
+                            </p>
+                        </div>
+
+                        <!-- Connector Proposition -->
+                        <div class="h-6 connector-vertical"></div>
+                        <div class="prop-badge">
+                            <i class="fa-solid fa-arrow-down text-blue-600 text-[10px]"></i>
+                            <span>dirige, evalúa y asegura la entrega de valor mediante directrices de</span>
+                        </div>
+                        <div class="h-6 connector-vertical"></div>
+                    </div>
+
+                    <!-- LEVEL 3: ESTRATÉGICO (COBIT 2019) -->
+                    <div class="flex flex-col items-center">
+                        <div onclick="selectNode('cobit')" id="node-card-cobit" class="map-card w-full max-w-3xl p-5 border-l-4 border-l-sky-600">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center text-lg font-bold">
+                                        <i class="fa-solid fa-compass"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-[10px] font-mono font-bold bg-sky-50 text-sky-700 px-2 py-0.5 rounded border border-sky-200">Nivel 3 &bull; Estratégico</span>
+                                            <span class="text-xs text-slate-400">ISACA &bull; Directorio & C-Level</span>
+                                        </div>
+                                        <h3 class="text-base font-bold text-slate-900 mt-0.5">
+                                            COBIT 2019: Marco de Gobierno y Gestión de TI Empresarial
+                                        </h3>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-mono font-bold text-sky-700 bg-sky-50 px-2 py-1 rounded">5 Dominios</span>
+                            </div>
+                            <p class="text-xs text-slate-600 mt-3 leading-relaxed">
+                                Define qué se debe controlar y medir en la organización. Establece los principios, políticas y objetivos de gobierno que alinean los requerimientos de las partes interesadas con la estrategia digital, supervisando el desempeño y la gestión del riesgo.
+                            </p>
+
+                            <!-- Sub-domains grid -->
+                            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-4 pt-3 border-t border-slate-100">
+                                <div onclick="event.stopPropagation(); selectNode('cobit-edm')" class="p-2 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 hover:border-sky-300 transition text-center cursor-pointer">
+                                    <span class="text-[10px] font-mono font-bold text-sky-800 block">EDM (5)</span>
+                                    <span class="text-[10px] text-slate-600 block leading-tight">Evaluar, Dirigir & Monitorear</span>
+                                </div>
+                                <div onclick="event.stopPropagation(); selectNode('cobit-apo')" class="p-2 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 hover:border-sky-300 transition text-center cursor-pointer">
+                                    <span class="text-[10px] font-mono font-bold text-sky-800 block">APO (14)</span>
+                                    <span class="text-[10px] text-slate-600 block leading-tight">Alinear, Planear & Organizar</span>
+                                </div>
+                                <div onclick="event.stopPropagation(); selectNode('cobit-bai')" class="p-2 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 hover:border-sky-300 transition text-center cursor-pointer">
+                                    <span class="text-[10px] font-mono font-bold text-sky-800 block">BAI (11)</span>
+                                    <span class="text-[10px] text-slate-600 block leading-tight">Construir, Adquirir & Desplegar</span>
+                                </div>
+                                <div onclick="event.stopPropagation(); selectNode('cobit-dss')" class="p-2 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 hover:border-sky-300 transition text-center cursor-pointer">
+                                    <span class="text-[10px] font-mono font-bold text-sky-800 block">DSS (6)</span>
+                                    <span class="text-[10px] text-slate-600 block leading-tight">Entregar, Servir & Soportar</span>
+                                </div>
+                                <div onclick="event.stopPropagation(); selectNode('cobit-mea')" class="p-2 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 hover:border-sky-300 transition text-center cursor-pointer">
+                                    <span class="text-[10px] font-mono font-bold text-sky-800 block">MEA (3)</span>
+                                    <span class="text-[10px] text-slate-600 block leading-tight">Monitorear & Evaluar</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Connector Proposition -->
+                        <div class="h-6 connector-vertical"></div>
+                        <div class="prop-badge">
+                            <i class="fa-solid fa-arrow-down text-indigo-600 text-[10px]"></i>
+                            <span>establece lineamientos de inversión y requerimientos de control para</span>
+                        </div>
+                        <div class="h-6 connector-vertical"></div>
+                    </div>
+
+                    <!-- LEVEL 2: TÁCTICO (PMBOK 7) -->
+                    <div class="flex flex-col items-center">
+                        <div onclick="selectNode('pmbok')" id="node-card-pmbok" class="map-card w-full max-w-3xl p-5 border-l-4 border-l-indigo-600">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-lg font-bold">
+                                        <i class="fa-solid fa-list-check"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-[10px] font-mono font-bold bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded border border-indigo-200">Nivel 2 &bull; Táctico</span>
+                                            <span class="text-xs text-slate-400">PMI &bull; Gerencia de Proyectos</span>
+                                        </div>
+                                        <h3 class="text-base font-bold text-slate-900 mt-0.5">
+                                            PMBOK 7: Gestión de Proyectos de Tecnologías de la Información
+                                        </h3>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-mono font-bold text-indigo-700 bg-indigo-50 px-2 py-1 rounded">Triple Restricción</span>
+                            </div>
+                            <p class="text-xs text-slate-600 mt-3 leading-relaxed">
+                                Planifica y ejecuta proyectos de modernización, renovación de activos y despliegue dentro de alcance, tiempo y costo. Traduce los lineamientos estratégicos de COBIT en proyectos concretos (Gantt, WBS/EDT) que generan nuevas capacidades operativas.
+                            </p>
+                            <div class="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100 text-[11px] text-slate-500">
+                                <i class="fa-solid fa-arrow-right-arrow-left text-indigo-500"></i>
+                                <span class="font-medium text-slate-700">Relación Sistémica:</span>
+                                <span>Ejecuta la implementación o mejora de servicios que luego son entregados a la mesa de operaciones de ITIL.</span>
+                            </div>
+                        </div>
+
+                        <!-- Connector Proposition -->
+                        <div class="h-6 connector-vertical"></div>
+                        <div class="prop-badge">
+                            <i class="fa-solid fa-arrow-down text-emerald-600 text-[10px]"></i>
+                            <span>transfiere formalmente los servicios construidos para su operación a</span>
+                        </div>
+                        <div class="h-6 connector-vertical"></div>
+                    </div>
+
+                    <!-- LEVEL 1: OPERACIONAL (ITIL 4 & ISO 27001) -->
+                    <div class="flex flex-col items-center">
+                        <div class="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                            <!-- ITIL 4 -->
+                            <div onclick="selectNode('itil')" id="node-card-itil" class="map-card p-5 border-l-4 border-l-emerald-600">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <div class="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-headset"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-[10px] font-mono font-bold bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded border border-emerald-200">Nivel 1 &bull; Operacional</span>
+                                        <h3 class="text-sm font-bold text-slate-900 leading-tight">ITIL 4: Gestión de Servicios TI</h3>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed">
+                                    Gestiona la operación continua del servicio día a día. Maximiza el valor entregado mediante la gestión proactiva de incidentes, problemas, acuerdos de nivel de servicio (SLA) y mantenimiento periódico de soporte.
+                                </p>
+                                <div class="mt-3 pt-2 border-t border-slate-100 text-[11px] font-mono text-emerald-700 font-semibold flex items-center gap-1.5">
+                                    <i class="fa-solid fa-check text-[10px]"></i>
+                                    <span>Opera y mantiene servicios de PMBOK</span>
+                                </div>
+                            </div>
+
+                            <!-- ISO/IEC 27001 -->
+                            <div onclick="selectNode('iso')" id="node-card-iso" class="map-card p-5 border-l-4 border-l-amber-600">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <div class="w-9 h-9 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-shield-halved"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-[10px] font-mono font-bold bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded border border-amber-200">Normativa & Seguridad</span>
+                                        <h3 class="text-sm font-bold text-slate-900 leading-tight">ISO/IEC 27001: SGSI</h3>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed">
+                                    Garantiza la Confidencialidad, Integridad y Disponibilidad (CIA) de los activos. Impone controles obligatorios en endpoints: actualización de SO, antivirus corporativo y hardening de configuraciones.
+                                </p>
+                                <div class="mt-3 pt-2 border-t border-slate-100 text-[11px] font-mono text-amber-700 font-semibold flex items-center gap-1.5">
+                                    <i class="fa-solid fa-lock text-[10px]"></i>
+                                    <span>Controles de Ciberseguridad & Auditoría</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Connector Proposition -->
+                        <div class="h-6 connector-vertical"></div>
+                        <div class="prop-badge">
+                            <i class="fa-solid fa-arrow-down text-purple-600 text-[10px]"></i>
+                            <span>se modela, estandariza y optimiza de extremo a extremo mediante</span>
+                        </div>
+                        <div class="h-6 connector-vertical"></div>
+                    </div>
+
+                    <!-- TRANSVERSAL: BPM & BIZAGI -->
+                    <div class="flex flex-col items-center">
+                        <div onclick="selectNode('bpm')" id="node-card-bpm" class="map-card w-full max-w-3xl p-5 border-l-4 border-l-purple-600">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-lg font-bold">
+                                        <i class="fa-solid fa-diagram-project"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-[10px] font-mono font-bold bg-purple-50 text-purple-700 px-2 py-0.5 rounded border border-purple-200">Capa Transversal</span>
+                                            <span class="text-xs text-slate-400">Disciplina Operativa & BPMN 2.0</span>
+                                        </div>
+                                        <h3 class="text-base font-bold text-slate-900 mt-0.5">
+                                            BPM: Business Process Management & Herramientas de Modelado
+                                        </h3>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-mono font-bold text-purple-700 bg-purple-50 px-2 py-1 rounded">Bizagi Modeler</span>
+                            </div>
+                            <p class="text-xs text-slate-600 mt-3 leading-relaxed">
+                                Metodología corporativa para el entendimiento, diseño, ejecución y optimización continua de las actividades de negocio. Conecta personas, sistemas y proveedores para garantizar la trazabilidad de las operaciones de TI.
+                            </p>
+
+                            <!-- BPM Pillars -->
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-4 pt-3 border-t border-slate-100 text-center">
+                                <div onclick="event.stopPropagation(); selectNode('bpm-components')" class="p-2 rounded-lg bg-slate-50 hover:bg-purple-50 border border-slate-200 hover:border-purple-300 transition cursor-pointer">
+                                    <span class="text-[10px] font-mono font-bold text-purple-800 block">6 Dimensiones</span>
+                                    <span class="text-[10px] text-slate-600 block leading-tight">Personas, Sistemas, Socios</span>
+                                </div>
+                                <div onclick="event.stopPropagation(); selectNode('bpm-lifecycle')" class="p-2 rounded-lg bg-slate-50 hover:bg-purple-50 border border-slate-200 hover:border-purple-300 transition cursor-pointer">
+                                    <span class="text-[10px] font-mono font-bold text-purple-800 block">Ciclo de Vida</span>
+                                    <span class="text-[10px] text-slate-600 block leading-tight">6 Fases Iterativas</span>
+                                </div>
+                                <div onclick="event.stopPropagation(); selectNode('bpm-software')" class="p-2 rounded-lg bg-slate-50 hover:bg-purple-50 border border-slate-200 hover:border-purple-300 transition cursor-pointer">
+                                    <span class="text-[10px] font-mono font-bold text-purple-800 block">Ecosistema Software</span>
+                                    <span class="text-[10px] text-slate-600 block leading-tight">Bizagi, Bonita, AuraPortal</span>
+                                </div>
+                                <div onclick="event.stopPropagation(); selectNode('bpm-case')" class="p-2 rounded-lg bg-slate-50 hover:bg-purple-50 border border-slate-200 hover:border-purple-300 transition cursor-pointer">
+                                    <span class="text-[10px] font-mono font-bold text-purple-800 block">Caso Aplicado</span>
+                                    <span class="text-[10px] text-slate-600 block leading-tight">Mantenimiento de Cómputo</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================================== -->
+                <!-- VIEW 2: MAPA MENTAL RADIAL                                    -->
+                <!-- ============================================================== -->
+                <div id="view-mindmap" class="view-panel hidden space-y-6">
+
+                    <!-- Radial Center Hub Card -->
+                    <div class="flex justify-center">
+                        <div onclick="selectNode('root')" class="map-card max-w-xl w-full p-5 text-center bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border-2 border-indigo-300 shadow-sm">
+                            <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-indigo-700 bg-white px-2.5 py-0.5 rounded-full border border-indigo-200 inline-block mb-2">
+                                Núcleo del Mapa Mental
+                            </span>
+                            <h2 class="text-lg font-black text-slate-900">
+                                Gobierno de TI & Gestión de Procesos BPM
+                            </h2>
+                            <p class="text-xs text-slate-600 mt-1 max-w-md mx-auto">
+                                Estructura radial de cuatro ramas interconectadas que gobiernan la tecnología desde la visión directiva hasta la ejecución técnica en soporte.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 4 Radial Branches Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                        <!-- BRANCH 1: COBIT 2019 (ESTRATEGIA) -->
+                        <div class="panel-card bg-white border border-slate-200 rounded-xl p-5 shadow-xs border-t-4 border-t-sky-600">
+                            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center font-bold text-sm">
+                                        <i class="fa-solid fa-compass"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-sm font-bold text-slate-900 leading-tight">Rama 1: COBIT 2019</h3>
+                                        <span class="text-[10px] font-mono text-sky-700 font-semibold">Gobierno Estratégico & Valor</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-mono bg-sky-50 text-sky-800 px-2 py-0.5 rounded border border-sky-200">Nivel 3</span>
+                            </div>
+
+                            <div class="space-y-2">
+                                <div onclick="selectNode('cobit')" class="p-3 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 hover:border-sky-300 transition cursor-pointer">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-slate-900">Propósito de Gobernanza</span>
+                                        <i class="fa-solid fa-chevron-right text-[10px] text-sky-600"></i>
+                                    </div>
+                                    <p class="text-[11px] text-slate-600 mt-0.5">Asegurar la creación de valor, optimización de recursos y gestión de riesgos corporativos.</p>
+                                </div>
+
+                                <div onclick="selectNode('cobit-domains')" class="p-3 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 hover:border-sky-300 transition cursor-pointer">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-slate-900">5 Dominios de Control (40 Objetivos)</span>
+                                        <i class="fa-solid fa-chevron-right text-[10px] text-sky-600"></i>
+                                    </div>
+                                    <p class="text-[11px] text-slate-600 mt-0.5">EDM (Evaluar/Dirigir), APO (Planear), BAI (Construir), DSS (Servir/Soportar), MEA (Monitorear).</p>
+                                </div>
+
+                                <div onclick="selectNode('cobit-principles')" class="p-3 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 hover:border-sky-300 transition cursor-pointer">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-slate-900">Principios de Sistema de Gobierno</span>
+                                        <i class="fa-solid fa-chevron-right text-[10px] text-sky-600"></i>
+                                    </div>
+                                    <p class="text-[11px] text-slate-600 mt-0.5">Enfoque holístico, dinámico, adaptado al negocio y separación clara entre gobierno y gestión.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BRANCH 2: PMBOK 7 & ITIL 4 (PROYECTOS & OPERACIÓN) -->
+                        <div class="panel-card bg-white border border-slate-200 rounded-xl p-5 shadow-xs border-t-4 border-t-indigo-600">
+                            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-sm">
+                                        <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-sm font-bold text-slate-900 leading-tight">Rama 2: PMBOK 7 & ITIL 4</h3>
+                                        <span class="text-[10px] font-mono text-indigo-700 font-semibold">Relación Sistémica Proyectos-Servicios</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-mono bg-indigo-50 text-indigo-800 px-2 py-0.5 rounded border border-indigo-200">Niveles 2 & 1</span>
+                            </div>
+
+                            <div class="space-y-2">
+                                <div onclick="selectNode('pmbok')" class="p-3 rounded-lg bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 transition cursor-pointer">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-slate-900">PMBOK: Gestión de Proyectos TI</span>
+                                        <i class="fa-solid fa-chevron-right text-[10px] text-indigo-600"></i>
+                                    </div>
+                                    <p class="text-[11px] text-slate-600 mt-0.5">Planificación y ejecución dentro de alcance, tiempo y costo (Gantt, WBS, adquisiciones).</p>
+                                </div>
+
+                                <div onclick="selectNode('itil')" class="p-3 rounded-lg bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 transition cursor-pointer">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-slate-900">ITIL 4: Operación de Servicios</span>
+                                        <i class="fa-solid fa-chevron-right text-[10px] text-indigo-600"></i>
+                                    </div>
+                                    <p class="text-[11px] text-slate-600 mt-0.5">Operación continua, gestión de incidentes, mesa de ayuda L1/L2 y niveles SLA de soporte.</p>
+                                </div>
+
+                                <div onclick="selectNode('systemic-relation')" class="p-3 rounded-lg bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 transition cursor-pointer">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-slate-900">Sinergia Sistémica</span>
+                                        <i class="fa-solid fa-chevron-right text-[10px] text-indigo-600"></i>
+                                    </div>
+                                    <p class="text-[11px] text-slate-600 mt-0.5">PMBOK implementa la mejora/renovación; ITIL opera el día a día; ambos bajo COBIT.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BRANCH 3: ISO/IEC 27001 (SEGURIDAD DE INFORMACIÓN) -->
+                        <div class="panel-card bg-white border border-slate-200 rounded-xl p-5 shadow-xs border-t-4 border-t-amber-600">
+                            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm">
+                                        <i class="fa-solid fa-shield-halved"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-sm font-bold text-slate-900 leading-tight">Rama 3: ISO/IEC 27001</h3>
+                                        <span class="text-[10px] font-mono text-amber-700 font-semibold">Seguridad de la Información (SGSI)</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-mono bg-amber-50 text-amber-800 px-2 py-0.5 rounded border border-amber-200">Normativa</span>
+                            </div>
+
+                            <div class="space-y-2">
+                                <div onclick="selectNode('iso')" class="p-3 rounded-lg bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-300 transition cursor-pointer">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-slate-900">Tríada CIA (Confidencialidad, Integridad, Disponibilidad)</span>
+                                        <i class="fa-solid fa-chevron-right text-[10px] text-amber-600"></i>
+                                    </div>
+                                    <p class="text-[11px] text-slate-600 mt-0.5">Garantizar que los datos corporativos estén protegidos contra accesos no autorizados o pérdidas.</p>
+                                </div>
+
+                                <div onclick="selectNode('iso-controls')" class="p-3 rounded-lg bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-300 transition cursor-pointer">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-slate-900">Controles Técnicos en Soporte</span>
+                                        <i class="fa-solid fa-chevron-right text-[10px] text-amber-600"></i>
+                                    </div>
+                                    <p class="text-[11px] text-slate-600 mt-0.5">Instalación mandatoria de antivirus EDR, parches críticos del SO y configuración de arranque seguro.</p>
+                                </div>
+
+                                <div onclick="selectNode('iso-audit')" class="p-3 rounded-lg bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-300 transition cursor-pointer">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-slate-900">Trazabilidad & Acta de Entrega</span>
+                                        <i class="fa-solid fa-chevron-right text-[10px] text-amber-600"></i>
+                                    </div>
+                                    <p class="text-[11px] text-slate-600 mt-0.5">Evidencia documental obligatoria con actas de inicio, informes técnicos firmados y custodia de datos.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BRANCH 4: BPM & BIZAGI (PROCESOS) -->
+                        <div class="panel-card bg-white border border-slate-200 rounded-xl p-5 shadow-xs border-t-4 border-t-purple-600">
+                            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-sm">
+                                        <i class="fa-solid fa-diagram-project"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-sm font-bold text-slate-900 leading-tight">Rama 4: BPM & Bizagi</h3>
+                                        <span class="text-[10px] font-mono text-purple-700 font-semibold">Modelado de Procesos de Negocio</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-mono bg-purple-50 text-purple-800 px-2 py-0.5 rounded border border-purple-200">Transversal</span>
+                            </div>
+
+                            <div class="space-y-2">
+                                <div onclick="selectNode('bpm')" class="p-3 rounded-lg bg-slate-50 hover:bg-purple-50 border border-slate-200 hover:border-purple-300 transition cursor-pointer">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-slate-900">Concepto BPM (Entendimiento a Optimización)</span>
+                                        <i class="fa-solid fa-chevron-right text-[10px] text-purple-600"></i>
+                                    </div>
+                                    <p class="text-[11px] text-slate-600 mt-0.5">Entender, diseñar, ejecutar y optimizar flujos integrando personas, sistemas y proveedores.</p>
+                                </div>
+
+                                <div onclick="selectNode('bpm-lifecycle')" class="p-3 rounded-lg bg-slate-50 hover:bg-purple-50 border border-slate-200 hover:border-purple-300 transition cursor-pointer">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-slate-900">Ciclo de Vida BPM en 6 Fases</span>
+                                        <i class="fa-solid fa-chevron-right text-[10px] text-purple-600"></i>
+                                    </div>
+                                    <p class="text-[11px] text-slate-600 mt-0.5">Descubrimiento &rarr; Modelado &rarr; Automatización &rarr; Ejecución &rarr; Monitoreo &rarr; Optimización.</p>
+                                </div>
+
+                                <div onclick="selectNode('bpm-case')" class="p-3 rounded-lg bg-slate-50 hover:bg-purple-50 border border-slate-200 hover:border-purple-300 transition cursor-pointer">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-slate-900">Caso Bizagi: Mantenimiento de Cómputo</span>
+                                        <i class="fa-solid fa-chevron-right text-[10px] text-purple-600"></i>
+                                    </div>
+                                    <p class="text-[11px] text-slate-600 mt-0.5">3 carriles (Jefe de Soporte, Técnicos, Organización) y Procedimiento Formal SOP (PRC-TI-014).</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ============================================================== -->
+                <!-- VIEW 3: MATRIZ DE INTEGRACIÓN SISTÉMICA (CROSS-WALK)           -->
+                <!-- ============================================================== -->
+                <div id="view-matrix" class="view-panel hidden space-y-6">
+                    <div class="panel-card bg-white border border-slate-200 rounded-xl p-5 shadow-xs">
+                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+                            <div>
+                                <h3 class="text-base font-bold text-slate-900">Matriz Comparativa de Integración de Marcos de TI</h3>
+                                <p class="text-xs text-slate-500">Alineación entre gobierno estratégico, proyectos, soporte operacional y procesos BPM</p>
+                            </div>
+                            <span class="text-xs font-mono font-bold text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded border border-indigo-200">
+                                5 Marcos Analizados
+                            </span>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 border-y border-slate-200 text-slate-700 font-bold uppercase tracking-wider text-[10px]">
+                                        <th class="py-3 px-3">Marco / Norma</th>
+                                        <th class="py-3 px-3">Nivel Organizacional</th>
+                                        <th class="py-3 px-3">Propósito Central</th>
+                                        <th class="py-3 px-3">Relación Sistémica</th>
+                                        <th class="py-3 px-3">Artefacto Entregable</th>
+                                        <th class="py-3 px-3">Métrica Clave</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    <tr onclick="selectNode('cobit')" class="hover:bg-blue-50/50 cursor-pointer transition">
+                                        <td class="py-3 px-3 font-bold text-sky-800 flex items-center gap-2">
+                                            <i class="fa-solid fa-compass text-sky-600"></i>
+                                            <span>COBIT 2019</span>
+                                        </td>
+                                        <td class="py-3 px-3 font-mono text-[11px] text-slate-700">Nivel 3 &bull; Estratégico</td>
+                                        <td class="py-3 px-3 text-slate-600">Gobierno de TI corporativo y generación de valor al negocio</td>
+                                        <td class="py-3 px-3 text-slate-600">Define directrices y auditoría que rigen PMBOK e ITIL</td>
+                                        <td class="py-3 px-3 font-mono text-[11px] text-slate-700">Matriz de Objetivos de Control</td>
+                                        <td class="py-3 px-3 font-mono text-[11px] font-bold text-emerald-700">Madurez &ge; 4.0</td>
+                                    </tr>
+                                    <tr onclick="selectNode('pmbok')" class="hover:bg-indigo-50/50 cursor-pointer transition">
+                                        <td class="py-3 px-3 font-bold text-indigo-800 flex items-center gap-2">
+                                            <i class="fa-solid fa-list-check text-indigo-600"></i>
+                                            <span>PMBOK 7</span>
+                                        </td>
+                                        <td class="py-3 px-3 font-mono text-[11px] text-slate-700">Nivel 2 &bull; Táctico</td>
+                                        <td class="py-3 px-3 text-slate-600">Gestión de proyectos dentro de alcance, tiempo y costo</td>
+                                        <td class="py-3 px-3 text-slate-600">Implementa los proyectos que transforman o crean servicios para ITIL</td>
+                                        <td class="py-3 px-3 font-mono text-[11px] text-slate-700">EDT/WBS & Cronograma Gantt</td>
+                                        <td class="py-3 px-3 font-mono text-[11px] font-bold text-emerald-700">SPI &ge; 0.98</td>
+                                    </tr>
+                                    <tr onclick="selectNode('itil')" class="hover:bg-emerald-50/50 cursor-pointer transition">
+                                        <td class="py-3 px-3 font-bold text-emerald-800 flex items-center gap-2">
+                                            <i class="fa-solid fa-headset text-emerald-600"></i>
+                                            <span>ITIL 4</span>
+                                        </td>
+                                        <td class="py-3 px-3 font-mono text-[11px] text-slate-700">Nivel 1 &bull; Operacional</td>
+                                        <td class="py-3 px-3 text-slate-600">Gestión y operación continua de servicios de soporte TI</td>
+                                        <td class="py-3 px-3 text-slate-600">Opera los servicios creados por PMBOK y reporta métricas a COBIT</td>
+                                        <td class="py-3 px-3 font-mono text-[11px] text-slate-700">Catálogo de Servicios & SLAs</td>
+                                        <td class="py-3 px-3 font-mono text-[11px] font-bold text-emerald-700">Uptime &ge; 99.8%</td>
+                                    </tr>
+                                    <tr onclick="selectNode('iso')" class="hover:bg-amber-50/50 cursor-pointer transition">
+                                        <td class="py-3 px-3 font-bold text-amber-800 flex items-center gap-2">
+                                            <i class="fa-solid fa-shield-halved text-amber-600"></i>
+                                            <span>ISO/IEC 27001</span>
+                                        </td>
+                                        <td class="py-3 px-3 font-mono text-[11px] text-slate-700">Normativa & Ciberseguridad</td>
+                                        <td class="py-3 px-3 text-slate-600">Confidencialidad, integridad y disponibilidad de la información</td>
+                                        <td class="py-3 px-3 text-slate-600">Impone políticas de hardening y parches que ITIL aplica en soporte</td>
+                                        <td class="py-3 px-3 font-mono text-[11px] text-slate-700">Declaración de Aplicabilidad (SoA)</td>
+                                        <td class="py-3 px-3 font-mono text-[11px] font-bold text-emerald-700">0 Incidentes Graves</td>
+                                    </tr>
+                                    <tr onclick="selectNode('bpm')" class="hover:bg-purple-50/50 cursor-pointer transition">
+                                        <td class="py-3 px-3 font-bold text-purple-800 flex items-center gap-2">
+                                            <i class="fa-solid fa-diagram-project text-purple-600"></i>
+                                            <span>BPM & Bizagi</span>
+                                        </td>
+                                        <td class="py-3 px-3 font-mono text-[11px] text-slate-700">Capa Transversal</td>
+                                        <td class="py-3 px-3 text-slate-600">Modelado y mejora continua de flujos de trabajo organizacionales</td>
+                                        <td class="py-3 px-3 text-slate-600">Estandariza los procedimientos operativos con carriles y tareas trazables</td>
+                                        <td class="py-3 px-3 font-mono text-[11px] text-slate-700">Diagrama BPMN & Manual SOP</td>
+                                        <td class="py-3 px-3 font-mono text-[11px] font-bold text-emerald-700">Tiempo Ciclo -45%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================================== -->
+                <!-- VIEW 4: CICLO DE VIDA BPM (6 FASES CONTINUAS)                 -->
+                <!-- ============================================================== -->
+                <div id="view-lifecycle" class="view-panel hidden space-y-6">
+                    <div class="panel-card bg-white border border-slate-200 rounded-xl p-5 shadow-xs">
+                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+                            <div>
+                                <h3 class="text-base font-bold text-slate-900">Ciclo de Vida BPM: De la Estrategia a la Mejora Continua</h3>
+                                <p class="text-xs text-slate-500">Las 6 etapas metodológicas aplicadas al mantenimiento de infraestructura de cómputo</p>
+                            </div>
+                            <span class="text-xs font-mono font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">
+                                Ciclo Cerrado Deming
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- Phase 1 -->
+                            <div onclick="selectNode('bpm-phase-1')" class="p-4 rounded-xl border border-slate-200 hover:border-blue-400 bg-slate-50 hover:bg-white transition cursor-pointer">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-mono font-bold text-xs">1</span>
+                                    <h4 class="font-bold text-slate-900 text-sm">Descubrimiento</h4>
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed">
+                                    Identificación de la necesidad: fallas reiteradas en 485 computadoras por falta de mantenimiento planificado. Levantamiento de la situación inicial (As-Is).
+                                </p>
+                                <span class="inline-block mt-3 text-[10px] font-mono bg-blue-50 text-blue-700 px-2 py-0.5 rounded font-semibold">Artefacto: Matriz de Dolores</span>
+                            </div>
+
+                            <!-- Phase 2 -->
+                            <div onclick="selectNode('bpm-phase-2')" class="p-4 rounded-xl border border-slate-200 hover:border-indigo-400 bg-slate-50 hover:bg-white transition cursor-pointer">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center font-mono font-bold text-xs">2</span>
+                                    <h4 class="font-bold text-slate-900 text-sm">Modelado</h4>
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed">
+                                    Diagramación visual en Bizagi Modeler con estándar BPMN 2.0. Separación clara de 3 carriles: Jefe de Soporte, Profesionales Técnicos y Organización.
+                                </p>
+                                <span class="inline-block mt-3 text-[10px] font-mono bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded font-semibold">Artefacto: Diagrama .BPM Bizagi</span>
+                            </div>
+
+                            <!-- Phase 3 -->
+                            <div onclick="selectNode('bpm-phase-3')" class="p-4 rounded-xl border border-slate-200 hover:border-purple-400 bg-slate-50 hover:bg-white transition cursor-pointer">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center font-mono font-bold text-xs">3</span>
+                                    <h4 class="font-bold text-slate-900 text-sm">Automatización</h4>
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed">
+                                    Definición de formularios digitales para el Acta de Inicio, Checklist de diagnóstico técnico y Acta de Conformidad con firmas digitales validadas.
+                                </p>
+                                <span class="inline-block mt-3 text-[10px] font-mono bg-purple-50 text-purple-700 px-2 py-0.5 rounded font-semibold">Artefacto: Formularios E-Ticket</span>
+                            </div>
+
+                            <!-- Phase 4 -->
+                            <div onclick="selectNode('bpm-phase-4')" class="p-4 rounded-xl border border-slate-200 hover:border-emerald-400 bg-slate-50 hover:bg-white transition cursor-pointer">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center font-mono font-bold text-xs">4</span>
+                                    <h4 class="font-bold text-slate-900 text-sm">Ejecución</h4>
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed">
+                                    Puesta en marcha del mantenimiento: diagnóstico SMART, soplado físico, actualización de SO y despliegue del antivirus EDR bajo el procedimiento SOP.
+                                </p>
+                                <span class="inline-block mt-3 text-[10px] font-mono bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded font-semibold">Artefacto: 485 Equipos Certificados</span>
+                            </div>
+
+                            <!-- Phase 5 -->
+                            <div onclick="selectNode('bpm-phase-5')" class="p-4 rounded-xl border border-slate-200 hover:border-amber-400 bg-slate-50 hover:bg-white transition cursor-pointer">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="w-6 h-6 rounded-full bg-amber-600 text-white flex items-center justify-center font-mono font-bold text-xs">5</span>
+                                    <h4 class="font-bold text-slate-900 text-sm">Monitoreo</h4>
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed">
+                                    Seguimiento de tiempos de ciclo y tasas de fallo. El tiempo de mantenimiento promedio se redujo de 145 min a 67 min por equipo informático.
+                                </p>
+                                <span class="inline-block mt-3 text-[10px] font-mono bg-amber-50 text-amber-700 px-2 py-0.5 rounded font-semibold">Artefacto: Cuadro de Mando SLA</span>
+                            </div>
+
+                            <!-- Phase 6 -->
+                            <div onclick="selectNode('bpm-phase-6')" class="p-4 rounded-xl border border-slate-200 hover:border-rose-400 bg-slate-50 hover:bg-white transition cursor-pointer">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center font-mono font-bold text-xs">6</span>
+                                    <h4 class="font-bold text-slate-900 text-sm">Optimización</h4>
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed">
+                                    Retroalimentación y rediseño To-Be: automatización del despliegue de imágenes de SO vía PXE Network Boot para bajar 20 minutos adicionales en la siguiente fase.
+                                </p>
+                                <span class="inline-block mt-3 text-[10px] font-mono bg-rose-50 text-rose-700 px-2 py-0.5 rounded font-semibold">Artefacto: Plan de Mejora Continua</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- RIGHT PANEL: LIVE NODE INSPECTOR (Enterprise Technical Dossier)-->
+            <!-- ============================================================== -->
+            <aside id="inspector-panel" class="inspector-panel w-80 lg:w-96 bg-white border-l border-slate-200 flex flex-col shrink-0 overflow-y-auto p-5 shadow-xs z-10 no-print">
+
+                <!-- Inspector Header -->
+                <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-microscope text-blue-600 text-sm"></i>
+                        <span class="font-mono text-xs font-bold uppercase tracking-wider text-slate-700">Inspector Técnico</span>
+                    </div>
+                    <button onclick="copyDossier()" title="Copiar ficha técnica" class="text-slate-400 hover:text-slate-700 text-xs py-1 px-2 rounded hover:bg-slate-100 transition">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                </div>
+
+                <!-- Live Node Content Slot -->
+                <div id="inspector-content" class="mt-4 space-y-4">
+                    <!-- Populated dynamically via JS -->
+                </div>
+
+            </aside>
+
+        </div>
+
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: FICHA METODOLÓGICA & CASO DE ESTUDIO                    -->
+    <!-- ============================================================== -->
+    <div id="modal-case-info" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white max-w-2xl w-full p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-2xl relative space-y-5">
+            <button onclick="toggleModal('modal-case-info')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg w-8 h-8 rounded-lg flex items-center justify-center hover:bg-slate-100 transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-lg">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg font-black text-slate-900">Fundamentación Pedagógica del Caso 02</h2>
+                    <span class="text-xs text-slate-500 font-mono">Gobierno de TI, ITIL, COBIT, ISO 27001 & BPM</span>
+                </div>
+            </div>
+
+            <div class="space-y-3 text-xs text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+                <p>
+                    <strong class="text-slate-800">Objetivo del Caso 02:</strong> Elaborar un mapa conceptual o mental integral que sistematice y explique los fundamentos del Gobierno de TI, identificando las características, objetivos y beneficios de los marcos <strong>COBIT 2019</strong>, <strong>ITIL 4</strong>, la norma <strong>ISO/IEC 27001</strong> y la metodología <strong>BPM (Business Process Management)</strong> en herramientas como Bizagi Modeler.
+                </p>
+                <p>
+                    <strong class="text-slate-800">Doble Enfoque Visual:</strong> Esta plataforma permite alternar libremente entre un <em>Mapa Conceptual Relacional</em> (organizado jerárquicamente por niveles organizacionales y proposiciones conectivas) y un <em>Mapa Mental Radial</em> (que expande cuatro ramas directas con sub-nodos técnicos).
+                </p>
+                <p>
+                    <strong class="text-slate-800">Conexión con el Caso Práctico 01:</strong> El mapa conceptual fundamenta teórica y estructuralmente el procedimiento operativo <code>PRC-TI-014</code> implementado en el Caso 01, demostrando cómo una tarea de soporte técnico responde a la gobernanza directiva de COBIT y a la seguridad de ISO 27001.
+                </p>
+            </div>
+
+            <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+                <span class="text-[11px] font-mono text-slate-400">Semana 14 &bull; Caso 02</span>
+                <button onclick="toggleModal('modal-case-info')" class="px-4 py-2 rounded-lg bg-slate-900 text-white font-semibold text-xs hover:bg-slate-800 transition">
+                    Cerrar Ventana
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- JAVASCRIPT: DATASET, GRAPH NAVIGATION & INTERACTION            -->
+    <!-- ============================================================== -->
+    <script>
+        // Complete Technical Dossier Dataset (18 Nodes)
+        const nodesData = {
+            'root': {
+                id: 'root',
+                title: 'Gobierno y Gestión de TI & Procesos',
+                category: 'Núcleo Sistémico',
+                badgeClass: 'bg-blue-100 text-blue-800 border-blue-200',
+                standard: 'Arquitectura Corporativa de TI',
+                level: 'Nivel Corporativo / Directorio',
+                definition: 'Estructura integral que articula los objetivos de negocio con las inversiones tecnológicas, garantizando la optimización del riesgo, el cumplimiento normativo y la entrega continua de valor a los accionistas.',
+                responsibilities: [
+                    'Alineación entre estrategia empresarial y cartera de proyectos informáticos.',
+                    'Gobernanza de riesgos de ciberseguridad y continuidad operativa.',
+                    'Estandarización de procesos de soporte bajo BPMN 2.0 y directrices de calidad.'
+                ],
+                upstream: 'Directorio, Junta General de Accionistas, Regulaciones Legales.',
+                downstream: 'COBIT 2019 (Estratégico), PMBOK 7 (Táctico), ITIL 4 & ISO 27001 (Operacional).',
+                caseApplication: 'Proporciona la autorización corporativa y el marco presupuestal para el mantenimiento preventivo de la flota informática institucional.',
+                metric: 'Índice de Retorno de Inversión en TI (ROI) &gt; 22%'
+            },
+            'cobit': {
+                id: 'cobit',
+                title: 'COBIT 2019 (ISACA)',
+                category: 'Gobierno Estratégico',
+                badgeClass: 'bg-sky-100 text-sky-800 border-sky-200',
+                standard: 'ISACA COBIT 2019 Framework',
+                level: 'Nivel 3: Estratégico (Directorio & C-Level)',
+                definition: 'Marco de gobierno y gestión para la información y la tecnología empresarial que ayuda a generar valor óptimo a través de la tecnología, equilibrando beneficios con niveles de riesgo y uso de recursos.',
+                responsibilities: [
+                    'Evaluar, Dirigir y Monitorear (Dominio EDM): Determinar el rumbo corporativo.',
+                    'Establecer políticas globales de arquitectura y seguridad de la información.',
+                    'Definir qué se debe controlar y cómo se mide el éxito de la función tecnológica.'
+                ],
+                upstream: 'Plan Estratégico del Negocio y Requerimientos de los Stakeholders.',
+                downstream: 'Lineamientos de control y presupuesto para proyectos (PMBOK) y servicios (ITIL).',
+                caseApplication: 'Define el requerimiento mandatorio de inventariar y auditar el 100% de activos de cómputo para reducir la tasa de interrupciones no programadas.',
+                metric: 'Nivel de Capacidad de Procesos &ge; 4 (Gestionado Cuantitativamente)'
+            },
+            'cobit-edm': {
+                id: 'cobit-edm',
+                title: 'COBIT Dominio EDM (5 Objetivos)',
+                category: 'Dominio de Gobierno',
+                badgeClass: 'bg-sky-100 text-sky-800 border-sky-200',
+                standard: 'COBIT 2019 - Evaluar, Dirigir y Monitorear',
+                level: 'Nivel 3: Alta Dirección',
+                definition: 'El único dominio de gobernanza pura en COBIT. La junta directiva evalúa opciones estratégicas, dirige al equipo ejecutivo y monitorea la conformidad y el cumplimiento.',
+                responsibilities: [
+                    'EDM01: Asegurar que se fija el Marco de Gobierno y su Mantenimiento.',
+                    'EDM02: Asegurar la Entrega de Valor al Negocio.',
+                    'EDM03: Asegurar la Optimización de los Riesgos de TI.',
+                    'EDM04: Asegurar la Optimización de los Recursos Tecnológicos.',
+                    'EDM05: Asegurar el Compromiso y Transparencia a las Partes Interesadas.'
+                ],
+                upstream: 'Directorio y Reguladores del Sector.',
+                downstream: 'Dominios de Gestión APO, BAI, DSS y MEA.',
+                caseApplication: 'Aprobación del presupuesto corporativo anual para la renovación y mantenimiento de los 485 equipos de cómputo.',
+                metric: 'Cumplimiento del Marco de Gobernanza: 100%'
+            },
+            'cobit-apo': {
+                id: 'cobit-apo',
+                title: 'COBIT Dominio APO (14 Objetivos)',
+                category: 'Dominio de Gestión',
+                badgeClass: 'bg-sky-100 text-sky-800 border-sky-200',
+                standard: 'COBIT 2019 - Alinear, Planear y Organizar',
+                level: 'Nivel Táctico-Estratégico',
+                definition: 'Cubre la identificación de cómo la TI puede contribuir de la mejor manera al logro de los objetivos del negocio, traduciendo metas en planes concretos y organizando los recursos.',
+                responsibilities: [
+                    'APO01: Administrar el Marco de Gestión de TI.',
+                    'APO02: Administrar la Estrategia.',
+                    'APO09: Administrar los Contratos de Servicios.',
+                    'APO12: Administrar los Riesgos de TI.',
+                    'APO13: Administrar la Seguridad de la Información.'
+                ],
+                upstream: 'Directivas del Dominio EDM.',
+                downstream: 'Construcción en BAI y Operación en DSS.',
+                caseApplication: 'Elaboración del plan maestro de soporte preventivo y definición de políticas de ciberseguridad.',
+                metric: 'Cobertura de Riesgos Tecnológicos Mitigados &gt; 95%'
+            },
+            'cobit-bai': {
+                id: 'cobit-bai',
+                title: 'COBIT Dominio BAI (11 Objetivos)',
+                category: 'Dominio de Gestión',
+                badgeClass: 'bg-sky-100 text-sky-800 border-sky-200',
+                standard: 'COBIT 2019 - Construir, Adquirir e Implementar',
+                level: 'Nivel Táctico / Proyectos',
+                definition: 'Gestiona la identificación de requerimientos de TI, la adquisición de tecnología y su implementación en los procesos de la empresa.',
+                responsibilities: [
+                    'BAI01: Administrar Programas y Proyectos.',
+                    'BAI03: Administrar la Construcción de Soluciones.',
+                    'BAI06: Administrar Cambios en Producción.',
+                    'BAI09: Administrar los Activos de Información.'
+                ],
+                upstream: 'Planes del Dominio APO.',
+                downstream: 'Entrega formal al Dominio DSS (Operaciones).',
+                caseApplication: 'Adquisición de kits de soplado de aire, pastas térmicas y licencias antivirus EDR corporativas.',
+                metric: 'Proyectos completados a tiempo y presupuesto &gt; 92%'
+            },
+            'cobit-dss': {
+                id: 'cobit-dss',
+                title: 'COBIT Dominio DSS (6 Objetivos)',
+                category: 'Dominio de Operaciones',
+                badgeClass: 'bg-sky-100 text-sky-800 border-sky-200',
+                standard: 'COBIT 2019 - Entregar, Servir y Dar Soporte',
+                level: 'Nivel 1: Operacional',
+                definition: 'Se centra en la entrega real de los servicios requeridos de TI, incluyendo la gestión de solicitudes, problemas, operaciones y seguridad en campo.',
+                responsibilities: [
+                    'DSS01: Administrar las Operaciones de TI.',
+                    'DSS02: Administrar las Solicitudes de Servicios y los Incidentes.',
+                    'DSS03: Administrar Problemas de Causa Raíz.',
+                    'DSS05: Administrar los Servicios de Seguridad.'
+                ],
+                upstream: 'Soluciones entregadas por BAI.',
+                downstream: 'Reportes de telemetría hacia MEA.',
+                caseApplication: 'Ejecución del soporte técnico en campo para 485 estaciones de trabajo.',
+                metric: 'Cumplimiento del SLA de resolución &gt; 99%'
+            },
+            'cobit-mea': {
+                id: 'cobit-mea',
+                title: 'COBIT Dominio MEA (3 Objetivos)',
+                category: 'Dominio de Auditoría',
+                badgeClass: 'bg-sky-100 text-sky-800 border-sky-200',
+                standard: 'COBIT 2019 - Monitorear, Evaluar y Valorar',
+                level: 'Nivel de Aseguramiento',
+                definition: 'Supervisa de forma independiente el desempeño de todos los procesos, el control interno y la conformidad con regulaciones externas.',
+                responsibilities: [
+                    'MEA01: Monitorear, Evaluar y Valorar el Desempeño y Cumplimiento.',
+                    'MEA02: Monitorear el Sistema de Control Interno.',
+                    'MEA03: Monitorear el Cumplimiento con Requisitos Externos.'
+                ],
+                upstream: 'Telemetría y logs de todos los dominios.',
+                downstream: 'Informes de auditoría hacia el Directorio (EDM).',
+                caseApplication: 'Auditoría mensual de actas de mantenimiento y validación del 100% de parches instalados.',
+                metric: 'Hallazgos de auditoría resueltos &gt; 98%'
+            },
+            'pmbok': {
+                id: 'pmbok',
+                title: 'PMBOK 7 (Project Management Institute)',
+                category: 'Gestión Táctica',
+                badgeClass: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+                standard: 'Guía de los Fundamentos para la Dirección de Proyectos',
+                level: 'Nivel 2: Táctico (Gerencias de TI & Proyectos)',
+                definition: 'Cuerpo de conocimiento que estandariza la planificación, ejecución y control de proyectos temporales para crear un producto o servicio único dentro de restricciones de alcance, costo y cronograma.',
+                responsibilities: [
+                    'Definición de Estructura de Desglose del Trabajo (EDT/WBS).',
+                    'Gestión de cronogramas con Diagramas de Gantt y ruta crítica.',
+                    'Gestión de adquisiciones, contrataciones de proveedores y riesgos.'
+                ],
+                upstream: 'Directrices del Directorio y objetivos estratégicos de COBIT.',
+                downstream: 'Transición formal y entrega de nuevos servicios a la operación continua de ITIL.',
+                caseApplication: 'Proyecto de modernización del parque informático: estructurado en 6 semanas con entregas por lotes de 80 computadoras.',
+                metric: 'Varianza de Cronograma (SV): 0.99 &bull; Varianza de Costo (CV): +1.8%'
+            },
+            'itil': {
+                id: 'itil',
+                title: 'ITIL 4 (Information Technology Infrastructure Library)',
+                category: 'Gestión Operacional',
+                badgeClass: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                standard: 'AXELOS ITIL 4 Service Value System (SVS)',
+                level: 'Nivel 1: Operacional (Mesa de Ayuda & Soporte Técnico)',
+                definition: 'Marco de mejores prácticas para la gestión de servicios de tecnologías de la información que alinea los servicios tecnológicos con las necesidades operativas continuas del negocio.',
+                responsibilities: [
+                    'Gestión de Incidentes (restauración inmediata del servicio normal).',
+                    'Mantenimiento Preventivo y Gestión de Problemas para erradicar causas raíz.',
+                    'Acuerdos de Nivel de Servicio (SLA) y Catálogo de Servicios de TI.'
+                ],
+                upstream: 'Servicios entregados formalmente por proyectos PMBOK.',
+                downstream: 'Usuarios finales, colaboradores y reportes de métricas a COBIT.',
+                caseApplication: 'Ejecución del soporte técnico en 3 niveles (L1, L2, L3) con tiempos de respuesta garantizados menores a 20 minutos.',
+                metric: 'Disponibilidad de Servicios TI (Uptime): 99.85%'
+            },
+            'iso': {
+                id: 'iso',
+                title: 'ISO/IEC 27001 (SGSI)',
+                category: 'Normativa & Ciberseguridad',
+                badgeClass: 'bg-amber-100 text-amber-800 border-amber-200',
+                standard: 'ISO/IEC 27001:2022 Information Security Management',
+                level: 'Normativo / Cumplimiento Transversal',
+                definition: 'Estándar internacional para los Sistemas de Gestión de la Seguridad de la Información (SGSI). Preserva la Confidencialidad, Integridad y Disponibilidad (Tríada CIA) de los datos.',
+                responsibilities: [
+                    'Control A.8.19: Instalación mandatoria de parches de seguridad críticos.',
+                    'Control A.8.7: Protección contra código malicioso (Antivirus / EDR centralizado).',
+                    'Control A.8.1: Inventario seguro de activos y custodia de información técnica.'
+                ],
+                upstream: 'Políticas corporativas de seguridad y requerimientos legales.',
+                downstream: 'Técnicos de soporte en campo y administradores de sistemas.',
+                caseApplication: 'Verificación estricta de arranque seguro, políticas de contraseñas de 12 caracteres y borrado seguro de archivos temporales en cada PC intervenida.',
+                metric: 'Endpoints con Agente EDR Activo: 100.0%'
+            },
+            'bpm': {
+                id: 'bpm',
+                title: 'BPM: Business Process Management',
+                category: 'Disciplina Transversal',
+                badgeClass: 'bg-purple-100 text-purple-800 border-purple-200',
+                standard: 'Notación BPMN 2.0 (OMG)',
+                level: 'Transversal / Eficiencia de Procesos',
+                definition: 'Enfoque disciplinado para identificar, diseñar, ejecutar, documentar, medir, monitorear y controlar los procesos de negocio tanto manuales como automatizados para alcanzar resultados consistentes y alineados con la estrategia.',
+                responsibilities: [
+                    'Entendimiento profundo de las actividades operativas actuales (As-Is).',
+                    'Modelado formal con carriles de responsabilidad y puntos de control.',
+                    'Optimización iterativa basada en datos empíricos de tiempo y costos.'
+                ],
+                upstream: 'Estrategia de TI de COBIT y objetivos de negocio.',
+                downstream: 'Plataformas de automatización, software Bizagi y manuales SOP.',
+                caseApplication: 'Diseño del proceso de mantenimiento de equipos de cómputo en Bizagi Modeler con 3 carriles de natación.',
+                metric: 'Reducción del tiempo de ciclo operativo: -53%'
+            },
+            'bpm-components': {
+                id: 'bpm-components',
+                title: '6 Dimensiones del Ecosistema BPM',
+                category: 'Estructura BPM',
+                badgeClass: 'bg-purple-100 text-purple-800 border-purple-200',
+                standard: 'Framework Integral BPM',
+                level: 'Capa Estructural',
+                definition: 'Los seis factores interconectados que todo proceso de negocio debe articular para funcionar de manera armónica sin crear cuellos de botella ni fricción organizacional.',
+                responsibilities: [
+                    '1. Personas: Roles con competencias técnicas y responsabilidades claras.',
+                    '2. Sistemas: Herramientas digitales, SO, antivirus y software de gestión.',
+                    '3. Proveedores: Suministro de piezas de repuesto, discos SSD y consumibles.',
+                    '4. Socios: Aliados estratégicos de soporte e infraestructura externa.',
+                    '5. Clientes: Usuarios internos que reciben las estaciones de cómputo optimizadas.',
+                    '6. Funciones de Negocio: Objetivos de rentabilidad, productividad y continuidad.'
+                ],
+                upstream: 'Organigrama y arquitectura corporativa.',
+                downstream: 'Manual de funciones y procedimientos operativos SOP.',
+                caseApplication: 'Articula al Jefe de Soporte, Técnicos, Usuarios y Proveedores de hardware en un solo flujo.',
+                metric: 'Alineación de Actores Operativos: 100%'
+            },
+            'bpm-lifecycle': {
+                id: 'bpm-lifecycle',
+                title: 'Ciclo de Vida BPM (6 Fases)',
+                category: 'Metodología BPM',
+                badgeClass: 'bg-purple-100 text-purple-800 border-purple-200',
+                standard: 'Metodología BPM CBOK',
+                level: 'Metodológico Continuo',
+                definition: 'Ciclo cerrado iterativo que garantiza que los procesos no queden estáticos en papel, sino que evolucionen constantemente conforme cambia la tecnología y la demanda.',
+                responsibilities: [
+                    'Fase 1: Descubrimiento (Identificación de problemas operativos y metas).',
+                    'Fase 2: Modelado (Diseño del flujo en BPMN 2.0).',
+                    'Fase 3: Automatización (Creación de formularios y reglas de decisión).',
+                    'Fase 4: Ejecución (Despliegue operativo en campo).',
+                    'Fase 5: Monitoreo (Seguimiento de métricas de desempeño y SLAs).',
+                    'Fase 6: Optimización (Rediseño y eliminación continua de desperdicios).'
+                ],
+                upstream: 'Demandas del negocio y directrices de auditoría.',
+                downstream: 'Planes de mejora continua y nuevas versiones del proceso.',
+                caseApplication: 'Permitió pasar de un mantenimiento desordenado a un proceso formalizado de alta eficiencia.',
+                metric: 'Velocidad de Adaptación a Cambios: 2 semanas'
+            },
+            'bpm-software': {
+                id: 'bpm-software',
+                title: 'Ecosistema de Software para Modelado BPM',
+                category: 'Herramientas Digitales',
+                badgeClass: 'bg-purple-100 text-purple-800 border-purple-200',
+                standard: 'BPMN 2.0 Execution Engines',
+                level: 'Plataforma Tecnológica',
+                definition: 'Suites de software especializadas en la diagramación, simulación y automatización de procesos de negocio según estándares internacionales de la OMG.',
+                responsibilities: [
+                    'Bizagi Modeler: Herramienta líder para diagramación, documentación y exportación formal.',
+                    'Bonitasoft: Suite open-source para orquestación e integración con APIs.',
+                    'Visual Paradigm: Plataforma avanzada para modelado UML, BPMN y arquitectura empresarial.',
+                    'AuraPortal: Sistema BPM empresarial con motor no-code de reglas complejas.'
+                ],
+                upstream: 'Requerimientos de modelado levantados por el equipo de procesos.',
+                downstream: 'Archivos ejecutables .BPMN, reportes en PDF y esquemas de automatización.',
+                caseApplication: 'Utilización de Bizagi Modeler para generar el archivo formal y el diagrama con 3 carriles de natación.',
+                metric: 'Conformidad con Estándar BPMN 2.0: 100%'
+            },
+            'bpm-case': {
+                id: 'bpm-case',
+                title: 'Caso Aplicado: Mantenimiento de Cómputo',
+                category: 'Implementación Práctica',
+                badgeClass: 'bg-purple-100 text-purple-800 border-purple-200',
+                standard: 'Bizagi Workflow + Procedimiento PRC-TI-014',
+                level: 'Nivel Operativo en Campo',
+                definition: 'Implementación integral del proceso de soporte técnico preventivo para 485 computadoras utilizando Bizagi Modeler y el Procedimiento Formal Operativo (SOP).',
+                responsibilities: [
+                    'Carril 1 (Jefe de Soporte): Reunión de equipo, emisión de Acta de Inicio y consolidación final.',
+                    'Carril 2 (Profesionales Técnicos): Diagnóstico SMART, limpieza física, parches de SO y antivirus.',
+                    'Carril 3 (Organización): Recepción del Informe Final de Auditoría y firma de conformidad.'
+                ],
+                upstream: 'Plan Operativo Anual de TI aprobado por el Directorio.',
+                downstream: 'Equipos funcionando al 100% y usuarios con continuidad operativa garantizada.',
+                caseApplication: 'Permite reducir fallas de hardware en un 90% y asegurar el cumplimiento de la norma ISO 27001.',
+                metric: '485 Equipos Certificados &bull; 0 Incidentes de Seguridad'
+            },
+            'systemic-relation': {
+                id: 'systemic-relation',
+                title: 'Relación Sistémica ITIL & PMBOK',
+                category: 'Integración Metodológica',
+                badgeClass: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+                standard: 'Articulación Táctica-Operativa',
+                level: 'Inter-Marco',
+                definition: 'Sinergia operativa donde los proyectos (PMBOK) y los servicios continuos (ITIL) se complementan mutuamente para construir un ciclo de vida de tecnología sostenible.',
+                responsibilities: [
+                    'PMBOK gestiona el proyecto temporal de renovación o mantenimiento con un cronograma acotado.',
+                    'ITIL recibe la infraestructura al culminar el proyecto para gestionarla en su operación diaria.',
+                    'Cuando un servicio ITIL requiere una mejora mayor o reemplazo masivo, se genera un nuevo proyecto PMBOK.'
+                ],
+                upstream: 'Directrices del Directorio bajo COBIT.',
+                downstream: 'Mesa de servicio y usuarios corporativos.',
+                caseApplication: 'El plan de mantenimiento se planifica como un proyecto PMBOK de 6 semanas y se opera con los estándares de incidentes y SLAs de ITIL 4.',
+                metric: 'Tasa de Éxito en Transición Operativa: 100%'
+            },
+            'cobit-domains': {
+                id: 'cobit-domains',
+                title: '5 Dominios COBIT 2019 (ISACA)',
+                category: 'Gobierno y Gestión',
+                badgeClass: 'bg-sky-100 text-sky-800 border-sky-200',
+                standard: 'ISACA COBIT 2019',
+                level: 'Arquitectura de Gobierno',
+                definition: 'La taxonomía fundamental de COBIT que divide los 40 objetivos en un dominio de gobierno para directores y cuatro dominios de gestión para la gerencia.',
+                responsibilities: [
+                    'EDM (5 Objetivos): Evaluar, Dirigir y Monitorear (Directorio).',
+                    'APO (14 Objetivos): Alinear, Planear y Organizar (Estrategia).',
+                    'BAI (11 Objetivos): Construir, Adquirir e Implementar (Proyectos).',
+                    'DSS (6 Objetivos): Entregar, Servir y Dar Soporte (Operaciones).',
+                    'MEA (3 Objetivos): Monitorear, Evaluar y Valorar (Auditoría).'
+                ],
+                upstream: 'Normas internacionales y objetivos empresariales.',
+                downstream: 'Todas las áreas técnicas y operativas de la organización.',
+                caseApplication: 'Permite mapear cada tarea de soporte a un objetivo de control formal de ISACA.',
+                metric: 'Cobertura de Control COBIT: 40/40 Objetivos'
+            },
+            'cobit-principles': {
+                id: 'cobit-principles',
+                title: '6 Principios del Sistema de Gobierno',
+                category: 'Principios de Gobernanza',
+                badgeClass: 'bg-sky-100 text-sky-800 border-sky-200',
+                standard: 'COBIT 2019 Governance System Principles',
+                level: 'Fundacional',
+                definition: 'Conjunto de seis reglas axiomáticas que debe cumplir todo sistema de gobernanza de información y tecnología para ser efectivo en el mundo real.',
+                responsibilities: [
+                    '1. Proporcionar Valor a las Partes Interesadas (Stakeholder Value).',
+                    '2. Enfoque Holístico (integrando componentes interconectados).',
+                    '3. Sistema Dinámico de Gobierno (adaptable ante cambios).',
+                    '4. Gobierno Distinto de la Gestión (separación de roles clave).',
+                    '5. Adaptado a las Necesidades de la Empresa (Tailored System).',
+                    '6. Sistema de Gobierno de Extremo a Extremo (End-to-End).'
+                ],
+                upstream: 'Valores corporativos y código de ética de la empresa.',
+                downstream: 'Diseño de la estructura organizativa de TI.',
+                caseApplication: 'Garantiza que el mantenimiento de hardware no sea visto como un gasto, sino como un generador de valor y productividad.',
+                metric: 'Adhesión a Principios: 6/6'
+            }
+        };
+
+        // Active node state
+        let currentNodeId = 'root';
+
+        // Select Node Function
+        function selectNode(nodeId) {
+            if (!nodesData[nodeId]) return;
+            currentNodeId = nodeId;
+
+            // Highlight node card in View 1 if present
+            document.querySelectorAll('.map-card').forEach(el => {
+                el.classList.remove('active-node');
+            });
+            const activeEl = document.getElementById(`node-card-${nodeId}`);
+            if (activeEl) {
+                activeEl.classList.add('active-node');
+            }
+
+            renderInspector(nodeId);
+        }
+
+        // Render Inspector
+        function renderInspector(nodeId) {
+            const data = nodesData[nodeId];
+            if (!data) return;
+
+            const container = document.getElementById('inspector-content');
+            container.innerHTML = `
+                <!-- Category Badge & Standard -->
+                <div class="space-y-1">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${data.badgeClass}">
+                            ${data.category}
+                        </span>
+                        <span class="text-[10px] font-mono text-slate-400">${data.standard}</span>
+                    </div>
+                    <h3 class="text-base font-extrabold text-slate-900 leading-tight">${data.title}</h3>
+                    <div class="text-[11px] text-blue-700 font-semibold font-mono flex items-center gap-1.5">
+                        <i class="fa-solid fa-layer-group text-[10px]"></i>
+                        <span>${data.level}</span>
+                    </div>
+                </div>
+
+                <!-- Definition -->
+                <div class="p-3 rounded-lg bg-slate-50 border border-slate-200">
+                    <span class="text-[10px] font-mono uppercase font-bold text-slate-400 block mb-1">Definición Ejecutiva</span>
+                    <p class="text-xs text-slate-700 leading-relaxed">${data.definition}</p>
+                </div>
+
+                <!-- Responsibilities / Key Points -->
+                <div class="space-y-2">
+                    <span class="text-[10px] font-mono uppercase font-bold text-slate-400 block">Responsabilidades & Componentes Clave</span>
+                    <ul class="space-y-1.5 text-xs text-slate-700">
+                        ${data.responsibilities.map(r => `
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-circle-check text-blue-600 text-[10px] mt-1 shrink-0"></i>
+                                <span>${r}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+
+                <!-- Upstream & Downstream Relations -->
+                <div class="grid grid-cols-1 gap-2 pt-2 border-t border-slate-100">
+                    <div class="p-2.5 rounded-lg bg-blue-50/50 border border-blue-100">
+                        <span class="text-[10px] font-mono font-bold uppercase text-blue-800 block">Entradas (Upstream)</span>
+                        <span class="text-[11px] text-slate-600 block mt-0.5">${data.upstream}</span>
+                    </div>
+                    <div class="p-2.5 rounded-lg bg-indigo-50/50 border border-indigo-100">
+                        <span class="text-[10px] font-mono font-bold uppercase text-indigo-800 block">Salidas (Downstream)</span>
+                        <span class="text-[11px] text-slate-600 block mt-0.5">${data.downstream}</span>
+                    </div>
+                </div>
+
+                <!-- Practical Application in Case -->
+                <div class="p-3 rounded-lg bg-emerald-50/60 border border-emerald-200/80">
+                    <div class="flex items-center gap-1.5 text-emerald-800 text-xs font-bold mb-1">
+                        <i class="fa-solid fa-screwdriver-wrench text-[11px]"></i>
+                        <span>Aplicación Práctica en Mantenimiento TI</span>
+                    </div>
+                    <p class="text-[11px] text-slate-700 leading-relaxed">${data.caseApplication}</p>
+                    <div class="mt-2 pt-2 border-t border-emerald-200/60 flex items-center justify-between text-[11px] font-mono">
+                        <span class="text-emerald-800 font-semibold">Métrica Clave:</span>
+                        <span class="font-bold text-emerald-900">${data.metric}</span>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="pt-2 flex items-center gap-2">
+                    <a href="caso01.html" class="flex-1 text-center py-2 px-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        <span>Ver en Caso 01</span>
+                    </a>
+                </div>
+            `;
+        }
+
+        // Switch View Modes
+        function switchView(viewId) {
+            document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
+            const target = document.getElementById(viewId);
+            if (target) target.classList.remove('hidden');
+
+            // Update sidebar buttons
+            document.querySelectorAll('.side-nav-btn').forEach(btn => {
+                btn.className = "side-nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition";
+            });
+            const sideBtn = document.getElementById(`side-btn-${viewId.replace('view-', '')}`);
+            if (sideBtn) {
+                sideBtn.className = "side-nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-semibold transition bg-blue-50 text-blue-700 border border-blue-200/80 shadow-sm";
+            }
+
+            // Update topbar pills
+            const topBtns = {
+                'view-relational': document.getElementById('top-btn-relational'),
+                'view-mindmap': document.getElementById('top-btn-mindmap'),
+                'view-matrix': document.getElementById('top-btn-matrix'),
+                'view-lifecycle': document.getElementById('top-btn-lifecycle')
+            };
+            Object.values(topBtns).forEach(b => {
+                if (b) b.className = "py-1 px-3 rounded-md font-medium text-slate-600 hover:text-slate-900";
+            });
+            if (topBtns[viewId]) {
+                topBtns[viewId].className = "py-1 px-3 rounded-md font-semibold bg-white text-blue-700 shadow-xs";
+            }
+
+            // Update banner title
+            const titles = {
+                'view-relational': { tag: 'Vista 1: Relacional', title: 'Mapa Conceptual: Jerarquía de Gobierno y Gestión de TI' },
+                'view-mindmap': { tag: 'Vista 2: Radial', title: 'Mapa Mental: 4 Ramas de Gobernanza y Procesos de TI' },
+                'view-matrix': { tag: 'Vista 3: Cross-Walk', title: 'Matriz Comparativa de Integración de Marcos de TI' },
+                'view-lifecycle': { tag: 'Vista 4: Ciclo BPM', title: 'Ciclo de Vida de Procesos de Negocio en 6 Fases' }
+            };
+            if (titles[viewId]) {
+                document.getElementById('view-type-tag').textContent = titles[viewId].tag;
+                document.getElementById('view-title').textContent = titles[viewId].title;
+            }
+        }
+
+        // Framework Filter
+        function filterByFramework(fw) {
+            document.querySelectorAll('.filter-chip-btn').forEach(btn => {
+                btn.className = "filter-chip-btn text-[11px] font-medium py-1.5 px-2 rounded-md bg-white text-slate-700 border border-slate-200 text-center hover:bg-slate-50 transition";
+            });
+            event.target.className = "filter-chip-btn text-[11px] font-bold py-1.5 px-2 rounded-md bg-blue-600 text-white border border-blue-600 text-center shadow-xs transition";
+
+            if (fw === 'all') {
+                selectNode('root');
+            } else if (fw === 'cobit') {
+                selectNode('cobit');
+            } else if (fw === 'pmbok') {
+                selectNode('pmbok');
+            } else if (fw === 'itil') {
+                selectNode('itil');
+            } else if (fw === 'iso') {
+                selectNode('iso');
+            } else if (fw === 'bpm') {
+                selectNode('bpm');
+            }
+        }
+
+        // Search nodes
+        function searchNodes(query) {
+            const q = query.toLowerCase().trim();
+            const countEl = document.getElementById('search-count-badge');
+            if (!q) {
+                countEl.textContent = '18 nodos';
+                return;
+            }
+
+            let matches = 0;
+            for (const [key, node] of Object.entries(nodesData)) {
+                const text = `${node.title} ${node.definition} ${node.standard} ${node.category}`.toLowerCase();
+                if (text.includes(q)) {
+                    matches++;
+                    if (matches === 1) {
+                        selectNode(key);
+                    }
+                }
+            }
+            countEl.textContent = `${matches} resultado${matches !== 1 ? 's' : ''}`;
+        }
+
+        // Copy dossier to clipboard
+        function copyDossier() {
+            const data = nodesData[currentNodeId];
+            if (!data) return;
+            const textToCopy = `[${data.category}] ${data.title}
+Estándar: ${data.standard}
+Nivel: ${data.level}
+Definición: ${data.definition}
+Aplicación Práctica: ${data.caseApplication}
+Métrica: ${data.metric}`;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                alert('Ficha técnica copiada al portapapeles con éxito.');
+            }).catch(() => {
+                prompt('Copiar expediente:', textToCopy);
+            });
+        }
+
+        // Toggle Modal
+        function toggleModal(id) {
+            const m = document.getElementById(id);
+            if (m.classList.contains('hidden')) {
+                m.classList.remove('hidden');
+            } else {
+                m.classList.add('hidden');
+            }
+        }
+
+        // Toggle Inspector on Mobile
+        function toggleInspector() {
+            const insp = document.getElementById('inspector-panel');
+            insp.classList.toggle('hidden');
+        }
+
+        // Initialize on DOM Ready
+        window.addEventListener('DOMContentLoaded', () => {
+            selectNode('root');
+        });
+    </script>
+</body>
+</html>
